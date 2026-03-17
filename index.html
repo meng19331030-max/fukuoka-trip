@@ -2,94 +2,262 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>福岡夢幻之旅 🌸</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; }
-        .bg-pink-blue { background: linear-gradient(135deg, #e0f2fe 0%, #fce7f3 100%); }
+        body { font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .bg-pink-blue { background: linear-gradient(135deg, #e0f2fe 0%, #fce7f3 100%); background-attachment: fixed; }
         .card-glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); }
         .tab-active { border-bottom: 3px solid #f472b6; color: #db2777; font-weight: bold; }
+        .hidden { display: none; }
     </style>
 </head>
 <body class="bg-pink-blue min-h-screen pb-24">
 
-    <!-- 頂部天氣資訊欄 -->
+    <!-- 頂部資訊 -->
     <div class="p-4 flex justify-between items-center text-gray-600">
         <div>
-            <h1 class="text-2xl font-bold text-pink-600">FUKUOKA 4/23</h1>
-            <p id="current-date" class="text-xs italic text-blue-500 font-semibold"></p>
+            <h1 class="text-2xl font-bold text-pink-600">FUKUOKA TRIP</h1>
+            <p id="display-date" class="text-xs italic text-blue-500 font-semibold">2026/04/23 - 04/27</p>
         </div>
-        <div id="weather" class="text-right bg-white/50 p-2 rounded-xl text-sm">
-            <i class="fa-solid fa-cloud-sun text-yellow-500"></i> 福岡 18°C
+        <div class="text-right bg-white/50 p-2 rounded-xl text-sm shadow-sm">
+            <i class="fa-solid fa-cloud-sun text-yellow-500"></i> 福岡 <span id="temp">18°C</span>
         </div>
     </div>
 
-    <!-- 頁面切換按鈕 -->
-    <div class="flex justify-around bg-white/30 backdrop-blur-md sticky top-0 z-20 mb-4">
-        <button onclick="showPage('itinerary')" id="tab-itinerary" class="py-3 px-6 tab-active">詳細行程</button>
-        <button onclick="showPage('wallet')" id="tab-wallet" class="py-3 px-6 text-gray-500">記帳小幫手</button>
+    <!-- 天數切換與導覽 -->
+    <div class="sticky top-0 z-30 bg-white/40 backdrop-blur-md border-b border-pink-100">
+        <div class="flex overflow-x-auto no-scrollbar py-2 px-2 gap-2">
+            <button onclick="switchDay(1)" id="btn-d1" class="day-btn py-2 px-4 rounded-full bg-pink-500 text-white text-sm whitespace-nowrap shadow-sm">D1</button>
+            <button onclick="switchDay(2)" id="btn-d2" class="day-btn py-2 px-4 rounded-full bg-white text-gray-500 text-sm whitespace-nowrap shadow-sm">D2</button>
+            <button onclick="switchDay(3)" id="btn-d3" class="day-btn py-2 px-4 rounded-full bg-white text-gray-500 text-sm whitespace-nowrap shadow-sm">D3</button>
+            <button onclick="switchDay(4)" id="btn-d4" class="day-btn py-2 px-4 rounded-full bg-white text-gray-500 text-sm whitespace-nowrap shadow-sm">D4</button>
+            <button onclick="switchDay(5)" id="btn-d5" class="day-btn py-2 px-4 rounded-full bg-white text-gray-500 text-sm whitespace-nowrap shadow-sm">D5</button>
+        </div>
+        <div class="flex justify-around border-t border-pink-50 text-sm">
+            <button onclick="showMainPage('itinerary')" id="tab-itinerary" class="py-3 px-6 tab-active">詳細行程</button>
+            <button onclick="showMainPage('wallet')" id="tab-wallet" class="py-3 px-6 text-gray-500">記帳/筆記</button>
+        </div>
     </div>
 
-    <!-- 行程內容頁面 -->
+    <!-- 行程內容區 -->
     <main id="page-itinerary" class="p-4 space-y-4">
         
-        <!-- 航班資訊 -->
-        <div class="card-glass rounded-2xl p-4 shadow-sm border-l-4 border-pink-400">
-            <div class="flex justify-between items-start">
-                <div>
-                    <span class="bg-pink-100 text-pink-600 text-[10px] px-2 py-1 rounded-full">EVA AIR BR106</span>
-                    <h2 class="text-lg font-bold mt-1 text-gray-800">✈️ 桃園機場 ➔ 福岡機場</h2>
-                    <p class="text-sm text-gray-500">08:00 - 11:20 抵達</p>
+        <!-- DAY 1 -->
+        <div id="content-d1" class="day-content space-y-4">
+            <div class="card-glass rounded-2xl p-4 shadow-sm border-l-4 border-pink-400">
+                <span class="text-[10px] bg-pink-100 text-pink-600 px-2 py-1 rounded-full uppercase">EVA BR106</span>
+                <h2 class="font-bold text-gray-800 mt-2">✈️ 11:20 抵達福岡機場</h2>
+                <p class="text-xs text-gray-500 mt-1">🚕 前往飯店：約 20min (預估 ¥2,500)</p>
+                <p class="text-[10px] text-blue-500 font-mono mt-1">Agoda: 1990699229</p>
+            </div>
+
+            <div class="card-glass rounded-2xl p-4 shadow-sm border-l-4 border-red-400">
+                <div class="flex justify-between items-center">
+                    <h2 class="font-bold text-gray-800">⛩️ 櫛田神社參拜</h2>
+                    <button onclick="toggleElement('ritual-guide')" class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded">查看步驟</button>
+                </div>
+                <div id="ritual-guide" class="hidden mt-3 text-sm text-gray-600 bg-white/80 p-3 rounded-lg space-y-2">
+                    <p>1️⃣ 手水舍：淋雙手並漱口</p>
+                    <p>2️⃣ 本殿：投錢(5/50円) ➔ 二禮二拍手一禮</p>
+                    <p>3️⃣ 求籤：100円自取</p>
+                    <p class="text-red-500 font-bold italic">💡 總店一蘭拉麵在附近</p>
                 </div>
             </div>
-        </div>
 
-        <!-- 飯店資訊 -->
-        <div class="card-glass rounded-2xl p-4 shadow-sm border-l-4 border-blue-400">
-            <h2 class="font-bold text-gray-800 text-lg">🏨 Branche 藥院大通 SeedsStay</h2>
-            <p class="text-xs text-blue-600 font-mono mt-1">Agoda 訂單: 1990699229</p>
-            <div class="mt-3 grid grid-cols-2 gap-2 text-xs">
-                <div class="bg-blue-50 p-2 rounded-lg">🚕 預估 2,500 JPY</div>
-                <div class="bg-pink-50 p-2 rounded-lg italic">約 20 分鐘車程</div>
+            <div class="card-glass rounded-2xl p-4 shadow-sm border-l-4 border-yellow-400">
+                <h2 class="font-bold text-gray-800">🍡 鈴懸 本店 (甜點天花板)</h2>
+                <p class="text-xs text-gray-500 mt-1">必買：鈴乃最中、草莓大福 (季節限定)</p>
             </div>
-        </div>
 
-        <!-- 櫛田神社 (特殊參拜教學) -->
-        <div class="card-glass rounded-2xl p-4 shadow-sm border-l-4 border-red-400">
-            <div class="flex justify-between items-center">
-                <h2 class="font-bold text-gray-800 text-lg">⛩️ 櫛田神社參拜</h2>
-                <button onclick="toggleRitual()" class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded">查看步驟</button>
-            </div>
-            <div id="ritual-guide" class="hidden mt-3 text-sm text-gray-600 bg-white/80 p-3 rounded-lg space-y-2">
-                <p>1️⃣ 手水舍：淋雙手並漱口</p>
-                <p>2️⃣ 本殿：投5/50円，二禮二拍手一禮</p>
-                <p>3️⃣ 求籤：100円自取，壞籤綁在旁邊</p>
-                <p class="text-red-500 font-bold">💡 一蘭拉麵總店在附近！</p>
-            </div>
-        </div>
-
-        <!-- 美食與購物 -->
-        <div class="card-glass rounded-2xl p-4 shadow-sm border-l-4 border-yellow-400 space-y-4">
-            <div>
-                <h2 class="font-bold text-gray-800 italic">🥯 鈴懸 (福岡甜點天花板)</h2>
-                <p class="text-xs text-gray-500">必買：鈴乃○餅、鈴乃最中、草莓大福</p>
-            </div>
-            <hr class="border-gray-200">
-            <div class="flex justify-between items-center">
+            <div class="card-glass rounded-2xl p-4 shadow-sm border-l-4 border-orange-400 flex justify-between items-center">
                 <div>
-                    <h2 class="font-bold text-gray-800">🥘 前田屋牛腸鍋 (已預約)</h2>
-                    <p class="text-xs text-orange-600 font-mono">代碼: TS7DNWA82N | 17:00</p>
+                    <h2 class="font-bold text-gray-800">🥘 前田屋牛腸鍋</h2>
+                    <p class="text-xs text-orange-600 font-mono">17:00 預約: TS7DNWA82N</p>
                 </div>
-                <a href="https://www.google.com/maps/search/?api=1&query=前田屋牛腸鍋" class="text-blue-500"><i class="fa-solid fa-map-location-dot text-2xl"></i></a>
+                <a href="https://www.google.com/maps/search/?api=1&query=前田屋+牛腸鍋" class="text-blue-400"><i class="fa-solid fa-location-dot text-xl"></i></a>
             </div>
         </div>
 
-        <p class="text-center text-gray-400 text-xs py-4">🌙 散步 15 分鐘回藥院飯店，晚安。</p>
+        <!-- DAY 2 -->
+        <div id="content-d2" class="day-content hidden space-y-4">
+            <div class="card-glass rounded-2xl p-4 border-l-4 border-pink-400">
+                <h2 class="font-bold text-gray-800">🌸 太宰府天滿宮 ➔ 竈門神社</h2>
+                <p class="text-xs text-gray-500 mt-1">必吃：若松屋鰻魚飯</p>
+            </div>
+            <div class="card-glass rounded-2xl p-4 border-l-4 border-blue-400">
+                <h2 class="font-bold text-gray-800">☕ 咖啡巡禮</h2>
+                <p class="text-xs text-gray-500 mt-1">FUK COFFEE / Blue Bottle / Full Full 麵包</p>
+            </div>
+            <div class="card-glass rounded-2xl p-4 border-l-4 border-orange-400">
+                <h2 class="font-bold text-gray-800">🥩 NIKUICHI 燒肉 (藥院店)</h2>
+                <p class="text-xs text-gray-500 mt-1">天神地下街逛街後晚餐</p>
+            </div>
+        </div>
+
+        <!-- DAY 3 -->
+        <div id="content-d3" class="day-content hidden space-y-4">
+            <div class="card-glass rounded-2xl p-4 border-l-4 border-blue-500 text-center py-8">
+                <i class="fa-solid fa-fish-fins text-3xl text-blue-400 mb-2"></i>
+                <h2 class="font-bold text-gray-800">海之中道海洋世界</h2>
+                <p class="text-xs text-gray-500 mt-1">水族館 + 海濱公園花海</p>
+            </div>
+            <div class="card-glass rounded-2xl p-4 border-l-4 border-pink-400">
+                <h2 class="font-bold text-gray-800">🗼 福岡塔 & MARK IS</h2>
+                <p class="text-xs text-gray-500 mt-1">傍晚看夜景 + 購物中心</p>
+            </div>
+        </div>
+
+        <!-- DAY 4 -->
+        <div id="content-d4" class="day-content hidden space-y-4">
+            <div class="card-glass rounded-2xl p-4 border-l-4 border-green-500">
+                <h2 class="font-bold text-gray-800">🛍️ 購物馬拉松</h2>
+                <p class="text-xs text-gray-500 mt-1">西松屋(櫻坂) ➔ 天神大名 ➔ LaLaport(鋼彈)</p>
+            </div>
+            <div class="card-glass rounded-2xl p-4 border-l-4 border-purple-500">
+                <h2 class="font-bold text-gray-800">🍱 伴手禮補貨 (博多站)</h2>
+                <p class="text-xs text-gray-500 mt-1">LOPIA / 治一郎布丁 / 努努雞</p>
+            </div>
+        </div>
+
+        <!-- DAY 5 -->
+        <div id="content-d5" class="day-content hidden space-y-4">
+            <div class="card-glass rounded-2xl p-4 border-l-4 border-orange-300">
+                <h2 class="font-bold text-gray-800">🍳 食堂 おわん</h2>
+                <p class="text-xs text-gray-500 mt-1">最後的日式早餐</p>
+            </div>
+            <div class="card-glass rounded-2xl p-4 border-l-4 border-gray-400 text-center py-6">
+                <h2 class="font-bold text-gray-800">✈️ 前往機場 (12:20 飛機)</h2>
+                <p class="text-xs text-gray-500 mt-1">期待下一次旅行！</p>
+            </div>
+        </div>
+
     </main>
 
-    <!-- 記帳小幫手頁面 -->
-    <main id="page-wallet" class="hidden p-4">
-        <div class="card-glass rounded-2xl p-6 shadow-sm mb-4">
-            <h2
+    <!-- 記帳頁面 -->
+    <main id="page-wallet" class="hidden p-4 space-y-4">
+        <div class="card-glass rounded-2xl p-6 shadow-sm">
+            <h2 class="font-bold text-pink-600 mb-4 font-lg"><i class="fa-solid fa-coins mr-2"></i>消費紀錄</h2>
+            <div class="space-y-3">
+                <input id="exp-name" type="text" placeholder="項目 (如：一蘭拉麵)" class="w-full p-3 rounded-xl border-none ring-1 ring-pink-100 outline-none focus:ring-pink-400 transition-all shadow-inner bg-white/50">
+                <div class="flex gap-2">
+                    <input id="exp-amount" type="number" inputmode="numeric" placeholder="金額 (JPY)" class="flex-1 p-3 rounded-xl border-none ring-1 ring-blue-100 outline-none focus:ring-blue-400 shadow-inner bg-white/50">
+                    <button onclick="addExpense()" class="bg-pink-500 text-white px-6 rounded-xl font-bold active:scale-95 transition-transform shadow-lg">新增</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-glass rounded-2xl p-4">
+            <ul id="expense-list" class="space-y-2 divide-y divide-pink-100/50"></ul>
+            <div class="mt-4 pt-4 border-t border-pink-200 text-right">
+                <div class="text-xs text-gray-400">總支出 (JPY / TWD)</div>
+                <div class="text-2xl font-bold text-pink-600">¥ <span id="total-jpy">0</span></div>
+                <div class="text-sm text-blue-500 font-semibold">≈ NT$ <span id="total-twd">0</span></div>
+                <button onclick="clearExpenses()" class="mt-4 text-[10px] text-gray-300 uppercase tracking-widest">Clear All Data</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 1. 基本頁面切換邏輯
+        function showMainPage(page) {
+            document.getElementById('page-itinerary').classList.toggle('hidden', page !== 'itinerary');
+            document.getElementById('page-wallet').classList.toggle('hidden', page !== 'wallet');
+            document.getElementById('tab-itinerary').className = (page === 'itinerary') ? 'py-3 px-6 tab-active' : 'py-3 px-6 text-gray-500';
+            document.getElementById('tab-wallet').className = (page === 'wallet') ? 'py-3 px-6 tab-active' : 'py-3 px-6 text-gray-500';
+        }
+
+        // 2. 天數切換邏輯
+        function switchDay(dayNum) {
+            // 隱藏所有天數內容
+            document.querySelectorAll('.day-content').forEach(el => el.classList.add('hidden'));
+            // 顯示選定天數
+            document.getElementById('content-d' + dayNum).classList.remove('hidden');
+            
+            // 更新按鈕樣式
+            document.querySelectorAll('.day-btn').forEach(btn => {
+                btn.classList.replace('bg-pink-500', 'bg-white');
+                btn.classList.replace('text-white', 'text-gray-500');
+            });
+            const activeBtn = document.getElementById('btn-d' + dayNum);
+            activeBtn.classList.replace('bg-white', 'bg-pink-500');
+            activeBtn.classList.replace('text-gray-500', 'text-white');
+        }
+
+        // 3. 顯示/隱藏指定元素 (解決查看步驟點不開的問題)
+        function toggleElement(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        // 4. 記帳邏輯
+        let expenses = JSON.parse(localStorage.getItem('fuk_expenses')) || [];
+
+        function renderExpenses() {
+            const list = document.getElementById('expense-list');
+            const jpyDisplay = document.getElementById('total-jpy');
+            const twdDisplay = document.getElementById('total-twd');
+            let total = 0;
+            
+            list.innerHTML = expenses.length ? '' : '<p class="text-center text-gray-300 py-4 text-sm">尚無開銷紀錄</p>';
+            
+            expenses.forEach((item, index) => {
+                total += item.amount;
+                list.innerHTML += `
+                    <li class="flex justify-between items-center py-3">
+                        <span class="text-gray-700 text-sm font-medium">${item.name}</span>
+                        <div class="flex items-center gap-3">
+                            <span class="font-mono text-gray-600 italic">¥${item.amount.toLocaleString()}</span>
+                            <button onclick="removeExpense(${index})" class="text-red-300 text-xs"><i class="fa-solid fa-circle-xmark"></i></button>
+                        </div>
+                    </li>
+                `;
+            });
+
+            jpyDisplay.innerText = total.toLocaleString();
+            twdDisplay.innerText = Math.round(total * 0.22).toLocaleString();
+            localStorage.setItem('fuk_expenses', JSON.stringify(expenses));
+        }
+
+        function addExpense() {
+            const nameEl = document.getElementById('exp-name');
+            const amountEl = document.getElementById('exp-amount');
+            const name = nameEl.value;
+            const amount = parseInt(amountEl.value);
+
+            if (name && !isNaN(amount)) {
+                expenses.push({ name, amount });
+                nameEl.value = '';
+                amountEl.value = '';
+                renderExpenses();
+            } else {
+                alert('請輸入項目與金額');
+            }
+        }
+
+        function removeExpense(index) {
+            expenses.splice(index, 1);
+            renderExpenses();
+        }
+
+        function clearExpenses() {
+            if(confirm('確定要清除所有紀錄嗎？')) {
+                expenses = [];
+                renderExpenses();
+            }
+        }
+
+        // 初始化
+        window.onload = () => {
+            renderExpenses();
+            console.log("App Loaded Successfully");
+        };
+    </script>
+</body>
+</html>
