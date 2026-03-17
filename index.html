@@ -3,181 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>朵朵的初次飛行-福岡探索之旅</title>
+    <title>🌸朵朵的初次飛行-福岡探險</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background: linear-gradient(180deg, #fdf2f8 0%, #f0f9ff 100%); font-family: -apple-system, system-ui, sans-serif; }
-        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.5); }
-        .btn-pink { background: linear-gradient(135deg, #f472b6 0%, #db2777 100%); }
-        .btn-blue { background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%); }
-        .timeline-dot { position: absolute; left: -9px; top: 10px; width: 18px; height: 18px; background: #f472b6; border: 4px solid white; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .scroll-hide::-webkit-scrollbar { display: none; }
+        body { background: #f8fafc; font-family: -apple-system, system-ui, sans-serif; }
+        .card-attraction { border-left: 5px solid #f472b6; } /* 粉色：景點 */
+        .card-restaurant { border-left: 5px solid #fbbf24; } /* 黃色：餐廳 */
+        .card-transport { border-left: 5px solid #60a5fa; } /* 藍色：交通 */
+        .tag-must-eat { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
+        .tag-must-buy { background: #fdf2f8; color: #db2777; border: 1px solid #fbcfe8; }
+        .tag-booking { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+        .weather-banner { background: linear-gradient(90deg, #60a5fa, #a855f7); }
     </style>
 </head>
-<body class="max-w-md mx-auto pb-32">
+<body class="max-w-md mx-auto pb-24">
 
-    <div class="p-4">
-        <div class="relative h-72 w-full overflow-hidden rounded-[2.5rem] shadow-2xl border-4 border-white">
-            <img src="https://cdn.phototourl.com/uploads/2026-03-17-193f0470-4689-4717-822b-c781717bd299.jpg" class="w-full h-full object-cover" alt="封面圖">
-            <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/60 to-transparent text-white">
-                <p class="text-xs font-bold tracking-[0.2em] opacity-80 mb-1">FUKUOKA TRAVEL 2026</p>
-                <h1 class="text-xl font-black">🌸朵朵的初次飛行-福岡探索之旅🇯🇵</h1>
-            </div>
+    <div class="relative w-full h-64 overflow-hidden rounded-b-[3rem] shadow-lg">
+        <img src="https://cdn.phototourl.com/uploads/2026-03-17-193f0470-4689-4717-822b-c781717bd299.jpg" class="w-full h-full object-cover">
+        <div class="absolute top-0 left-0 right-0 p-4 weather-banner text-white text-[10px] font-bold flex justify-between items-center opacity-90">
+            <span>📍 福岡市 · 即時天氣狀況</span>
+            <span>☀️ 22°C / 降雨機率 10%</span>
+        </div>
+        <div class="absolute bottom-6 left-6 text-white">
+            <h1 class="text-xl font-black shadow-sm">🌸 朵朵的初次飛行-福岡探索之旅</h1>
+            <p class="text-[10px] opacity-80 tracking-widest uppercase mt-1 italic">DuoDuo's First Adventure 2026</p>
         </div>
     </div>
 
-    <div class="flex overflow-x-auto space-x-4 px-4 py-2 scroll-hide">
-        <div class="glass-card min-w-[160px] p-4 rounded-3xl shadow-sm flex items-center space-x-3">
-            <i class="fa-solid fa-cloud-sun text-yellow-500 text-2xl"></i>
-            <div>
-                <p class="text-[10px] text-gray-400 font-bold uppercase">福岡市</p>
-                <p class="text-sm font-black text-gray-700">22°C / 14°C</p>
-            </div>
-        </div>
-        <div class="glass-card min-w-[200px] p-4 rounded-3xl shadow-sm border-l-4 border-pink-400">
-            <div class="flex justify-between items-center mb-1">
-                <p class="text-[10px] text-gray-400 font-bold uppercase">本日支出 (JPY)</p>
-                <i class="fa-solid fa-wallet text-pink-400 text-xs"></i>
-            </div>
-            <p class="text-lg font-black text-gray-700">¥ 0</p>
-            <button onclick="alert('記帳功能開發中！預計可輸入：計程車 ¥2500')" class="text-[10px] text-pink-500 font-bold mt-1">+ 新增記帳</button>
-        </div>
+    <div class="flex justify-center space-x-4 p-6">
+        <button class="bg-pink-500 text-white px-5 py-2 rounded-full text-xs font-bold shadow-md">Day 1</button>
+        <button class="bg-white text-gray-400 px-5 py-2 rounded-full text-xs font-bold shadow-sm">Day 2</button>
+        <button class="bg-white text-gray-400 px-5 py-2 rounded-full text-xs font-bold shadow-sm">Day 3</button>
     </div>
 
-    <div class="p-6">
-        <div class="flex items-center space-x-3 mb-8">
-            <div class="bg-blue-600 text-white px-4 py-1 rounded-full text-xs font-black shadow-lg">4/23 (四)</div>
-            <h2 class="text-2xl font-black text-gray-800 italic">DAY 1</h2>
+    <div class="px-5 space-y-6">
+
+        <div class="bg-white rounded-3xl p-5 shadow-sm card-restaurant">
+            <div class="flex justify-between items-start mb-3">
+                <span class="text-[10px] font-black text-amber-500 uppercase tracking-tighter">16:15 · 甜點午茶</span>
+                <span class="tag-must-buy px-2 py-0.5 rounded-full text-[10px] font-bold">#必買伴手禮</span>
+            </div>
+            <h3 class="text-lg font-black text-gray-800">鈴懸 (すずかけ) 本店 🍓</h3>
+            <p class="text-xs text-gray-500 mt-2 leading-relaxed">
+                被譽為<b>「福岡甜點界天花板」</b>。攻略：本店位於麵包超人館對面，推薦選購 <b>草莓大福</b> (4-5月限定)，選用頂級「草王」草莓。
+            </p>
+            <div class="flex space-x-2 mt-4 overflow-x-auto pb-2">
+                <img src="https://cdn.phototourl.com/uploads/2026-03-17-e256915a-6002-40ed-ab94-b241e6a91e4a.jpg" class="w-24 h-24 object-cover rounded-2xl">
+                <img src="https://cdn.phototourl.com/uploads/2026-03-17-af9e4b86-cbcc-4001-b6da-1ef9985dea3d.jpg" class="w-24 h-24 object-cover rounded-2xl">
+            </div>
+            <a href="https://www.google.com/maps/search/?api=1&query=鈴懸+本店" class="mt-4 flex items-center justify-center w-full bg-amber-50 text-amber-600 py-3 rounded-2xl text-xs font-bold">
+                <i class="fa-solid fa-location-arrow mr-2"></i>開啟導航
+            </a>
         </div>
 
-        <div class="relative border-l-2 border-pink-200 ml-2 space-y-12">
-            
-            <div class="relative pl-8">
-                <div class="timeline-dot"></div>
-                <div class="glass-card p-5 rounded-3xl shadow-sm">
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-xs font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded">08:00 AM</span>
-                        <i class="fa-solid fa-plane-departure text-blue-400"></i>
-                    </div>
-                    <h3 class="text-lg font-black text-gray-800 mb-1">桃園機場 ➔ 長榮 BR106</h3>
-                    <p class="text-xs text-gray-500 mb-4 font-medium italic">朵朵的初航啟程！☁️</p>
-                    <button onclick="window.open('https://cdn.phototourl.com/uploads/2026-03-17-d0a4373b-c132-4c37-83a6-db7e4d67d0ee.png')" class="w-full btn-blue text-white text-xs font-bold py-3 rounded-2xl shadow-lg shadow-blue-100 mb-2">
-                        <i class="fa-solid fa-ticket-simple mr-2"></i>點擊查看機票憑證
-                    </button>
-                </div>
-                <div class="mt-3 bg-white/50 border border-gray-100 p-3 rounded-2xl flex items-center justify-between">
-                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest"><i class="fa-solid fa-clock mr-1"></i> 2.5 hr Flight</span>
-                    <span class="text-xs font-bold text-blue-600">11:20 抵達福岡</span>
-                </div>
+        <div class="bg-blue-50/50 rounded-3xl p-5 border border-blue-100 card-transport">
+            <div class="flex items-center space-x-3 mb-3">
+                <i class="fa-solid fa-taxi text-blue-500"></i>
+                <h4 class="text-sm font-bold text-blue-700">交通預估：計程車方案</h4>
             </div>
-
-            <div class="relative pl-8">
-                <div class="timeline-dot"></div>
-                <div class="glass-card p-5 rounded-3xl shadow-sm">
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-xs font-bold text-gray-400">12:10 PM</span>
-                        <i class="fa-solid fa-hotel text-pink-400"></i>
-                    </div>
-                    <h3 class="text-lg font-black text-gray-800">Branche 藥院大通</h3>
-                    <p class="text-xs text-gray-500 mt-1 mb-4">Agoda: 1990699229</p>
-                    <button onclick="window.open('https://cdn.phototourl.com/uploads/2026-03-17-5539a649-76e8-441d-a714-d8a31076f51f.png')" class="w-full bg-slate-800 text-white text-xs font-bold py-3 rounded-2xl mb-2">
-                        <i class="fa-solid fa-file-contract mr-2"></i>查看住宿憑證
-                    </button>
-                    <a href="https://www.google.com/maps/search/?api=1&query=Branche+Yakuin+Fukuoka" target="_blank" class="block w-full text-center py-2 text-[10px] font-bold text-blue-500 bg-blue-50 rounded-xl mt-2">📍 Google 地圖導覽</a>
-                </div>
-                <div class="mt-3 bg-yellow-50 border border-yellow-100 p-3 rounded-2xl flex items-center justify-between text-yellow-800">
-                    <span class="text-xs font-bold"><i class="fa-solid fa-taxi mr-2"></i>計程車 (20min)</span>
-                    <span class="text-xs font-bold">¥2,200 - 2,800</span>
-                </div>
+            <div class="flex justify-between items-center bg-white p-3 rounded-xl shadow-sm">
+                <span class="text-xs text-gray-600">預估車資 (20min)</span>
+                <span class="font-black text-blue-600">¥2,200 - 2,800</span>
             </div>
-
-            <div class="relative pl-8">
-                <div class="timeline-dot"></div>
-                <div class="glass-card p-5 rounded-3xl shadow-sm">
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-xs font-bold text-pink-500">13:00 PM</span>
-                        <i class="fa-solid fa-utensils text-pink-400"></i>
-                    </div>
-                    <h3 class="text-lg font-black text-gray-800">博多運河城午餐 🥣</h3>
-                    <div class="mt-3 bg-pink-50 p-3 rounded-2xl text-[10px] text-pink-800 leading-relaxed">
-                        <b>🍼 育兒建議：</b>推薦去 4-5 樓 (拉麵競技場)，5 樓有連鎖家庭餐廳位置較大，推車進出方便，適合朵朵坐沙發。
-                    </div>
-                    <a href="https://www.google.com/maps/search/?api=1&query=Canal+City+Hakata" target="_blank" class="block w-full text-center py-2 text-[10px] font-bold text-blue-500 bg-blue-50 rounded-xl mt-3">📍 地圖導覽</a>
-                </div>
-                <div class="mt-3 space-y-2">
-                    <div class="bg-gray-800 text-white p-3 rounded-2xl flex justify-between items-center text-xs">
-                        <span>🚕 Taxi (10min)</span>
-                        <span>約 ¥1,300</span>
-                    </div>
-                    <div class="bg-blue-50 text-blue-700 p-3 rounded-2xl flex justify-between items-center text-[10px] font-bold">
-                        <span>🚃 地鐵七隈線 ➜ 櫛田神社前站</span>
-                        <span>🚶 步行 20-25min</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="relative pl-8">
-                <div class="timeline-dot"></div>
-                <div class="glass-card p-5 rounded-3xl shadow-sm border-l-4 border-red-500">
-                    <h3 class="text-lg font-black text-gray-800">櫛田神社 ⛩️</h3>
-                    <div class="mt-3 space-y-2 text-[10px] text-gray-600">
-                        <p>❶ 手水舍淋雙手、漱口</p>
-                        <p>❷ 本殿投 5/50 円，二禮二拍手一禮</p>
-                        <p>❸ 100 円求籤 (不好綁架在旁邊)</p>
-                    </div>
-                    <p class="text-[10px] text-red-500 font-bold mt-3 italic">🔹 一蘭總店就在附近！</p>
-                </div>
-            </div>
-
-            <div class="relative pl-8">
-                <div class="timeline-dot"></div>
-                <div class="glass-card p-5 rounded-3xl shadow-sm">
-                    <h3 class="text-lg font-black text-gray-800">麵包超人館 & 鈴懸本店 🍓</h3>
-                    <p class="text-[10px] text-gray-400 mb-4">🚶 穿過川端通商店街 (不怕雨)</p>
-                    
-                    <div class="flex space-x-2 mb-4 overflow-x-auto scroll-hide">
-                        <img src="https://cdn.phototourl.com/uploads/2026-03-17-e256915a-6002-40ed-ab94-b241e6a91e4a.jpg" class="h-24 w-32 object-cover rounded-xl border-2 border-white shadow-sm">
-                        <img src="https://cdn.phototourl.com/uploads/2026-03-17-af9e4b86-cbcc-4001-b6da-1ef9985dea3d.jpg" class="h-24 w-32 object-cover rounded-xl border-2 border-white shadow-sm">
-                    </div>
-                    
-                    <div class="bg-orange-50 p-3 rounded-2xl text-[10px] text-orange-900 leading-relaxed">
-                        <b>必買：</b>草莓大福 (4-5月限定，朵朵看爸媽吃 👅)、鈴乃○餅。
-                    </div>
-                </div>
-            </div>
-
-            <div class="relative pl-8 pb-10">
-                <div class="timeline-dot"></div>
-                <div class="bg-slate-900 rounded-[2.5rem] p-6 shadow-2xl text-white">
-                    <div class="flex justify-between items-start mb-4">
-                        <h3 class="text-xl font-black">前田屋牛腸鍋 🍲</h3>
-                        <i class="fa-solid fa-calendar-check text-yellow-400"></i>
-                    </div>
-                    <img src="https://cdn.phototourl.com/uploads/2026-03-17-edaa1a30-47de-4fe9-90e6-924c5b5ba467.jpg" class="w-full h-32 object-cover rounded-2xl mb-4 border border-white/20">
-                    
-                    <div class="space-y-2 mb-6">
-                        <p class="text-[10px] text-slate-400">預約：17:00 / 號碼：TS7DNWA82N</p>
-                        <button onclick="window.open('https://cdn.phototourl.com/uploads/2026-03-17-1f7e6db7-717f-4cc5-acf6-8f09526cd024.jpg')" class="w-full bg-white/10 text-white text-xs py-3 rounded-xl border border-white/20">查看訂位憑證</button>
-                    </div>
-                </div>
-            </div>
-
         </div>
+
+        <div class="bg-gray-900 rounded-[2.5rem] p-6 shadow-xl card-restaurant text-white">
+            <div class="flex justify-between items-center mb-4">
+                <span class="tag-must-eat px-2 py-0.5 rounded-full text-[10px] font-bold">#必吃美食</span>
+                <span class="tag-booking px-2 py-0.5 rounded-full text-[10px] font-bold italic underline">TS7DNWA82N</span>
+            </div>
+            <h3 class="text-xl font-black">前田屋牛腸鍋 🍲</h3>
+            <p class="text-xs text-gray-400 mt-2 mb-4">
+                <b>必點菜單：</b>和牛味噌牛腸鍋。攻略：請務必在 <b>17:00</b> 準時抵達，這家店預約非常熱門。
+            </p>
+            <img src="https://cdn.phototourl.com/uploads/2026-03-17-edaa1a30-47de-4fe9-90e6-924c5b5ba467.jpg" class="w-full h-40 object-cover rounded-3xl mb-4">
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="window.open('https://cdn.phototourl.com/uploads/2026-03-17-1f7e6db7-717f-4cc5-acf6-8f09526cd024.jpg')" class="bg-white/10 py-3 rounded-2xl text-[10px] font-bold border border-white/20">查看憑證</button>
+                <a href="https://www.google.com/maps/search/?api=1&query=前田屋+牛腸鍋" class="bg-blue-600 py-3 rounded-2xl text-[10px] font-bold text-center">地圖導航</a>
+            </div>
+        </div>
+
     </div>
 
-    <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/80 backdrop-blur-md border-t border-gray-100 p-4 flex justify-around items-center z-50">
+    <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/90 backdrop-blur-md border-t border-gray-100 p-4 flex justify-around items-center">
+        <div class="text-center group">
+            <i class="fa-solid fa-calculator text-gray-400 group-hover:text-pink-500 text-xl transition-colors"></i>
+            <p class="text-[8px] font-bold text-gray-400 mt-1 uppercase">記帳工具</p>
+        </div>
         <div class="text-center">
-            <i class="fa-solid fa-calendar-days text-pink-500 text-xl"></i>
-            <p class="text-[8px] font-bold text-pink-500 mt-1 uppercase">Itinerary</p>
+            <i class="fa-solid fa-house text-pink-500 text-xl"></i>
+            <p class="text-[8px] font-bold text-pink-500 mt-1 uppercase">首頁行程</p>
         </div>
         <div class="text-center opacity-30">
-            <i class="fa-solid fa-camera text-gray-400 text-xl"></i>
-            <p class="text-[8px] font-bold text-gray-400 mt-1 uppercase">Album</p>
-        </div>
-        <div class="text-center opacity-30">
-            <i class="fa-solid fa-map-marked-alt text-gray-400 text-xl"></i>
-            <p class="text-[8px] font-bold text-gray-400 mt-1 uppercase">Map</p>
+            <i class="fa-solid fa-circle-info text-gray-400 text-xl"></i>
+            <p class="text-[8px] font-bold text-gray-400 mt-1 uppercase">旅遊指南</p>
         </div>
     </div>
 
