@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>福岡之旅 - 行程助手</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .timeline-line::before { content: ''; position: absolute; left: 20px; top: 0; bottom: 0; width: 2px; background: #e5e7eb; }
+    </style>
+</head>
+<body class="max-w-md mx-auto">
+
+    <div class="bg-blue-600 text-white p-6 rounded-b-3xl shadow-lg">
+        <h1 class="text-2xl font-bold">🇯🇵 福岡五天四夜</h1>
+        <p class="opacity-80">2026 精彩旅程</p>
+    </div>
+
+    <div class="flex space-x-4 p-4 overflow-x-auto">
+        <button class="bg-blue-500 text-white px-4 py-2 rounded-full shadow-md">Day 1</button>
+        <button class="bg-white text-gray-600 px-4 py-2 rounded-full shadow-sm">Day 2</button>
+        <button class="bg-white text-gray-600 px-4 py-2 rounded-full shadow-sm">Day 3</button>
+        <button class="bg-white text-gray-600 px-4 py-2 rounded-full shadow-sm">Day 4</button>
+    </div>
+
+    <div class="p-4 relative timeline-line">
+        
+        <div class="relative pl-10 mb-8">
+            <div class="absolute left-0 w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center z-10">
+                <i class="fa-solid fa-plane text-blue-600"></i>
+            </div>
+            <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-blue-500">
+                <span class="text-xs text-blue-500 font-bold">10:00 AM</span>
+                <h3 class="font-bold text-gray-800 text-lg">抵達福岡機場</h3>
+                <p class="text-gray-500 text-sm mt-1">辦理入境手續、領取網卡。</p>
+                <a href="https://www.google.com/maps/search/Fukuoka+Airport" target="_blank" class="mt-2 inline-block text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">📍 開啟地圖導覽</a>
+            </div>
+        </div>
+
+        <div class="relative pl-10 mb-8">
+            <div class="absolute left-0 w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center z-10">
+                <i class="fa-solid fa-utensils text-orange-600"></i>
+            </div>
+            <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-orange-500">
+                <span class="text-xs text-orange-500 font-bold">12:30 PM</span>
+                <h3 class="font-bold text-gray-800 text-lg">一蘭拉麵 總本店</h3>
+                <p class="text-gray-500 text-sm mt-1">來到福岡必吃的元祖拉麵。</p>
+                <a href="https://www.google.com/maps/search/Ichiran+Lamen" target="_blank" class="mt-2 inline-block text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">📍 開啟地圖導覽</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="text-center p-8 text-gray-400 text-xs">
+        &copy; 2026 福岡旅遊助手 - 由 AI 助手協作設計
+    </div>
+
+</body>
+</html>
