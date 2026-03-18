@@ -16,19 +16,19 @@
         .magazine-header img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
         .magazine-title-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 1.2rem; border-radius: 0 0 2rem 2rem; }
         .hide-scroll::-webkit-scrollbar { display: none; }
-        .glass-nav { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
-        .checkbox-custom { width: 1.2rem; height: 1.2rem; border-radius: 0.3rem; border: 2px solid #A5D8FF; appearance: none; cursor: pointer; position: relative; }
+        .glass-nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); }
+        .checkbox-custom { width: 1.3rem; height: 1.3rem; border-radius: 0.4rem; border: 2px solid #A5D8FF; appearance: none; cursor: pointer; position: relative; flex-shrink: 0; }
         .checkbox-custom:checked { background-color: #3B82F6; border-color: #3B82F6; }
-        .checkbox-custom:checked::after { content: '✓'; position: absolute; color: white; font-size: 0.8rem; left: 3px; top: -1px; }
+        .checkbox-custom:checked::after { content: '✓'; position: absolute; color: white; font-size: 0.9rem; left: 3px; top: -1px; }
         .guide-tag { padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 900; margin-right: 4px; display: inline-block; }
         .transport-detail { display: none; margin-top: 10px; padding: 15px; border-radius: 16px; background: #f0f7ff; border: 1px dashed #A5D8FF; font-size: 12px; color: #1e40af; line-height: 1.6; }
     </style>
 </head>
 <body class="pb-32">
 
-    <!-- 圖片燈箱元件 -->
+    <!-- 圖片燈箱 -->
     <div id="imageModal" style="display:none;" class="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4" onclick="this.style.display='none'">
-        <img id="modalImg" class="max-w-full max-h-full rounded-xl">
+        <img id="modalImg" class="max-w-full max-h-full rounded-xl shadow-2xl">
     </div>
 
     <!-- 1. 雜誌風封面 -->
@@ -41,7 +41,7 @@
         </div>
     </header>
 
-    <!-- 底部浮動導覽 -->
+    <!-- 底部導覽 -->
     <nav class="fixed bottom-6 left-6 right-6 h-16 glass-nav rounded-3xl flex justify-around items-center shadow-2xl z-50 border border-white/50 px-2">
         <button onclick="showSec('itin')" id="tab-itin" class="flex flex-col items-center text-blue-500 font-bold flex-1"><i class="fa-solid fa-calendar-day text-lg"></i><span class="text-[9px] mt-1">行程</span></button>
         <button onclick="showSec('list')" id="tab-list" class="flex flex-col items-center text-gray-400 flex-1"><i class="fa-solid fa-list-check text-lg"></i><span class="text-[9px] mt-1">清單</span></button>
@@ -51,7 +51,7 @@
 
     <!-- 行程頁面 -->
     <section id="sec-itin" class="px-5 space-y-6">
-        <!-- 橫向天氣滑動 -->
+        <!-- 橫向天氣 -->
         <div class="flex gap-3 overflow-x-auto hide-scroll py-1">
             <div class="min-w-[130px] bg-white p-3 rounded-2xl shadow-sm border-b-4 border-blue-400 flex items-center gap-2">
                 <i class="fa-solid fa-cloud-sun text-yellow-500"></i><div class="text-[10px] font-bold">4/23<br>18°-23°</div>
@@ -78,20 +78,18 @@
             
             <!-- DAY 1 -->
             <div id="day-1" class="day-plan space-y-6">
-                <!-- 機場 -->
                 <div class="bg-white rounded-3xl p-5 w-full card-shadow border-l-4 border-blue-400">
                     <div class="flex justify-between items-start mb-2">
-                        <h3 class="font-black text-sm text-gray-800 tracking-tighter">11:20 抵達福岡機場 ✈️</h3>
+                        <h3 class="font-black text-sm text-gray-800 tracking-tighter">08:00 桃園 ✈️ 11:20 福岡</h3>
                         <button onclick="viewImg('https://cdn.phototourl.com/uploads/2026-03-17-d0a4373b-c132-4c37-83a6-db7e4d67d0ee.png')" class="text-[9px] bg-blue-50 text-blue-600 px-3 py-1 rounded-lg font-bold">機票憑證</button>
                     </div>
                     <p class="text-[10px] font-bold text-green-700 italic">🌟 必喝：抹茶拿鐵 (國際線入境 51B)</p>
                 </div>
 
-                <!-- 飯店 -->
-                <div class="bg-white rounded-3xl p-5 w-full card-shadow border-l-4 border-pink-300">
+                <div class="bg-white rounded-3xl p-5 w-full card-shadow">
                     <div class="flex justify-between items-start mb-4">
-                        <h3 class="font-black text-sm text-gray-800 italic">住宿 Check-in</h3>
-                        <button onclick="viewImg('https://cdn.phototourl.com/uploads/2026-03-17-5539a649-76e8-441d-a714-d8a31076f51f.png')" class="text-[9px] bg-pink-50 text-pink-600 px-2 py-1 rounded-lg font-bold">查看憑證</button>
+                        <h3 class="font-black text-sm text-gray-800 italic">12:10 住宿 Check-in</h3>
+                        <button onclick="viewImg('https://cdn.phototourl.com/uploads/2026-03-17-5539a649-76e8-441d-a714-d8a31076f51f.png')" class="text-[9px] bg-pink-50 text-pink-600 px-3 py-1 rounded-lg font-bold">查看憑證</button>
                     </div>
                     <div class="grid grid-cols-2 gap-2 mb-3">
                         <div class="bg-gray-50 p-2 rounded-xl text-center"><p class="text-[9px] font-bold text-gray-400">🚕 ¥2,800</p><p class="text-[8px] text-gray-400">約 NT$620</p></div>
@@ -100,7 +98,6 @@
                     <p class="text-[10px] text-gray-400 font-mono tracking-tighter italic">訂單: 1990699229</p>
                 </div>
 
-                <!-- 運河城 -->
                 <div class="bg-white rounded-3xl p-5 w-full card-shadow border-l-4 border-orange-400">
                     <div class="flex justify-between items-center mb-2">
                         <h3 class="font-black text-sm text-gray-800 italic">13:00 博多運河城午餐</h3>
@@ -108,14 +105,13 @@
                     </div>
                     <button onclick="toggleTrans('trans-canal')" class="text-[9px] bg-orange-50 text-orange-600 px-3 py-1 rounded-full font-bold mb-2">前往方式</button>
                     <div id="trans-canal" class="transport-detail italic">
-                        🚕 計程車：8-10分鐘 (¥1,300/NT$280)<br>
-                        🚃 地鐵：藥院大通 ➔ 櫛田神社前站 (¥210)<br>
-                        🚶 步行：1.6km (推車約 20-25min)
+                        🚕 計程車：約8-10分鐘 (¥1,300/NT$280)<br>
+                        🚃 搭地鐵：從「藥院大通站」搭七隈線 ➔ 櫛田神社前站 (¥210)<br>
+                        🚶 步行：1.6km (推車步行約 20-25min)
                     </div>
                     <p class="bg-blue-50 p-3 rounded-xl text-blue-800 font-bold text-[10px] leading-relaxed italic">💡 推薦 4F/5F 家庭餐廳，位置大。14:15/15:15 B1 有噴水秀！</p>
                 </div>
 
-                <!-- 櫛田神社 -->
                 <div class="bg-white rounded-3xl p-5 w-full card-shadow border-l-4 border-red-500">
                     <div class="flex justify-between items-center mb-3">
                         <h3 class="font-black text-sm text-gray-800 italic underline decoration-red-200">15:00 櫛田神社 ⛩️</h3>
@@ -124,291 +120,320 @@
                     <button onclick="toggleTrans('trans-kushida')" class="text-[9px] bg-red-50 text-red-600 px-3 py-1 rounded-full font-bold mb-2">前往方式</button>
                     <div id="trans-kushida" class="transport-detail">
                         🚶 步行：僅需 3-5 分鐘<br>
-                        ♿ 推車：從運河城北出口走天橋到對面大樓搭電梯。
+                        ♿ 推車：從運河城北出口走天橋到對面大樓搭電梯，地面最平坦。
                     </div>
                     <div class="text-[10px] space-y-3 font-bold">
-                        <div class="bg-red-50 p-3 rounded-xl border border-red-100">
-                            <p class="font-black text-red-700 underline">🙏 參拜步驟：</p>
-                            1. 洗手漱口 ➔ 2. 本殿投錢(5/50円)二禮二拍手一禮 ➔ 3. 100円自取求籤
+                        <div class="bg-red-50 p-3 rounded-xl border border-red-100 italic">
+                            <p class="font-black text-red-700 underline mb-1">🙏 參拜步驟：</p>
+                            1.洗手漱口 ➔ 2.本殿投錢拍手 ➔ 3.100円自取求籤
                         </div>
-                        <p class="bg-gray-50 p-2 rounded-xl text-gray-600 italic">🏛️ 備註：靈泉鶴之井戶 (傳說延年益壽，水鹹)、試力石挑戰。</p>
-                        <p class="text-blue-500 font-black italic">🔹 一蘭拉麵總店在附近</p>
+                        <div class="bg-gray-50 p-3 rounded-xl text-gray-600 italic">
+                            <p class="font-black mb-1">🏛️ 參觀備註：</p>
+                            • 靈泉鶴之井戶 (傳說延年益壽，水鹹注意)<br>
+                            • 力石挑戰 (相撲力士試力石)
+                        </div>
+                        <p class="text-blue-500 font-black italic">🔹 一蘭拉麵總店在附近 | ⛩️ 天開稻荷神社就在旁邊</p>
                     </div>
                 </div>
 
-                <!-- 天開稻荷神社 -->
-                <div class="bg-white rounded-3xl p-5 w-full card-shadow border-l-4 border-red-700">
-                    <div class="flex justify-between items-center">
-                        <h3 class="font-black text-sm text-red-800">天開稻荷神社 ⛩️</h3>
-                        <a href="https://www.google.com/maps/search/?api=1&query=天開稻荷神社" class="text-red-700 text-lg"><i class="fa-solid fa-map-location-dot"></i></a>
-                    </div>
-                </div>
-
-                <!-- AKIRA SUISAN -->
                 <div class="bg-white rounded-3xl p-5 w-full card-shadow border-l-4 border-orange-400">
                     <span class="guide-tag bg-orange-500 text-white italic">必吃超厚丼飯</span>
-                    <h4 class="font-black text-sm text-gray-800 mt-2 italic">AKIRA SUISAN (川端通商店街)</h4>
-                    <img src="https://cdn.phototourl.com/uploads/2026-03-17-ae4e14d8-7b9f-4c64-8a04-9e1467d408c4.jpg" class="rounded-xl w-full h-32 object-cover my-2">
-                    <a href="https://www.google.com/maps/search/?api=1&query=AKIRA+SUISAN" class="text-blue-500 text-[11px] font-bold underline italic tracking-tight">Google 地圖查看</a>
+                    <h4 class="font-black text-sm text-gray-800 mt-2 italic">AKIRA SUISAN (商店街內)</h4>
+                    <img src="https://cdn.phototourl.com/uploads/2026-03-17-ae4e14d8-7b9f-4c64-8a04-9e1467d408c4.jpg" class="rounded-xl w-full h-32 object-cover my-2 shadow-inner">
+                    <a href="https://www.google.com/maps/search/?api=1&query=AKIRA+SUISAN" class="text-blue-500 text-[10px] font-bold underline italic tracking-tight">地圖導航點我</a>
                 </div>
 
-                <!-- 麵包超人 -->
                 <div class="bg-white rounded-3xl p-5 w-full card-shadow">
                     <h3 class="font-black text-sm text-gray-800 mb-2">16:00 麵包超人博物館 🍭</h3>
                     <button onclick="toggleTrans('trans-anpan')" class="text-[9px] bg-blue-50 text-blue-600 px-3 py-1 rounded-full font-bold mb-2">前往方式</button>
                     <div id="trans-anpan" class="transport-detail">
-                        🚶 步行 7min，沿「川端通商店街」(有頂棚) 往北直走即可。
+                        🚶 步行約 7min，沿「川端通商店街」(有頂棚) 往北直走即可。
                     </div>
-                    <p class="text-[10px] font-bold text-pink-600 bg-pink-50 p-2 rounded-xl italic">⚠️ 提醒：入內需換成抱著或用揹巾。</p>
+                    <p class="text-[10px] font-bold text-pink-600 bg-pink-50 p-2 rounded-xl italic italic">⚠️ 提醒：入內需換成抱著或用揹巾。</p>
                 </div>
 
-                <!-- 鈴懸 (獨立卡片) -->
                 <div class="bg-white rounded-3xl p-5 w-full card-shadow border-2 border-pink-100">
-                    <span class="guide-tag bg-pink-500 text-white">福岡甜點天花板</span>
+                    <span class="guide-tag bg-pink-500 text-white italic">甜點天花板</span>
                     <h3 class="font-black text-base text-gray-800 mt-3 italic underline decoration-pink-100">鈴懸 (すずかけ) 本店</h3>
                     <div class="grid grid-cols-2 gap-3 mt-4">
                         <img src="https://cdn.phototourl.com/uploads/2026-03-17-666e9bb9-774c-4290-bf9b-5de8599eb2e2.webp" class="rounded-xl h-28 w-full object-contain bg-gray-50">
                         <img src="https://cdn.phototourl.com/uploads/2026-03-17-01da1205-01db-46c0-832c-6e5d9b23c8dc.jpg" class="rounded-xl h-28 w-full object-contain bg-gray-50">
                     </div>
-                    <p class="text-[10px] text-pink-700 font-bold italic mt-3 italic">• 鈴乃○餅、鈴乃最中、限定草莓大福 🍓</p>
+                    <p class="text-[10px] text-pink-700 font-bold italic mt-3 italic italic tracking-tight">• 鈴乃○餅、鈴乃最中、靈魂草莓大福🍓</p>
                 </div>
 
-                <!-- 前田屋 -->
                 <div class="bg-white rounded-3xl p-5 w-full card-shadow border-t-8 border-orange-500">
                     <div class="flex justify-between items-start mb-3">
                         <div>
-                            <span class="guide-tag bg-orange-600 text-white italic tracking-widest uppercase">Reserved</span>
+                            <span class="guide-tag bg-orange-600 text-white italic">重要預約代號</span>
                             <h3 class="text-sm font-black text-gray-800 mt-2">17:00 前田屋 牛腸鍋</h3>
                             <p class="text-lg font-black text-orange-700 font-mono italic">TS7DNWA82N</p>
                         </div>
                         <button onclick="viewImg('https://cdn.phototourl.com/uploads/2026-03-17-1f7e6db7-717f-4cc5-acf6-8f09526cd024.jpg')" class="bg-orange-500 text-white text-[9px] px-3 py-1 rounded-full font-bold shadow-lg shadow-orange-100">預約截圖</button>
                     </div>
-                    <a href="https://www.google.com/maps/search/?api=1&query=Maedaya+Motsu+Nabe" class="block w-full py-3 bg-orange-600 text-white text-center rounded-2xl font-black text-sm italic shadow-lg shadow-orange-100 uppercase tracking-widest italic tracking-tighter underline">導航前往晚餐</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Maedaya+Motsu+Nabe" class="block w-full py-3 bg-orange-600 text-white text-center rounded-2xl font-black text-sm italic shadow-lg shadow-orange-100 uppercase tracking-widest italic tracking-tighter">NAVIGATE ➔</a>
                 </div>
 
-                <!-- Bon Repas -->
                 <div class="bg-white rounded-3xl p-5 w-full card-shadow border-l-4 border-teal-400">
                     <h3 class="font-black text-sm text-gray-800 italic">🛒 Bon Repas 藥院店 (超市)</h3>
-                    <p class="text-[10px] text-teal-600 mt-2 font-bold italic">💡 20:30 半額特價攻略！就在地鐵出口旁，距離飯店步行 5min。</p>
+                    <p class="text-[10px] text-teal-600 mt-2 font-bold italic">💡 20:30 半額特價！離飯店步行 5min，就在地鐵出口旁。</p>
                 </div>
             </div>
 
-            <!-- DAY 2 -->
+            <!-- DAY 2 (修正完整) -->
             <div id="day-2" class="day-plan hidden space-y-6">
-                <!-- 竈門神社 -->
                 <div class="bg-white rounded-3xl p-5 w-full card-shadow border-l-4 border-pink-300">
-                    <div class="flex justify-between items-start">
-                        <h3 class="font-black text-sm text-gray-800 italic">09:40 竈門神社 🌸</h3>
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="font-black text-sm text-gray-800 italic tracking-tighter">09:40 竈門神社 🌸</h3>
                         <button onclick="toggleTrans('trans-kamado')" class="text-[9px] bg-blue-50 text-blue-600 px-3 py-1 rounded-full font-bold shadow-sm">前往方式</button>
                     </div>
-                    <div id="trans-kamado" class="transport-detail">
-                        🚃 西鐵藥院站 (非地鐵) ➔ 搭天神大牟田線(特急/急行皆可) ➔ 二日市站 ➔ 轉太宰府線 (旅人號) ➔ 太宰府站<br>
-                        🚕 計程車：站前搭乘約 5min (¥1,000)<br>
-                        🚌 巴士：在「西鐵太宰府」巴士站搭往「內山」方向。
+                    <div id="trans-kamado" class="transport-detail italic">
+                        1. 步行至「西鐵藥院站」(非地鐵)<br>
+                        2. 搭天神大牟田線(特急/急行) ➔ 二日市站<br>
+                        3. 換月台轉太宰府線 (旅人號) ➔ 太宰府站<br>
+                        4. 站前計程車直奔 (5min, ¥1,000) 或搭「內山」方向巴士。
                     </div>
                 </div>
 
-                <!-- 若松屋 -->
                 <div class="bg-white rounded-3xl p-5 w-full card-shadow border-t-8 border-orange-400">
                     <div class="flex justify-between items-start">
-                        <h3 class="font-black text-sm text-gray-800 italic">11:20 若松屋鰻魚飯 🍱</h3>
+                        <h3 class="font-black text-sm text-gray-800 italic tracking-tighter">11:20 若松屋鰻魚飯 🍱</h3>
                         <a href="https://www.google.com/maps/search/?api=1&query=Wakamatsuya+Dazaifu" class="text-orange-500 text-xl"><i class="fa-solid fa-map-location-dot"></i></a>
                     </div>
-                    <p class="text-[10px] text-orange-600 font-bold bg-orange-50 p-2 rounded-xl mt-2 italic">• 營業時間：10:30–15:30 (售完為止)<br>• 必吃：鰻魚蛋捲。建議 11:30 前到免排隊。</p>
+                    <p class="text-[11px] text-orange-600 font-bold bg-orange-50 p-2 rounded-xl mt-2 italic">• 營業時間：10:30–15:30 (售完為止)<br>• 必點：鰻魚蛋捲。建議 11:30 前到免排隊。</p>
+                    <button onclick="toggleTrans('trans-tenmangu')" class="text-[9px] bg-red-50 text-red-600 px-3 py-1 rounded-full font-bold mt-2">回天滿宮方式</button>
+                    <div id="trans-tenmangu" class="transport-detail">從竈門神社搭計程車或 100円公車下山即可。</div>
                 </div>
 
-                <!-- 太宰府美食對決 -->
                 <div class="bg-white rounded-3xl p-6 w-full card-shadow border-l-4 border-red-500">
-                    <h3 class="font-black text-lg text-gray-800 mb-4 italic underline decoration-red-200 decoration-8 underline-offset-4">太宰府美食攻略 🍡</h3>
+                    <h3 class="font-black text-lg text-gray-800 mb-4 italic underline decoration-red-200">太宰府美食對決 🍡</h3>
                     <div class="space-y-4 font-bold">
-                        <div class="bg-red-50 p-3 rounded-2xl">
-                            <p class="text-sm font-black text-red-700 underline mb-2 italic">🏆 梅枝餅名店評比：</p>
-                            <p class="text-[11px] mb-2">• <b>寺田屋：</b>皮最薄、餡料口感最不甜膩。</p>
-                            <p class="text-[11px] mb-2">• <b>かさの家：</b>人氣第一，皮稍厚，口感甜甜鹹鹹。</p>
-                            <p class="text-[11px]">• <b>安武：</b>皮厚適中，口味甜鹹感最重。</p>
+                        <div class="bg-red-50 p-3 rounded-2xl text-[12px] italic">
+                            <p class="text-red-700 underline mb-2">🏆 梅枝餅口感評比：</p>
+                            • <b>寺田屋：</b>皮最薄、不甜膩(推)。<br>
+                            • <b>かさの家：</b>人氣NO.1、甜鹹均衡。<br>
+                            • <b>安武：</b>口味最重、甜鹹感明顯。
                         </div>
                         <div class="grid grid-cols-2 gap-2 text-[10px] italic">
-                            <p class="bg-gray-50 p-2 rounded-xl">🐟 FUKUYA 明太子茶泡飯</p>
-                            <p class="bg-gray-50 p-2 rounded-xl">🍔 筑紫庵 梅子塔塔醬漢堡</p>
-                            <p class="bg-gray-50 p-2 rounded-xl">🍦 小鳥居茶房 布丁冰棒</p>
-                            <p class="bg-gray-50 p-2 rounded-xl">📐 一蘭五角碗拉麵</p>
+                            <p class="bg-gray-50 p-2 rounded-xl text-center">🐟 FUKUYA 明太子泡飯</p>
+                            <p class="bg-gray-50 p-2 rounded-xl text-center">🍔 筑紫庵 梅子炸雞堡</p>
+                            <p class="bg-gray-50 p-2 rounded-xl text-center">🍦 小鳥居茶房 布丁冰棒</p>
+                            <p class="bg-gray-50 p-2 rounded-xl text-center">📐 一蘭 五角碗拉麵</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Birthday -->
                 <div class="bg-white rounded-3xl p-5 w-full card-shadow">
                     <h3 class="font-black text-sm text-indigo-700 italic">Birthday 大佐野店 🍼</h3>
-                    <button onclick="toggleTrans('trans-birthday')" class="text-[9px] bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full font-bold mb-2">前往方式</button>
-                    <div id="trans-birthday" class="transport-detail">
-                        🚕 從太宰府站搭計程車 (8-10min)。<br>
-                        💡 備註：這間店極大，隔壁還有西松屋，適合寶寶在推車午睡。
-                    </div>
+                    <p class="text-[10px] text-gray-500 font-bold italic mt-2 italic tracking-tighter">🚕 太宰府站搭計程車 (8-10min)。<br>旁邊有西松屋，適合寶寶在推車上午睡。</p>
                 </div>
 
-                <!-- 警固神社 -->
                 <div class="bg-white rounded-3xl p-5 w-full card-shadow border-l-4 border-blue-400">
-                    <h3 class="font-black text-sm text-gray-800 italic">15:00 警固神社 ⛩️</h3>
-                    <button onclick="toggleTrans('trans-back')" class="text-[9px] bg-blue-50 text-blue-600 px-3 py-1 rounded-full font-bold mb-2">返回天神方式</button>
-                    <div id="trans-back" class="transport-detail">
-                        🚕 計程車到「西鐵二日市站」➔ 搭「特急」回西鐵天神站。
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-black text-sm text-gray-800 italic">回天神 ➔ 警固神社</h3>
+                        <button onclick="toggleTrans('trans-back-tenjin')" class="text-[9px] bg-blue-50 text-blue-600 px-3 py-1 rounded-full font-bold">前往方式</button>
                     </div>
-                    <p class="text-[10px] text-blue-600 font-bold bg-blue-50 p-2 rounded-lg italic mt-2">🍼 育嬰室：三越 6F 育嬰室設備極佳，適合換尿布整理戰利品。</p>
+                    <div id="trans-back-tenjin" class="transport-detail">🚕 計程車到「西鐵二日市站」➔ 搭「特急」回西鐵天神站。</div>
+                    <p class="text-[10px] text-blue-600 font-bold bg-blue-50 p-3 rounded-xl mt-2 italic italic italic tracking-tighter">🍼 育嬰室：三越百貨 6F 育嬰室設備極佳，推車最推薦。</p>
                 </div>
 
-                <!-- Mina & 咖啡 -->
-                <div class="bg-white rounded-3xl p-5 card-shadow italic text-[11px] space-y-4">
-                    <h3 class="font-black text-sm">Mina 天神 & 地下街 🛍️</h3>
+                <div class="bg-white rounded-3xl p-5 w-full card-shadow border-l-4 border-teal-500">
+                    <h3 class="font-black text-sm text-gray-800 italic">Mina 天神 & 地下街 🛍️</h3>
                     <button onclick="toggleTrans('trans-mina')" class="text-[9px] bg-teal-50 text-teal-600 px-3 py-1 rounded-full font-bold mb-2">推車友善路線</button>
-                    <div id="trans-mina" class="transport-detail">
-                        從地下街指標往「北天神」走，找「北口」電梯上來即達。全程有冷氣且推車友善。
+                    <div id="trans-mina" class="transport-detail">走「天神地下街」指標往北天神，找「北口」電梯直上門口。全程有冷氣、有電梯。</div>
+                    <div class="text-[10px] font-bold text-gray-600 space-y-2 italic">
+                        • <b>4F LOFT：</b>生活雜貨/寶寶防水圍兜。<br>
+                        • <b>7F 西松屋：</b>重要！副食品/尿布補貨聖地。<br>
+                        • 育嬰室推薦 4F 或 7F。
                     </div>
-                    <p>🛒 <b>7F 西松屋：</b>市中心副食品/尿布補貨聖地。<br>☕ <b>FUK COFFEE：</b>必點蠟燭布丁 & 飛機拉花冰拿鐵。</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="bg-white rounded-2xl p-4 card-shadow italic text-[10px]">
+                        <p class="font-black text-pink-600 mb-1">Full Full 麵包</p>
+                        🚶 步行約 10min 穿過中央公園。
+                    </div>
+                    <div class="bg-white rounded-2xl p-4 card-shadow italic text-[10px]">
+                        <p class="font-black text-blue-600 mb-1">FUK COFFEE</p>
+                        必點冰拿鐵+蠟燭布丁🕯️
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl p-5 w-full card-shadow border-t-8 border-orange-600">
+                    <h3 class="text-sm font-black text-gray-800 italic">晚餐：NIKUICHI 燒肉 (藥院店)</h3>
+                    <p class="text-[10px] text-gray-400 font-bold mt-1">天神散步/地鐵 1 站回飯店休息，輕鬆享用高CP值和牛。</p>
                 </div>
             </div>
 
-            <!-- DAY 3 -->
+            <!-- DAY 3 (修正完整) -->
             <div id="day-3" class="day-plan hidden space-y-6">
                 <div class="bg-white rounded-3xl p-5 w-full card-shadow border-l-4 border-orange-300">
                     <div class="flex justify-between items-start mb-3">
-                        <h3 class="font-black text-sm text-gray-800 italic">09:00 食堂 おわん 🍱</h3>
-                        <button onclick="viewImg('https://cdn.phototourl.com/uploads/2026-03-18-14b25d1c-c3dd-4a94-9053-1e5287531a6d.png')" class="text-[9px] bg-blue-50 text-blue-600 px-3 py-1 rounded-lg font-bold">訂位憑證</button>
+                        <div>
+                            <span class="guide-tag bg-orange-100 text-orange-600 italic">09:00 已訂位</span>
+                            <h3 class="font-black text-sm text-gray-800 italic">食堂 おわん 🍱</h3>
+                        </div>
+                        <button onclick="viewImg('https://cdn.phototourl.com/uploads/2026-03-18-14b25d1c-c3dd-4a94-9053-1e5287531a6d.png')" class="text-[9px] bg-blue-50 text-blue-600 px-3 py-1 rounded-lg font-bold shadow-sm">訂位憑證</button>
                     </div>
-                    <img src="https://cdn.phototourl.com/uploads/2026-03-18-1a0cecb5-25d7-43b0-8130-6976e7adc56a.jpg" class="rounded-xl w-full h-32 object-cover shadow-inner">
-                    <p class="text-[10px] text-orange-700 italic mt-2 font-bold italic tracking-tight">明太子、日式蛋捲搭配現煮釜飯，口感層次超驚喜！</p>
+                    <img src="https://cdn.phototourl.com/uploads/2026-03-18-1a0cecb5-25d7-43b0-8130-6976e7adc56a.jpg" class="rounded-xl w-full h-32 object-cover shadow-inner mb-3">
+                    <p class="text-[10px] text-orange-700 italic font-bold leading-relaxed italic italic">層次豐富的日式早餐，明太子配現煮釜飯絕讚！</p>
                 </div>
+
                 <div class="bg-white rounded-3xl p-5 w-full card-shadow border-l-4 border-blue-400">
                     <div class="flex justify-between items-center mb-2">
-                        <h3 class="font-black text-sm text-gray-800 italic">海洋世界渡輪 🚢</h3>
-                        <button onclick="toggleTrans('trans-umi')" class="text-[9px] bg-blue-50 text-blue-600 px-3 py-1 rounded-full font-bold">搭船細節</button>
+                        <h3 class="font-black text-sm text-gray-800 italic">海之中道渡輪 🚢</h3>
+                        <button onclick="toggleTrans('trans-ferry')" class="text-[9px] bg-blue-50 text-blue-600 px-3 py-1 rounded-full font-bold">前往方式</button>
                     </div>
-                    <div id="trans-umi" class="transport-detail">
-                        🚕 09:15 出發搭計程車 (12-15min) ➔ 博多埠頭 第 1 碼頭。<br>
-                        🚢 安田汽船 10:05 準時開船 (航程 15-20min)。
+                    <div id="trans-ferry" class="transport-detail italic">
+                        1. 09:15 計程車 (¥1,500) ➔ 博多埠頭 第 1 碼頭。<br>
+                        2. <b>10:05 安田汽船</b> 準時開船 (航程 20min)。
                     </div>
-                    <p class="text-[10px] font-bold text-blue-700 bg-blue-50 p-2 rounded-lg mt-2 italic">🐬 11:00 海豚表演 | 🐹 12:00 海獸島抽天竺鼠號碼牌。</p>
+                    <div class="bg-blue-50 p-3 rounded-xl mt-3 text-[10px] font-bold text-blue-800 italic">
+                        🐬 11:00 海豚表演 | 🐹 12:00 天竺鼠整理券(先抽)。
+                    </div>
                 </div>
-                <div class="bg-white rounded-3xl p-5 w-full card-shadow border-l-4 border-green-500 italic text-[11px]">
+
+                <div class="bg-white rounded-3xl p-5 w-full card-shadow border-l-4 border-green-500 italic">
                     <h3 class="font-black text-sm text-green-700">海之中道海濱公園 🌸</h3>
-                    <p class="mt-2 font-bold italic">4月限定粉蝶花海！推車散步首選，育嬰室極多。</p>
+                    <p class="text-[10px] mt-2 font-bold">4月限定粉蝶花海！推車散步首選，育嬰室極多。</p>
                 </div>
+
                 <div class="bg-white rounded-3xl p-5 w-full card-shadow">
-                    <h3 class="font-black text-sm italic">晚上：福岡塔 & MARK IS</h3>
-                    <button onclick="toggleTrans('trans-back-tower')" class="text-[9px] bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full font-bold mt-2">回程搭船方式</button>
-                    <div id="trans-back-tower" class="transport-detail">
-                        16:15 從海之中道搭船 ➔ 地行浜 (百道海濱)，下船步行即達福岡塔。
-                    </div>
-                    <div class="bg-indigo-50 p-3 rounded-xl mt-3 space-y-2 italic font-bold">
-                        <p class="text-indigo-700">• teamLab 森林：建議揹巾進入，5F 投影超酷！</p>
-                        <p class="text-teal-700">• MARK IS 3F：阿卡將專櫃 + 爬行軟墊區 (伸展放電)。</p>
+                    <h3 class="font-black text-sm text-gray-800 italic">晚上：福岡塔 & MARK IS</h3>
+                    <button onclick="toggleTrans('trans-momochi')" class="text-[9px] bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full font-bold mt-2">前往方式</button>
+                    <div id="trans-momochi" class="transport-detail">回程改搭 16:15 船班 ➔ 地行浜 (百道海濱)，下船即達福岡塔。</div>
+                    <div class="bg-indigo-50 p-4 rounded-xl mt-3 space-y-3 font-bold italic">
+                        <p class="text-[10px] text-indigo-700">• <b>teamLab 森林 (5F)：</b>建議用揹巾，光影投影超美。</p>
+                        <p class="text-[10px] text-teal-700">• <b>MARK IS 3F：</b>阿卡將專櫃 + 遊戲軟墊區(放電)。</p>
                     </div>
                 </div>
-                <!-- 回程計程車字卡 -->
-                <div class="text-center p-6 mb-20">
-                    <button onclick="showTaxiCard('hotel')" class="bg-blue-500 text-white p-4 rounded-3xl text-sm font-black shadow-lg shadow-blue-100">大採購完 🚕 點我顯示回飯店字卡</button>
-                </div>
+                <div class="text-center pb-10"><button onclick="showTaxiCard('hotel')" class="bg-blue-500 text-white p-3 rounded-full text-[11px] font-black shadow-lg">🚕 點我顯示回飯店字卡</button></div>
             </div>
 
-            <!-- DAY 4 -->
+            <!-- DAY 4 (修正完整) -->
             <div id="day-4" class="day-plan hidden space-y-6">
                 <div class="bg-white rounded-3xl p-5 w-full card-shadow border-l-4 border-blue-400">
-                    <h3 class="font-black text-sm text-gray-800 italic">天神大名散策 🛍️</h3>
-                    <p class="text-[10px] text-gray-500 font-bold italic mt-2 italic tracking-tight">Shin Shin 拉麵建議 15:00 前往。I'm d'onut? 2點人較少。</p>
+                    <h3 class="font-black text-sm text-gray-800 italic">天神大名逛街 🛍️</h3>
+                    <p class="text-[10px] text-gray-600 font-bold bg-blue-50 p-2 rounded-xl mt-2 italic italic">I'm d'onut? 下午2點排隊。Shin Shin 拉麵 3-4點推車免排隊。</p>
                 </div>
+
                 <div class="bg-white rounded-3xl p-5 w-full card-shadow border-t-8 border-indigo-500">
                     <div class="flex justify-between items-start mb-2">
                         <h3 class="font-black text-sm text-gray-800 italic">LaLaport 福岡 (鋼彈)</h3>
-                        <button onclick="showTaxiCard('lala')" class="text-[9px] bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full font-bold">鋼彈立像字卡</button>
+                        <button onclick="showTaxiCard('lala')" class="text-[9px] bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full font-bold">鋼彈字卡</button>
                     </div>
-                    <button onclick="toggleTrans('trans-lala')" class="text-[9px] bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full font-bold mb-2">天神直達巴士指引</button>
-                    <div id="trans-lala" class="transport-detail">
-                        🚌 在「天神大丸前 (4C)」搭 44/46L 號直達，大人 ¥310。<br>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Tenjin+Daimaru+Bus+Stop" class="underline text-blue-600 font-black italic">地圖點我查看巴士站</a>
+                    <button onclick="toggleTrans('trans-lala')" class="text-[9px] bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full font-bold mb-2">交通指引 (含直達巴士)</button>
+                    <div id="trans-lala" class="transport-detail italic">
+                        🚕 計程車：12min (約¥1,700/NT$370)。<br>
+                        🚌 巴士：在「天神大丸前 (4C)」搭 44/46L 號直達，免在博多轉乘。<br>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Tenjin+Daimaru+Bus+Stop" class="underline text-blue-600 font-black italic">地圖點我看巴士站</a>
                     </div>
-                    <button onclick="toggleTrans('tax-refund')" class="text-[9px] bg-white text-gray-500 border border-gray-200 px-3 py-1 rounded-full font-bold mt-2">LaLaport 退稅教學</button>
-                    <div id="tax-refund" class="transport-detail">
-                        1. 大型連鎖 (UNIQLO) 店內退稅。<br>2. 阿卡將/Gundam Side-F：需先含稅結帳 ➔ 下載 PIE VAT App ➔ 持護照收據至 1F 中央免稅櫃檯合計辦理。
+                    <button onclick="toggleTrans('tax-refund')" class="text-[9px] bg-white text-gray-500 border border-gray-200 px-3 py-1 rounded-full font-bold mt-2">💡 LaLaport 退稅攻略 (必看)</button>
+                    <div id="tax-refund" class="transport-detail italic bg-white border-indigo-100 text-gray-600">
+                        1. 大型店(Uniqlo)店內退。<br>
+                        2. 櫃檯退(阿卡將/Gundam)：需先含稅結帳 ➔ 下載 <b>PIE VAT App</b> ➔ 持商品收據至 1F 綜合免稅櫃檯合計辦理。
                     </div>
-                    <p class="text-[10px] text-indigo-600 font-bold italic mt-2">🌟 18:00/19:00 鋼彈燈光秀表演最美！</p>
+                    <p class="text-[10px] text-indigo-700 font-bold mt-3 italic tracking-tight underline decoration-indigo-200 decoration-4">🌟 18:00/19:00 鋼彈燈光秀表演最美！</p>
                 </div>
+
                 <div class="bg-white rounded-3xl p-5 w-full card-shadow border-l-4 border-orange-400">
                     <h3 class="font-black text-sm text-gray-800 italic">博多車站伴手禮一條龍</h3>
-                    <button onclick="toggleTrans('trans-hakata')" class="text-[9px] bg-orange-50 text-orange-600 px-3 py-1 rounded-full font-bold mb-2">回博多站方式</button>
-                    <div id="trans-hakata" class="transport-detail">從鋼彈出口搭 44/45 號巴士即可直達博多車站。</div>
-                    <p class="text-[10px] font-bold italic text-orange-700 bg-orange-50 p-3 rounded-xl mt-2 italic tracking-tight italic tracking-tighter italic">採買動線：博多筑紫口 LOPIA 超市 ➔ 1F 治一郎布丁/年輪蛋糕 ➔ 阪急 B1 努努雞 (冷凍)。</p>
+                    <button onclick="toggleTrans('trans-hakata')" class="text-[9px] bg-orange-50 text-orange-600 px-3 py-1 rounded-full font-bold mb-2">回博多站巴士</button>
+                    <div id="trans-hakata" class="transport-detail">從鋼彈出口搭 44/45 號巴士即達博多車站。</div>
+                    <p class="text-[10px] font-bold text-orange-700 italic mt-2 italic tracking-tight bg-orange-50 p-3 rounded-xl italic">動線：筑紫口 LOPIA 超市 ➔ 1F 治一郎布丁/年輪蛋糕 ➔ 阪急 B1 努努雞 (冷凍不用等)。</p>
                 </div>
-                <div class="text-center p-6 mb-20"><button onclick="showTaxiCard('hotel')" class="bg-blue-500 text-white p-4 rounded-3xl text-sm font-black shadow-lg">購物完 🚕 點我顯示回飯店字卡</button></div>
+                <div class="text-center pb-10"><button onclick="showTaxiCard('hotel')" class="bg-blue-500 text-white p-3 rounded-full text-[11px] font-black shadow-lg">🛍️ 買完 🚕 點我顯示回飯店字卡</button></div>
             </div>
 
             <!-- DAY 5 -->
             <div id="day-5" class="day-plan hidden space-y-6">
                 <div class="bg-white rounded-3xl p-5 w-full card-shadow border-l-4 border-blue-400">
-                    <h3 class="font-black text-sm text-gray-800 italic mb-4">12:20 返台 BR105 ✈️</h3>
-                    <p class="text-[11px] text-gray-500 italic mb-4">機場最後補貨！期待下次與朵朵的初飛！🌸</p>
-                    <button onclick="showTaxiCard('airport')" class="bg-blue-600 text-white p-3 rounded-2xl w-full text-xs font-black shadow-lg">🚕 點我顯示機場專用字卡</button>
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="font-black text-sm text-gray-800 italic">10:20 前往機場 🚕</h3>
+                            <p class="text-[10px] text-gray-400 font-bold italic mt-1 italic tracking-tighter">目的地：福岡機場國際線航廈</p>
+                        </div>
+                        <button onclick="showTaxiCard('airport')" class="bg-blue-500 text-white p-3 rounded-2xl text-[10px] font-black shadow-lg">機場字卡</button>
+                    </div>
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="font-black text-sm text-gray-800 tracking-tighter">12:20 返台 BR105 ✈️</h3>
+                        <button onclick="viewImg('https://cdn.phototourl.com/uploads/2026-03-18-62e9009f-c1a2-420c-8443-7135151e6f84.jpg')" class="text-[9px] bg-blue-50 text-blue-600 px-3 py-1 rounded-lg font-bold shadow-sm">機票憑證</button>
+                    </div>
+                    <p class="text-center text-gray-300 text-[10px] font-bold italic pt-6 italic italic italic tracking-[0.2em]">期待與朵朵的下次初飛！🌸</p>
                 </div>
             </div>
             
             <div class="bg-blue-100 rounded-2xl p-4 text-center border-2 border-dashed border-blue-300 mb-20 italic font-black text-blue-600 text-[10px]">
-                💡 注意事項：福岡 4月底早晚偏涼，請攜帶薄外套與雨傘。
+                💡 注意事項：4月底福岡早晚偏涼，請攜帶薄外套與雨傘。
             </div>
         </div>
     </section>
 
-    <!-- 打包清單頁面 -->
-    <section id="sec-list" class="px-5 hidden space-y-6 pb-24">
+    <!-- 打包清單頁面 (百分比修正) -->
+    <section id="sec-list" class="px-5 hidden space-y-6 pb-24 animate-fadeIn">
         <div class="bg-white rounded-3xl p-6 card-shadow sticky top-4 z-10 border border-blue-50 text-center">
-            <h2 class="text-lg font-black text-blue-600 italic">打包進度 <span id="list-percent">0%</span></h2>
+            <h2 class="text-lg font-black text-blue-600 italic">行李打包進度 <span id="list-percent" class="tracking-widest">0%</span></h2>
             <div class="w-full bg-gray-100 h-2 rounded-full mt-3 overflow-hidden"><div id="list-progress" class="bg-blue-400 h-full transition-all duration-500 shadow-sm shadow-blue-200" style="width: 0%"></div></div>
         </div>
+        
         <div class="space-y-4">
             <div class="bg-white rounded-2xl p-5 shadow-sm">
-                <h3 class="font-black text-blue-500 border-b pb-2 text-sm mb-3 italic">出發核心</h3>
-                <div class="space-y-3 text-[11px] font-bold text-gray-500">
-                    <label class="flex items-center gap-3"><input type="checkbox" onchange="upCheck()" class="checkbox-custom"> 大人寶寶護照 / 長榮機票截圖</label>
+                <h3 class="font-black text-blue-500 border-b pb-2 text-sm italic mb-3">✈️ 出發前核心</h3>
+                <div class="space-y-3 text-[11px] font-bold text-gray-500" id="list-core">
+                    <label class="flex items-center gap-3"><input type="checkbox" onchange="upCheck()" class="checkbox-custom"> 大人寶寶護照 / 長榮機票憑證</label>
                     <label class="flex items-center gap-3"><input type="checkbox" onchange="upCheck()" class="checkbox-custom"> Visit Japan Web QR Code / 日圓現鈔</label>
-                    <label class="flex items-center gap-3"><input type="checkbox" onchange="upCheck()" class="checkbox-custom"> GO或Uber App綁卡 / iPhone Suica</label>
+                    <label class="flex items-center gap-3"><input type="checkbox" onchange="upCheck()" class="checkbox-custom"> 交通 App (GO/Uber) / Suica 加值</label>
+                    <label class="flex items-center gap-3"><input type="checkbox" onchange="upCheck()" class="checkbox-custom"> 購買 Esim / 旅平險</label>
                 </div>
             </div>
             <div class="bg-white rounded-2xl p-5 shadow-sm">
-                <h3 class="font-black text-pink-500 border-b pb-2 text-sm mb-3 italic">🍼 寶寶必備</h3>
-                <div class="grid grid-cols-1 gap-3 text-[11px] font-bold text-gray-500">
-                    <label class="flex items-center gap-3"><input type="checkbox" onchange="upCheck()" class="checkbox-custom"> 推車+防水罩 / 揹帶 / 小外套 / 被被</label>
+                <h3 class="font-black text-pink-500 border-b pb-2 text-sm italic mb-3">🍼 寶寶專屬用品</h3>
+                <div class="grid grid-cols-1 gap-4 text-[11px] font-bold text-gray-500">
+                    <label class="flex items-center gap-3"><input type="checkbox" onchange="upCheck()" class="checkbox-custom"> 推車 + 防水罩 / 揹帶 / 小外套 / 被被</label>
                     <label class="flex items-center gap-3"><input type="checkbox" onchange="upCheck()" class="checkbox-custom"> 奶粉奶瓶 / 溫冷水瓶 / 悶燒罐 / 副食品</label>
-                    <label class="flex items-center gap-3"><input type="checkbox" onchange="upCheck()" class="checkbox-custom"> 尿布濕巾 / 常備藥退燒藥 / 安撫玩具米餅</label>
+                    <label class="flex items-center gap-3"><input type="checkbox" onchange="upCheck()" class="checkbox-custom"> 尿布濕巾 / 屁屁膏 / 常備藥 / 消毒噴霧</label>
+                    <label class="flex items-center gap-3"><input type="checkbox" onchange="upCheck()" class="checkbox-custom"> 奶嘴 / 安撫玩具 / 米餅 / 耳罩</label>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl p-5 shadow-sm">
+                <h3 class="font-black text-orange-500 border-b pb-2 text-sm italic mb-3">🧳 托運與隨身包</h3>
+                <div class="space-y-3 text-[11px] font-bold text-gray-500">
+                    <label class="flex items-center gap-3"><input type="checkbox" onchange="upCheck()" class="checkbox-custom"> 大型購物袋 / 保冷袋 / 充電線 / 行充</label>
+                    <label class="flex items-center gap-3"><input type="checkbox" onchange="upCheck()" class="checkbox-custom"> 換洗衣物 / 盥洗用具 / 隱眼 / 眼鏡</label>
+                    <label class="flex items-center gap-3"><input type="checkbox" onchange="upCheck()" class="checkbox-custom"> <b>上機包：</b>護照 / 錢包 / 現鈔</label>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- 記帳頁面 -->
-    <section id="sec-money" class="px-5 hidden space-y-6 pb-20">
+    <section id="sec-money" class="px-5 hidden space-y-6">
         <div class="bg-white rounded-3xl p-8 card-shadow text-center">
-            <h2 class="text-xl font-black text-gray-700 italic mb-6">💴 旅遊花費</h2>
-            <input id="exp-name" type="text" placeholder="消費項目" class="w-full p-4 rounded-2xl bg-gray-50 border-none mb-3 font-bold">
+            <h2 class="text-xl font-black text-gray-700 italic mb-6">💴 旅遊花費記帳</h2>
+            <input id="exp-name" type="text" placeholder="項目" class="w-full p-4 rounded-2xl bg-gray-50 border-none mb-3 font-bold">
             <div class="flex gap-2 mb-6">
-                <input id="exp-jpy" type="number" placeholder="日圓" class="flex-1 p-4 rounded-2xl bg-gray-50 border-none font-bold">
-                <button onclick="addExp()" class="bg-blue-500 text-white px-8 rounded-2xl font-black">新增</button>
+                <input id="exp-jpy" type="number" placeholder="金額 (JPY)" class="flex-1 p-4 rounded-2xl bg-gray-50 border-none font-bold">
+                <button onclick="addExp()" class="bg-blue-500 text-white px-8 rounded-2xl font-black shadow-lg">新增</button>
             </div>
             <div class="pt-8 border-t border-gray-100">
-                <p class="text-4xl font-black text-blue-600">¥ <span id="total-jpy">0</span></p>
-                <p class="text-sm font-bold text-gray-400 mt-1 italic">約 NT$ <span id="total-twd">0</span></p>
+                <p class="text-4xl font-black text-blue-600 italic">¥ <span id="total-jpy">0</span></p>
+                <p class="text-sm font-bold text-gray-400 mt-1 italic italic">約 NT$ <span id="total-twd">0</span></p>
             </div>
         </div>
-        <div id="exp-list" class="space-y-2"></div>
+        <div id="exp-list" class="space-y-2 pb-20"></div>
     </section>
 
-    <!-- SOS 頁面 -->
+    <!-- SOS 緊急頁面 -->
     <section id="sec-sos" class="px-5 hidden space-y-4 pb-20">
-        <div class="bg-red-50 rounded-2xl p-5 border border-red-100 space-y-4 font-bold italic">
-            <h3 class="text-red-600 text-sm">🆘 緊急中心</h3>
-            <a href="tel:110" class="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm italic text-gray-700 tracking-tighter">報警 (110) <span class="text-blue-500 text-lg">一鍵撥號</span></a>
-            <a href="tel:119" class="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm italic text-gray-700 tracking-tighter">救護車 (119) <span class="text-red-600 text-lg">一鍵撥號</span></a>
-            <h3 class="text-blue-600 text-sm pt-4 italic">🌐 中文支援服務</h3>
-            <div class="text-[11px] text-gray-500 space-y-2">
+        <div class="bg-red-50 rounded-2xl p-5 border border-red-100 space-y-4 font-bold italic italic tracking-tighter">
+            <h3 class="text-red-600 text-sm">🆘 生命安全第一線</h3>
+            <a href="tel:110" class="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm">報警 (110) <span class="text-blue-500">撥打</span></a>
+            <a href="tel:119" class="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm">救護車 (119) <span class="text-red-600">撥打</span></a>
+            <h3 class="text-blue-600 text-sm pt-4">🌐 中文支援/機場服務</h3>
+            <div class="text-[11px] text-gray-500 space-y-2 italic">
                 <p>多語言翻譯 (24H): 03-5285-8185</p>
                 <p>JNTO 官方諮詢: 050-3816-2787</p>
-                <p>地震報平安專線: 171</p>
+                <p>成田機場: 0476-34-8000 | 遺失物JR: 03-3231-1880</p>
             </div>
         </div>
     </section>
@@ -416,69 +441,79 @@
     <!-- 司機字卡 Modal -->
     <div id="taxiModal" style="display:none;" class="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-6" onclick="this.style.display='none'">
         <div class="bg-white p-8 rounded-[3rem] w-full max-w-sm text-center shadow-2xl" onclick="event.stopPropagation()">
-            <h2 id="taxi-title" class="text-gray-400 text-[10px] font-bold mb-4 tracking-widest uppercase italic font-black">Taxi Driver Memo</h2>
-            <p id="taxi-addr" class="text-2xl font-black text-blue-600 leading-tight mb-6 italic tracking-tighter"></p>
+            <h2 id="taxi-title" class="text-gray-400 text-[10px] font-bold mb-4 tracking-widest uppercase italic font-black">Taxi Memo</h2>
+            <p id="taxi-addr" class="text-xl font-black text-blue-600 leading-tight mb-6 italic tracking-tighter"></p>
             <p id="taxi-msg" class="text-lg font-bold text-gray-800 bg-blue-50 py-4 rounded-2xl italic tracking-tighter"></p>
-            <button onclick="document.getElementById('taxiModal').style.display='none'" class="mt-6 text-gray-300 text-[10px] font-bold underline italic">CLOSE WINDOW</button>
+            <button onclick="document.getElementById('taxiModal').style.display='none'" class="mt-6 text-gray-300 text-[10px] font-bold underline italic">CLOSE</button>
         </div>
     </div>
 
     <script>
+        // 分頁控制
         function showSec(sec) {
             ['itin', 'list', 'money', 'sos'].forEach(s => {
-                document.getElementById('sec-' + s).classList.add('hidden');
-                document.getElementById('tab-' + s).classList.replace('text-blue-500', 'text-gray-400');
+                const el = document.getElementById('sec-' + s);
+                const tab = document.getElementById('tab-' + s);
+                if(el) el.classList.add('hidden');
+                if(tab) tab.classList.replace('text-blue-500', 'text-gray-400');
             });
             document.getElementById('sec-' + sec).classList.remove('hidden');
             document.getElementById('tab-' + sec).classList.replace('text-gray-400', 'text-blue-500');
             window.scrollTo(0, 0);
         }
 
+        // 天數控制
         function switchDay(day) {
             document.querySelectorAll('.day-plan').forEach(d => d.classList.add('hidden'));
-            document.getElementById('day-' + day).classList.remove('hidden');
+            const target = document.getElementById('day-' + day);
+            if(target) target.classList.remove('hidden');
             for(let i=1; i<=5; i++){
                 const btn = document.getElementById('d'+i+'-btn');
+                if(!btn) continue;
                 if(i===day){ btn.classList.add('bg-blue-500','text-white','shadow-lg'); btn.classList.remove('bg-white','text-gray-400'); }
                 else { btn.classList.remove('bg-blue-500','text-white','shadow-lg'); btn.classList.add('bg-white','text-gray-400'); }
             }
         }
 
+        // 交通詳情開關
         function toggleTrans(id) {
             const el = document.getElementById(id);
-            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+            if(el) el.style.display = (el.style.display === 'block') ? 'none' : 'block';
         }
 
+        // 圖片燈箱
         function viewImg(url) { document.getElementById('modalImg').src = url; document.getElementById('imageModal').style.display = 'flex'; }
 
+        // 字卡控制
         function showTaxiCard(type) {
             const modal = document.getElementById('taxiModal');
             const addr = document.getElementById('taxi-addr');
             const msg = document.getElementById('taxi-msg');
-            
             if(type === 'airport') {
                 addr.innerHTML = "福岡空港 国際線ターミナル<br>住所：博多区大字下臼井778-1";
                 msg.innerHTML = "国際線ターミナルまでお願いします。<br><span class='text-xs'>(請載我到機場國際線航廈)</span>";
             } else if(type === 'lala') {
-                addr.innerHTML = "ららぽーと福岡<br>（ガンダム立像前）";
+                addr.innerHTML = "ららぽーと福岡<br>（ガンダム立像前）<br>博多区那珂6丁目23-1";
                 msg.innerHTML = "ガンダム立像の前までお願いします。<br><span class='text-xs'>(請載我到鋼彈立像門口)</span>";
             } else {
-                addr.innerHTML = "福岡県福岡市<br>中央区平尾3-19-25";
+                addr.innerHTML = "住所：福岡県福岡市<br>中央区平尾3-19-25";
                 msg.innerHTML = "住所の場所までお願いします。<br><span class='text-xs'>(請載我到飯店地址)</span>";
             }
             modal.style.display = 'flex';
         }
 
+        // 清單百分比計算
         function upCheck() {
             const checks = document.querySelectorAll('#sec-list input[type="checkbox"]');
             const done = Array.from(checks).filter(c => c.checked).length;
             const percent = Math.round((done / checks.length) * 100);
             document.getElementById('list-percent').innerText = percent + '%';
             document.getElementById('list-progress').style.width = percent + '%';
-            localStorage.setItem('fuk_check_vFinal', JSON.stringify(Array.from(checks).map(c => c.checked)));
+            localStorage.setItem('fuk_check_final', JSON.stringify(Array.from(checks).map(c => c.checked)));
         }
 
-        let exps = JSON.parse(localStorage.getItem('fuk_exps_vFinal')) || [];
+        // 記帳邏輯
+        let exps = JSON.parse(localStorage.getItem('fuk_money_final')) || [];
         function addExp() {
             const n = document.getElementById('exp-name').value;
             const j = parseInt(document.getElementById('exp-jpy').value);
@@ -487,17 +522,20 @@
         function renderExp() {
             const list = document.getElementById('exp-list');
             let tot = 0; list.innerHTML = '';
-            exps.forEach(e => { tot += e.j; list.innerHTML += `<div class="flex justify-between bg-white p-3 rounded-xl shadow-sm text-xs font-bold italic"><span>${e.n}</span><span class="text-blue-500">¥${e.j.toLocaleString()}</span></div>`; });
+            exps.forEach((e, i) => {
+                tot += e.j;
+                list.innerHTML += `<div class="flex justify-between bg-white p-3 rounded-xl shadow-sm text-xs font-bold italic italic italic"><span>${e.n}</span><span class="text-blue-500">¥${e.j.toLocaleString()}</span></div>`;
+            });
             document.getElementById('total-jpy').innerText = tot.toLocaleString();
             document.getElementById('total-twd').innerText = Math.round(tot * 0.22).toLocaleString();
-            localStorage.setItem('fuk_exps_vFinal', JSON.stringify(exps));
+            localStorage.setItem('fuk_money_final', JSON.stringify(exps));
         }
 
         window.onload = () => {
-            const savedChecks = JSON.parse(localStorage.getItem('fuk_check_vFinal'));
+            const savedChecks = JSON.parse(localStorage.getItem('fuk_check_final'));
             if(savedChecks){
                 const checks = document.querySelectorAll('#sec-list input[type="checkbox"]');
-                checks.forEach((c, i) => c.checked = savedChecks[i] || false);
+                checks.forEach((c, i) => { if(c) c.checked = savedChecks[i] || false; });
                 upCheck();
             }
             renderExp();
