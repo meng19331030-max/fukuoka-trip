@@ -11,192 +11,187 @@
         :root { --fuji-blue: #A5D8FF; --soft-pink: #FFD1E3; --main-bg: #FDF2F8; }
         body { font-family: 'Zen Maru Gothic', sans-serif; background-color: var(--main-bg); color: #4A4A4A; overflow-x: hidden; }
         
-        /* 頁首雜誌感 */
-        .magazine-header { position: relative; width: 100%; height: 240px; overflow: hidden; border-radius: 0 0 3rem 3rem; z-index: 10; }
+        /* 頁首雜誌感：縮小高度、焦點靠右 */
+        .magazine-header { position: relative; width: 100%; height: 220px; overflow: hidden; border-radius: 0 0 3rem 3rem; z-index: 10; }
         .magazine-header img { width: 100%; height: 100%; object-fit: cover; object-position: 85% center; }
-        .magazine-title-overlay { position: absolute; bottom: 20px; left: 20px; right: 20px; text-shadow: 0 2px 8px rgba(0,0,0,0.4); z-index: 20; color: white; }
+        .magazine-title-overlay { position: absolute; bottom: 20px; left: 20px; right: 80px; text-shadow: 0 2px 8px rgba(0,0,0,0.4); z-index: 20; color: white; }
 
-        /* 1. 功能分頁 ICON：移至首圖下方橫向排列 */
-        .tab-navbar { display: flex; justify-content: space-around; padding: 15px 20px; background: white; border-radius: 2rem; margin: -25px 20px 0 20px; position: relative; z-index: 40; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
-        .tab-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #888; transition: 0.3s; }
-        .tab-btn i { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: #f8fafc; font-size: 1rem; }
-        .tab-btn.active i { background: #3B82F6; color: white; transform: scale(1.1); }
-        .tab-btn span { font-size: 9px; font-weight: 900; }
+        /* 功能分頁 ICON：首圖右下方單獨區隔 */
+        .tab-navbar { position: absolute; bottom: -25px; right: 20px; display: flex; gap: 8px; z-index: 50; }
+        .tab-btn { background: white; width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); color: #888; transition: 0.3s; border: 1px solid #f1f5f9; }
+        .tab-btn.active { background: #3B82F6; color: white; transform: translateY(-5px); }
 
-        /* 主佈局：左側導航 + 右側內容 */
-        .main-app-body { display: flex; min-height: 100vh; padding-bottom: 100px; }
+        /* 主佈局 */
+        .main-app-body { display: flex; min-height: 100vh; margin-top: 20px; }
 
-        /* 2. 左側垂直日期導覽 */
-        .side-date-nav { width: 65px; flex-shrink: 0; padding: 20px 0; display: flex; flex-direction: column; align-items: center; gap: 15px; position: sticky; top: 0; height: 100vh; background: transparent; }
-        .date-icon-btn { width: 45px; height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 1.2rem; background: white; transition: 0.3s; cursor: pointer; border: 1px solid #f1f5f9; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-        .date-icon-btn.active { background: #3B82F6; color: white; border: none; box-shadow: 0 5px 12px rgba(59, 130, 246, 0.2); }
-        .date-icon-btn i { font-size: 1.1rem; margin-bottom: 2px; }
+        /* 左側垂直日期導覽 */
+        .side-date-nav { width: 65px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 12px; position: sticky; top: 20px; height: calc(100vh - 50px); z-index: 40; }
+        .date-icon-btn { width: 46px; height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 1.2rem; background: white; transition: 0.3s; cursor: pointer; border: 1px solid #f1f5f9; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+        .date-icon-btn.active { background: #3B82F6; color: white; border: none; box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3); }
+        .date-icon-btn i { font-size: 1rem; margin-bottom: 2px; }
         .date-icon-btn span { font-size: 0.6rem; font-weight: 900; }
 
         /* 行程卡片區 */
-        .content-area { flex-grow: 1; padding: 20px 15px 120px 5px; }
-        .itin-card { border-radius: 1.8rem; padding: 1.2rem; border-left: 8px solid #e2e8f0; border: 1px solid #f1f5f9; background: white; margin-bottom: 1.2rem; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+        .content-area { flex-grow: 1; padding: 10px 15px 120px 5px; }
+        .itin-card { border-radius: 1.8rem; padding: 1.2rem; border-left: 8px solid #e2e8f0; border: 1px solid #f1f5f9; background: white; margin-bottom: 1rem; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
         .card-flight { border-left-color: #3b82f6; background-color: #eff6ff; }
         .card-spot { border-left-color: #ef4444; }
         .card-food { border-left-color: #f97316; }
         .card-hotel { border-left-color: #ec4899; }
         .card-shop { border-left-color: #8b5cf6; }
 
-        .transport-btn { background: #F0F7FF; color: #1E40AF; padding: 8px 12px; border-radius: 10px; font-size: 10px; font-weight: bold; margin-top: 10px; display: inline-block; cursor: pointer; border: 1px solid #A5D8FF; }
-        .transport-detail { display: none; padding: 12px; background: #F8FAFC; border-radius: 14px; border: 1px dashed #3B82F6; font-size: 11px; margin-top: 8px; line-height: 1.6; color: #1e40af; }
-        .guide-tag { padding: 2px 8px; border-radius: 6px; font-size: 9px; font-weight: 900; margin-right: 4px; display: inline-block; color: white; }
+        .transport-detail { display: none; padding: 12px; background: #f0f7ff; border-radius: 14px; border: 1px dashed #3B82F6; font-size: 11px; margin-top: 10px; color: #1e40af; line-height: 1.6; }
+        .guide-tag { padding: 2px 8px; border-radius: 6px; font-size: 9px; font-weight: 900; margin-right: 4px; color: white; }
         
-        .fab-add { position: fixed; bottom: 30px; right: 25px; width: 55px; height: 55px; background: #3B82F6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; z-index: 100; box-shadow: 0 8px 20px rgba(59,130,246,0.3); }
-
+        /* 燈箱與按鈕 */
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 300; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
+        .btn-blue { background: #3B82F6; color: white; padding: 10px; border-radius: 12px; font-weight: bold; font-size: 11px; text-align: center; width: 100%; display: block; }
         .checkbox-custom { width: 1.3rem; height: 1.3rem; border-radius: 0.4rem; border: 2px solid #A5D8FF; appearance: none; cursor: pointer; flex-shrink: 0; position: relative; }
         .checkbox-custom:checked { background: #3B82F6; border-color: #3B82F6; }
         .checkbox-custom:checked::after { content: '✓'; position: absolute; color: white; font-size: 0.9rem; left: 3px; top: -1px; }
         .hide-scroll::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body>
+<body class="hide-scroll">
 
     <!-- 圖片燈箱 -->
     <div id="imageModal" class="modal" onclick="this.style.display='none'"><img id="modalImg" class="max-w-full max-h-full rounded-2xl shadow-2xl"></div>
 
-    <!-- 1. 頁首雜誌封圖 -->
+    <!-- 1. 頁首與功能分頁 (移至右下方) -->
     <header class="magazine-header">
         <img src="https://cdn.phototourl.com/uploads/2026-03-17-d9da9a24-6193-46a7-9e7e-8f2c87802a46.jpg" alt="Cover">
-        <div class="magazine-title-overlay text-center">
-            <h1 class="font-black text-lg italic tracking-tighter uppercase">🌸 朵朵的初次飛行-福岡探索之旅 2026</h1>
+        <div class="magazine-title-overlay">
+            <h1 class="font-black text-lg italic tracking-tighter">🌸 朵朵的初次飛行<br>福岡探索之旅 2026</h1>
+        </div>
+        <div class="tab-navbar">
+            <button onclick="switchTab('itin')" id="tab-itin-btn" class="tab-btn active"><i class="fa-solid fa-location-dot"></i></button>
+            <button onclick="switchTab('info')" id="tab-info-btn" class="tab-btn"><i class="fa-solid fa-info"></i></button>
+            <button onclick="switchTab('cart')" id="tab-cart-btn" class="tab-btn"><i class="fa-solid fa-basket-shopping"></i></button>
+            <button onclick="switchTab('cash')" id="tab-cash-btn" class="tab-btn"><i class="fa-solid fa-coins"></i></button>
         </div>
     </header>
 
-    <!-- 2. 橫向功能分頁導覽 (首圖下方) -->
-    <div class="tab-navbar">
-        <button onclick="switchTab('itin')" id="tab-itin-btn" class="tab-btn active"><i class="fa-solid fa-location-dot"></i><span>行程表</span></button>
-        <button onclick="switchTab('info')" id="tab-info-btn" class="tab-btn"><i class="fa-solid fa-info"></i><span>資訊</span></button>
-        <button onclick="switchTab('cart')" id="tab-cart-btn" class="tab-btn"><i class="fa-solid fa-basket-shopping"></i><span>清單</span></button>
-        <button onclick="switchTab('cash')" id="tab-cash-btn" class="tab-btn"><i class="fa-solid fa-coins"></i><span>花費</span></button>
-    </div>
-
     <div class="main-app-body">
-        <!-- 3. 左側日期 Icon 導覽 (行程分頁專用) -->
+        <!-- 2. 左側日期 Icon 導覽 -->
         <aside class="side-date-nav hide-scroll" id="side-nav">
-            <div onclick="switchDay(1)" class="date-icon-btn active" id="d1-btn"><i class="fa-solid fa-plane-departure"></i><span>D1</span></div>
+            <div onclick="switchDay(1)" class="date-icon-btn active" id="d1-btn"><i class="fa-solid fa-plane"></i><span>D1</span></div>
             <div onclick="switchDay(2)" class="date-icon-btn" id="d2-btn"><i class="fa-solid fa-torii-gate"></i><span>D2</span></div>
             <div onclick="switchDay(3)" class="date-icon-btn" id="d3-btn"><i class="fa-solid fa-dolphin"></i><span>D3</span></div>
             <div onclick="switchDay(4)" class="date-icon-btn" id="d4-btn"><i class="fa-solid fa-robot"></i><span>D4</span></div>
-            <div onclick="switchDay(5)" class="date-icon-btn" id="d5-btn"><i class="fa-solid fa-house-chimney-user"></i><span>D5</span></div>
+            <div onclick="switchDay(5)" class="date-icon-btn" id="d5-btn"><i class="fa-solid fa-house-user"></i><span>D5</span></div>
         </aside>
 
-        <!-- 4. 右側主內容區 -->
+        <!-- 3. 右側主內容區 -->
         <div class="content-area">
             
             <!-- 行程分頁 -->
             <section id="sec-itin">
-                <div id="weather-box" class="bg-blue-50 p-4 rounded-2xl flex justify-between items-center border border-blue-100 mb-6 animate-fadeIn">
-                    <div class="flex items-center gap-3"><i class="fa-solid fa-cloud-sun text-xl text-yellow-500"></i><div><p class="font-black text-sm text-gray-700">18°C / <span class="opacity-50 text-xs">體感 16°C</span></p></div></div>
-                    <span class="bg-white px-2 py-0.5 rounded-full text-[9px] font-bold text-blue-500 shadow-sm">福岡 晴</span>
+                <div class="bg-blue-50 p-4 rounded-2xl flex justify-between items-center border border-blue-100 mb-6 italic">
+                    <div class="flex items-center gap-3"><i class="fa-solid fa-cloud-sun text-xl text-yellow-500"></i><p class="font-black text-sm">FUK 18°C / <span class="opacity-50 text-xs">體感 16°C</span></p></div>
+                    <span class="bg-white px-2 py-0.5 rounded-full text-[9px] font-bold text-blue-500">福岡晴</span>
                 </div>
                 <div id="itin-display" class="space-y-2"></div>
             </section>
 
-            <!-- 資訊分頁 -->
-            <section id="sec-info" class="hidden space-y-6">
-                <h2 class="text-xl font-black text-blue-600 italic">Travel Info ℹ️</h2>
-                <!-- 打包清單完成度 -->
+            <!-- 資訊分頁 (含行李清單) -->
+            <section id="sec-info" class="hidden space-y-6 animate-fadeIn">
+                <h2 class="text-xl font-black text-blue-600 italic">Travel Center ℹ️</h2>
                 <div class="bg-white rounded-3xl p-5 card-shadow italic border border-blue-50">
-                    <div class="flex justify-between items-center mb-2">
-                        <p class="text-xs font-black italic">🧳 行李打包完成度</p>
-                        <span id="list-percent" class="text-blue-500 font-black">0%</span>
-                    </div>
+                    <div class="flex justify-between items-center mb-2"><p class="text-xs font-black italic">🧳 行李打包完成度</p><span id="list-percent" class="text-blue-500 font-black">0%</span></div>
                     <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden mb-4"><div id="list-progress" class="bg-blue-400 h-full transition-all duration-500" style="width: 0%"></div></div>
-                    <div id="prep-render" class="space-y-2"></div>
+                    <div id="checklist-render" class="space-y-2"></div>
                 </div>
-                <!-- 緊急電話 -->
-                <div class="bg-red-50 p-5 rounded-3xl border border-red-100 space-y-4 font-bold text-[11px]">
-                    <h3 class="text-red-600 italic"><i class="fa-solid fa-circle-exclamation"></i> 緊急聯絡</h3>
-                    <div class="grid grid-cols-1 gap-2">
-                        <a href="tel:110" class="flex justify-between bg-white p-3 rounded-xl shadow-sm"><span>警察局 (110)</span><span class="text-blue-500">撥打</span></a>
-                        <a href="tel:119" class="flex justify-between bg-white p-3 rounded-xl shadow-sm"><span>救護車 / 消防 (119)</span><span class="text-red-600">撥打</span></a>
-                        <a href="tel:0352858185" class="flex justify-between bg-white p-3 rounded-xl shadow-sm italic text-gray-500"><span>24H 中文翻譯支援</span><span>03-5285-8185</span></a>
-                    </div>
+                <div class="bg-red-50 p-5 rounded-3xl border border-red-100 space-y-3 font-bold italic text-[11px]">
+                    <h3 class="text-red-600">🆘 緊急中心</h3>
+                    <a href="tel:110" class="flex justify-between bg-white p-3 rounded-xl shadow-sm"><span>警察局 (110)</span><span class="text-blue-500">撥打</span></a>
+                    <a href="tel:119" class="flex justify-between bg-white p-3 rounded-xl shadow-sm"><span>救護車 / 消防 (119)</span><span class="text-red-600">撥打</span></a>
                 </div>
             </section>
 
-            <!-- 購物清單 -->
-            <section id="sec-cart" class="hidden space-y-4">
-                <h2 class="text-xl font-black text-purple-600 italic">Wish List 🛒</h2>
+            <!-- 購物分頁 -->
+            <section id="sec-cart" class="hidden animate-fadeIn pb-20">
+                <h2 class="text-xl font-black text-purple-600 italic mb-4">Wish List 🛒</h2>
                 <div id="cart-render" class="grid grid-cols-2 gap-3"></div>
             </section>
 
-            <!-- 花費 -->
-            <section id="sec-cash" class="hidden space-y-4 pb-20">
+            <!-- 花費分頁 -->
+            <section id="sec-cash" class="hidden animate-fadeIn pb-20">
                 <div class="bg-slate-800 text-white p-6 rounded-[2rem] text-center shadow-xl mb-4 italic">
-                    <p class="text-[9px] opacity-60 uppercase tracking-widest font-bold">Total Costs</p>
+                    <p class="text-[9px] opacity-60 uppercase font-bold">Total Costs</p>
                     <p class="text-3xl font-black italic">¥ <span id="total-jpy">0</span></p>
                     <p class="text-[10px] opacity-50 mt-1">≈ NT$ <span id="total-twd">0</span></p>
                 </div>
                 <div id="cash-render" class="space-y-3"></div>
             </section>
-
         </div>
     </div>
 
     <!-- 右下角新增按鈕 -->
-    <div class="fab-add shadow-lg" id="fab-btn" onclick="handleFab()">+</div>
+    <div class="fab-add shadow-lg" id="fab-btn" style="display:none;" onclick="handleFab()">+</div>
 
-    <!-- 購物與花費 Modal 略過... (程式碼中包含邏輯) -->
+    <!-- 司機字卡 Modal -->
+    <div id="taxiModal" class="modal" onclick="this.style.display='none'">
+        <div class="bg-white p-8 rounded-[3rem] w-full max-w-xs text-center shadow-2xl" onclick="event.stopPropagation()">
+            <h2 class="text-gray-400 text-[10px] font-bold mb-4 tracking-widest uppercase italic">Driver Card</h2>
+            <p id="taxi-addr" class="text-xl font-black text-blue-600 leading-tight mb-6 italic"></p>
+            <p class="text-base font-bold text-gray-800 bg-blue-50 py-3 rounded-xl italic">ここに行ってください。<br><span class="text-xs font-normal">(請載我到這裡，謝謝)</span></p>
+        </div>
+    </div>
 
     <script>
-        // 5天超詳細行程庫
         const tripData = {
             1: [
-                { cat: 'flight', name: '航空公司 EVA AIR BR106', time: '08:00 TPE ➔ 11:20 FUK', note: '🌟 機場必喝：抹茶拿鐵 (國際線51B)', cert: 'https://cdn.phototourl.com/uploads/2026-03-17-d0a4373b-c132-4c37-83a6-db7e4d67d0ee.png' },
-                { cat: 'hotel', name: '住宿：Branche 藥院大通 SeedsStay', time: '預估 12:10 Check-in', note: '訂單: 1990699229', cert: 'https://cdn.phototourl.com/uploads/2026-03-17-5539a649-76e8-441d-a714-d8a31076f51f.png', taxi: '福岡県福岡市中央区平尾3-19-25', trans: '🚕 計程車 (20min): ¥2,800 (NT$620)' },
-                { cat: 'food', name: '13:00 運河城午餐', time: '13:00', note: '薦4/5F家庭餐廳。⛲️ B1水池整點噴水秀', trans: '🚕 ¥1,300 (10min) | 🚃 藥院大通 ➔ 櫛田神社前站 | 🚶 1.6km (25min)', maps: 'Canal City Hakata' },
-                { cat: 'spot', name: '15:00 櫛田神社 ⛩️', time: '15:00', note: '參拜:1.洗手 2.投錢拍手 3.求籤。延年益壽鶴之井戶。', trans: '🚶 步行 3-5min。♿ 推車：北出口走天橋搭電梯。', maps: 'Kushida Shrine' },
+                { cat: 'flight', name: 'BR106 桃園 ➔ 福岡', time: '08:00', note: '🌟 必喝：抹茶拿鐵 (國際線51B)', cert: 'https://cdn.phototourl.com/uploads/2026-03-17-d0a4373b-c132-4c37-83a6-db7e4d67d0ee.png' },
+                { cat: 'hotel', name: 'Branche 藥院大通 SeedsStay', time: '12:10 Check-in', note: 'Agoda: 1990699229', cert: 'https://cdn.phototourl.com/uploads/2026-03-17-5539a649-76e8-441d-a714-d8a31076f51f.png', taxi: '福岡県福岡市中央区平尾3-19-25', trans: '🚕 計程車 (20min): ¥2,800 (NT$620)' },
+                { cat: 'food', name: '博多運河城午餐', time: '13:00', note: '薦4/5F家庭餐廳。14:15 B1噴水秀', trans: '🚕 ¥1,300 (10min) | 🚃 藥院大通➔櫛田神社前站 | 🚶 1.6km (25min)', maps: 'Canal City Hakata' },
+                { cat: 'spot', name: '櫛田神社 ⛩️', time: '15:00', note: '🙏 參拜：1.洗手 2.投錢拍手 3.求籤。<br>🏛️ 備註：靈泉鶴之井戶(水鹹注意)、力石挑戰、一蘭總店在附近', trans: '🚶 步行 3-5min。♿ 推車：北出口走天橋進大樓搭電梯。', maps: 'Kushida Shrine' },
+                { cat: 'spot', name: '天開稻荷神社', time: '15:30', note: '美拍稻荷鳥居', maps: 'Tenkai Inari Shrine' },
                 { cat: 'food', name: 'AKIRA SUISAN 生魚片丼', time: '15:45', note: '超厚生魚片！便宜又大碗', img: 'https://cdn.phototourl.com/uploads/2026-03-17-ae4e14d8-7b9f-4c64-8a04-9e1467d408c4.jpg', maps: 'AKIRA SUISAN' },
-                { cat: 'spot', name: '16:00 麵包超人博物館 🍭', time: '16:00', note: '沿川端通商店街往北走。入內需換揹巾', trans: '🚶 步行 7min (有頂棚)', maps: 'Anpanman Museum Fukuoka' },
-                { cat: 'food', name: '鈴懸 (すずかけ) 本店', time: '16:45', note: '甜點天花板：草莓大福🍓、鈴乃○餅', gallery: ['https://cdn.phototourl.com/uploads/2026-03-17-666e9bb9-774c-4290-bf9b-5de8599eb2e2.webp', 'https://cdn.phototourl.com/uploads/2026-03-17-01da1205-01db-46c0-832c-6e5d9b23c8dc.jpg'], maps: 'Suzukake Honten' },
-                { cat: 'food', name: '17:00 前田屋牛腸鍋', time: '17:00 預約', note: 'TS7DNWA82N', cert: 'https://cdn.phototourl.com/uploads/2026-03-17-1f7e6db7-717f-4cc5-acf6-8f09526cd024.jpg' },
-                { cat: 'shop', name: '🛒 Bon Repas 藥院店', time: '20:30', note: '20:30起熟食半額！離飯店5min' }
+                { cat: 'spot', name: '麵包超人博物館 🍭', time: '16:00', note: '🚨 <span style="color:#ec4899; font-weight:900;">入內需換成抱著或用揹巾</span>', trans: '🚶 步行 7min：沿商店街往北走 (有頂棚不怕雨)', maps: 'Anpanman Museum' },
+                { cat: 'food', name: '鈴懸 (すずかけ) 本店', time: '16:45', note: '福岡甜點天花板。🍓必買：鈴乃○餅、草莓大福', gallery: ['https://cdn.phototourl.com/uploads/2026-03-17-666e9bb9-774c-4290-bf9b-5de8599eb2e2.webp', 'https://cdn.phototourl.com/uploads/2026-03-17-01da1205-01db-46c0-832c-6e5d9b23c8dc.jpg'], maps: 'Suzukake' },
+                { cat: 'food', name: '前田屋牛腸鍋', time: '17:00 預約', note: 'TS7DNWA82N', cert: 'https://cdn.phototourl.com/uploads/2026-03-17-1f7e6db7-717f-4cc5-acf6-8f09526cd024.jpg' },
+                { cat: 'shop', name: '🛒 Bon Repas 藥院店', time: '20:30', note: '20:30起半額熟食特價！' },
+                { cat: 'other', name: '散步回飯店', time: '19:00', note: '散步 12-15min，輕鬆放空。' }
             ],
             2: [
-                { cat: 'spot', name: '09:40 竈門神社 🌸', time: '09:40', note: '結緣勝地。交通注意：認明西鐵藥院站。', trans: '🚃 西鐵藥院 ➔ 二日市(轉) ➔ 太宰府站 ➔ 🚕 1000円。' },
-                { cat: 'spot', name: '11:00 太宰府天滿宮', time: '11:00', note: '從竈門神社搭100円巴士下山。' },
-                { cat: 'food', name: '若松屋鰻魚飯 🍱', time: '11:20', note: '必吃鰻魚蛋捲。建議11:30前抵達。' },
-                { cat: 'spot', name: '太宰府美食對決 🍡', time: '中午', note: '梅枝餅：寺田屋(皮薄)、かさの家(人氣NO1)、安武(重口味)' },
-                { cat: 'shop', name: 'Birthday 大佐野店 🍼', time: '13:30', note: 'Taxi 8min。旁有西松屋。推車午睡首選', maps: 'Birthday Osano' },
-                { cat: 'spot', name: '15:30 警固神社 ⛩️', time: '15:30', note: '三越 6F 育嬰室。', trans: '🚕 二日市站 ➔ 特急回天神。', taxi: '福岡県福岡市中央区平尾3-19-25' },
-                { cat: 'shop', name: '天神地下街 🛍️', time: '16:00', note: 'I\'m d\'onut? 排隊判斷。3COINS。設施完善。' },
-                { cat: 'shop', name: 'Mina 天神 🛍️', time: '16:30', note: '7F 西松屋重點補貨。全段電梯冷氣。', trans: '🚶 地下街北口電梯直升。', maps: 'Mina Tenjin' },
-                { cat: 'food', name: 'Blue Bottle & NIKUICHI', time: '19:00', note: '和牛燒肉 (藥院店)' }
+                { cat: 'spot', name: '竈門神社 🌸', time: '09:40', note: '最強結緣神社。旅人號拍照點', trans: '🚃 認明「西鐵藥院站」(非地鐵)➔二日市站轉太宰府線➔🚕1000円。' },
+                { cat: 'spot', name: '太宰府天滿宮', time: '11:00', trans: '竈門神社搭計程車或100円巴士下山。' },
+                { cat: 'food', name: '若松屋鰻魚飯 🍱', time: '11:20', note: '柳川本店 | 10:30–15:30。必吃鰻魚蛋捲！' },
+                { cat: 'food', name: '梅枝餅對決 🍡', time: '12:00', note: '寺田屋(皮薄不甜)、かさの家(人氣第一)、安武(重口味)' },
+                { cat: 'food', name: '太宰府美食清單', time: '邊走邊吃', note: 'FUKUYA 明太子泡飯、筑紫庵炸雞堡、小鳥居布丁冰棒、一蘭五角碗' },
+                { cat: 'shop', name: 'Birthday 大佐野店 🍼', time: '13:30', note: '🚕 站前搭8-10min。旁邊有西松屋，推車午睡首選', maps: 'Birthday Osano' },
+                { cat: 'spot', name: '警固神社 ⛩️', time: '15:30', note: '參拜完去三越 6F 育嬰室整理。', trans: '🚕 Birthday往西鐵二日市➔特急回天神。' },
+                { cat: 'food', name: 'I\'m d\'onut? 🍩', time: '16:00', note: '先看排隊人龍，若太長改買 Full Full。' },
+                { cat: 'food', name: 'Full Full 明太子麵包 🥖', time: '16:15', note: '步行10min穿過中央公園。' },
+                { cat: 'shop', name: '天神地下街 3COINS', time: '16:30', note: '東4番街。地下街育嬰室極佳。' },
+                { cat: 'shop', name: 'Mina 天神 🛍️', time: '17:00', note: 'Loft 4F、西松屋 7F (補貨重點)。', trans: '🚶 地下街指標往北天神，北口電梯上來。' },
+                { cat: 'food', name: 'FUK COFFEE Seaside ☕', time: '17:30', note: '必點冰拿鐵+蠟燭布丁🕯️' },
+                { cat: 'food', name: 'Blue Bottle 藍瓶咖啡', time: '18:00' },
+                { cat: 'other', name: '散步回飯店 🚕', time: '19:00', note: '推車 10-15min 輕便回飯店放東西。', taxi: '福岡県福岡市中央区平尾3-19-25' },
+                { cat: 'food', name: '晚餐：NIKUICHI 燒肉', time: '20:00', note: '藥院店高CP和牛。' }
             ],
             3: [
                 { cat: 'food', name: '食堂 おわん 🍱', time: '09:00 預約', note: '明太子釜飯套餐', cert: 'https://cdn.phototourl.com/uploads/2026-03-18-14b25d1c-c3dd-4a94-9053-1e5287531a6d.png', img: 'https://cdn.phototourl.com/uploads/2026-03-18-1a0cecb5-25d7-43b0-8130-6976e7adc56a.jpg' },
-                { cat: 'spot', name: '海洋世界 (水族館) 🐬', time: '11:00 表演', note: '11:00海豚秀。12:00抽天竺鼠。', trans: '🚕 往博多埠頭(¥1,500) ➔ 🚢 10:05 準時開船', maps: 'Marine World' },
-                { cat: 'spot', name: '海濱公園花海 🌸', time: '14:00', note: '4月粉蝶花最美。育嬰室極多', icon: 'fa-seedling' },
-                { cat: 'spot', name: '福岡塔 🗼', time: '16:45', trans: '🚢 16:15 往地行浜(百道)。', maps: 'Fukuoka Tower' },
-                { cat: 'spot', name: 'E・ZO (teamLab)', time: '17:30', note: '5F投影效果佳。⚠️換揹巾進入' },
-                { cat: 'shop', name: 'MARK IS 🍼', time: '18:30', note: '3F 阿卡將、爬行軟墊放電區', maps: 'MARK IS Momochi' },
-                { cat: 'other', name: '回飯店 🚕', time: '20:30', note: '¥2,000 直達飯店', taxi: '福岡県福岡市中央区平尾3-19-25' }
+                { cat: 'spot', name: '海洋世界 (水族館) 🐬', time: '11:00 表演', trans: '🚕 往博多埠頭(¥1,500)➔🚢 10:05 渡輪。11:00海豚秀 / 12:00天竺鼠互動。' },
+                { cat: 'spot', name: '海之中道花海 🌸', time: '14:00', note: '4月粉蝶花最美時刻。推車首選地。' },
+                { cat: 'spot', name: '福岡塔 🗼', time: '16:45', trans: '🚢 16:15 船班往地行浜(百道)。下船步行即達。' },
+                { cat: 'spot', name: 'E・ZO (teamLab)', time: '17:30', note: '🌟 投影極美。⚠️ 地面不平，換揹巾進入。', trans: '🚶 步行 8-10min。' },
+                { cat: 'shop', name: 'MARK IS 🍼', time: '18:30', note: '3F 阿卡將、Kids Premium Room 軟墊區', maps: 'MARK IS Momochi' },
+                { cat: 'other', name: '搭車回飯店 🚕', time: '20:30', note: '¥2,000 直達飯店', taxi: '福岡県福岡市中央区平尾3-19-25' }
             ],
             4: [
-                { cat: 'spot', name: '藥院漫步 🌿', time: '上午', note: '輕鬆早晨' },
-                { cat: 'shop', name: '天神/大名區 🛍️', time: '14:00', note: '生甜甜圈 / Shin Shin (3-4點入座)', trans: '🚶 步行 12min。' },
-                { cat: 'spot', name: 'LaLaport (鋼彈) 🤖', time: '16:30', note: '18:00燈光秀。PIE VAT退稅需App', trans: '🚕 ¥1,700 | 🚌 天神大丸前(4C)搭 44/46L 直達', taxi: 'ららぽーと福岡（ガンダム立像前）' },
-                { cat: 'shop', name: '博多站伴手禮 🎁', time: '19:00', note: 'LOPIA、治一郎、努努雞(熟食冷凍)', trans: '🚌 鋼彈出口 44/45 號巴士回博多站。', taxi: '福岡県福岡市中央区平尾3-19-25' }
+                { cat: 'spot', name: '大濠公園 / 福岡城跡 🌿', time: '上午', note: '全日最美星巴克之一', trans: '🚕 飯店搭 8-10min (¥1000)' },
+                { cat: 'shop', name: '天神/大名區逛街 🛍️', time: '14:00', note: 'Shin Shin 拉麵 3-4 點避人潮。', trans: '🚇 大濠公園➔赤坂站 | 🚕 ¥1,200 | 🚶 1.8km (25min)' },
+                { cat: 'spot', name: 'LaLaport (鋼彈) 🤖', time: '16:30', note: '18:00燈光秀。PIE VAT退稅', trans: '🚕 ¥1,700 | 🚌 天神大丸前(4C)搭 44/46L 直達。', taxi: 'ららぽーと福岡（ガンダム立像前）' },
+                { cat: 'shop', name: '博多站伴手禮 🎁', time: '19:00', note: 'LOPIA、治一郎布丁、努努雞(熟食區冷凍)', trans: '🚌 鋼彈出口搭巴士即達博多站。', taxi: '福岡県福岡市中央区平尾3-19-25' }
             ],
             5: [
-                { cat: 'flight', name: 'BR105 返台 ✈️', time: '12:20', note: '10:20 往機場。期待下次飛行。', cert: 'https://cdn.phototourl.com/uploads/2026-03-18-62e9009f-c1a2-420c-8443-7135151e6f84.jpg', taxi: '福岡空港 国際線ターミナル' }
+                { cat: 'flight', name: 'BR105 返台 ✈️', time: '12:20', note: '10:20 往機場。最後採買。', cert: 'https://cdn.phototourl.com/uploads/2026-03-18-62e9009f-c1a2-420c-8443-7135151e6f84.jpg', taxi: '福岡空港 国際線ターミナル' }
             ]
         };
 
-        const checklist = ["護照截圖", "VJW QR", "GO/Uber綁卡", "Suica加值", "esim網路", "推車防水罩", "揹帶", "奶粉奶瓶", "副食品調理包", "尿布濕巾", "行動電源"];
-        let cartItems = [];
-        let expenses = [];
-        let checkStatus = Array(checklist.length).fill(false);
-
-        // 初始化
-        window.onload = () => { switchTab('itin'); switchDay(1); renderList(); };
+        const checkItems = ["大人寶寶護照", "Visit Japan QR", "GO/Uber App綁卡", "iPhone Suica加值", "購買 esims", "推車+防水罩+揹帶", "奶粉奶瓶/副食品", "尿布濕巾/常備藥", "保冷袋/大型購物袋", "自拍棒腳架", "行動電源(禁托運)"];
+        let checkStatus = Array(checkItems.length).fill(false);
 
         function switchTab(tab) {
             ['itin', 'info', 'cart', 'cash'].forEach(s => {
@@ -206,6 +201,7 @@
             document.getElementById('sec-' + tab).classList.remove('hidden');
             document.getElementById('tab-' + tab + '-btn').classList.add('active');
             document.getElementById('side-nav').style.display = (tab === 'itin') ? 'flex' : 'none';
+            document.getElementById('fab-btn').style.display = (tab === 'cart' || tab === 'cash') ? 'flex' : 'none';
         }
 
         function switchDay(day) {
@@ -217,45 +213,35 @@
             tripData[day].forEach(item => {
                 const card = document.createElement('div');
                 card.className = `itin-card card-${item.cat} animate-fadeIn`;
-                let content = `
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="guide-tag bg-slate-200 text-slate-500 uppercase italic">${item.cat}</span>
-                        <span class="text-[10px] font-black text-blue-400 italic">${item.time}</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <div><h4 class="font-black text-gray-800 text-sm italic underline decoration-blue-50">${item.name}</h4><p class="text-[9px] text-gray-400 mt-2 font-bold">${item.note || ''}</p></div>
-                        ${item.maps ? `<a href="https://www.google.com/maps/search/?api=1&query=${item.maps}" class="text-blue-500"><i class="fa-solid fa-map-location-dot"></i></a>` : ''}
-                    </div>
-                `;
+                let content = `<div class="flex justify-between items-start mb-2"><span class="guide-tag bg-slate-400">${item.cat.toUpperCase()}</span><span class="text-[9px] font-black text-blue-400">${item.time}</span></div>`;
+                content += `<div class="flex justify-between"><div><h4 class="font-black text-gray-800 text-sm italic underline decoration-blue-50">${item.name}</h4><p class="text-[9px] text-gray-400 mt-2 font-bold">${item.note || ''}</p></div>`;
+                if(item.maps) content += `<a href="https://www.google.com/maps/search/?api=1&query=${item.maps}" class="text-blue-500"><i class="fa-solid fa-map-location-dot"></i></a>`;
+                content += `</div>`;
                 if(item.cert) content += `<button onclick="viewImg('${item.cert}')" class="transport-btn mt-2">查看憑證 ➔</button>`;
-                if(item.img) content += `<img src="${item.img}" class="mt-2 rounded-xl h-28 w-full object-cover" onclick="viewImg('${item.img}')">`;
+                if(item.img) content += `<img src="${item.img}" class="mt-2 rounded-xl h-28 w-full object-cover shadow-sm" onclick="viewImg('${item.img}')">`;
                 if(item.gallery) content += `<div class="grid grid-cols-2 gap-2 mt-2">${item.gallery.map(g => `<img src="${g}" class="rounded-xl h-20 object-contain bg-gray-50" onclick="viewImg('${g}')">`).join('')}</div>`;
-                if(item.trans) content += `<button class="transport-btn mt-2" onclick="this.nextElementSibling.style.display='block'">前往方式 ➔</button><div class="transport-detail italic font-bold">${item.trans}</div>`;
+                if(item.trans) content += `<div class="transport-btn mt-2" onclick="this.nextElementSibling.style.display='block'">前往方式 ➔</div><div class="transport-detail italic font-bold trans-box">${item.trans}</div>`;
                 if(item.taxi) content += `<button onclick="showTaxiCard('${item.taxi}')" class="mt-3 w-full bg-blue-500 text-white py-2.5 rounded-2xl text-[10px] font-black shadow-lg italic">🚕 司機字卡</button>`;
                 card.innerHTML = content;
                 list.appendChild(card);
             });
         }
 
-        // 打包清單
-        function renderList() {
-            const container = document.getElementById('prep-render');
-            container.innerHTML = checklist.map((item, i) => `
-                <label class="flex items-center gap-3 bg-gray-50 p-3 rounded-xl italic font-bold text-[11px]">
-                    <input type="checkbox" onchange="upCheck(${i})" class="checkbox-custom" ${checkStatus[i]?'checked':''}> ${item}
-                </label>`).join('');
-            updateProgress();
+        function renderChecklist() {
+            const container = document.getElementById('checklist-render');
+            container.innerHTML = checkItems.map((item, i) => `<label class="flex items-center gap-3 bg-gray-50 p-3 rounded-xl italic font-bold text-[11px]"><input type="checkbox" onchange="upCheck(${i})" class="checkbox-custom" ${checkStatus[i]?'checked':''}> ${item}</label>`).join('');
+            upPercent();
         }
-        function upCheck(i) { checkStatus[i] = !checkStatus[i]; updateProgress(); }
-        function updateProgress() {
-            const percent = Math.round((checkStatus.filter(v => v).length / checklist.length) * 100);
+        function upCheck(i) { checkStatus[i] = !checkStatus[i]; upPercent(); }
+        function upPercent() {
+            const percent = Math.round((checkStatus.filter(v => v).length / checkItems.length) * 100);
             document.getElementById('list-percent').innerText = percent + '%';
             document.getElementById('list-progress').style.width = percent + '%';
         }
 
         function showTaxiCard(addr) { document.getElementById('taxi-addr').innerText = addr; document.getElementById('taxiModal').style.display = 'flex'; }
         function viewImg(url) { document.getElementById('modalImg').src = url; document.getElementById('imageModal').style.display = 'flex'; }
-        function handleFab() { alert("功能開發中，目前僅供視覺展示，數據請手動記錄在 JavaScript 中。"); }
+        window.onload = () => { renderChecklist(); switchDay(1); };
     </script>
 </body>
 </html>
