@@ -30,125 +30,164 @@
         body { font-family: 'Zen Maru Gothic', sans-serif; background-color: #F7F7F7; color: #4A4A4A; -webkit-tap-highlight-color: transparent; }
         .card-shadow { box-shadow: 0 8px 30px rgba(0,0,0,0.04); }
         .nav-blur { backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.8); }
+        /* 時間軸線條 */
         .timeline-line::before { content: ''; position: absolute; left: 20px; top: 0; bottom: 0; width: 2px; background: #DC909A; opacity: 0.3; }
         [v-cloak] { display: none; }
+        /* 隱藏捲軸但可捲動 */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="max-w-md mx-auto">
+<body class="max-w-md mx-auto relative min-h-screen">
 
-<div id="app" v-cloak class="pb-24">
-    <header class="relative">
-        <img src="https://cdn.phototourl.com/free/2026-04-08-0cf446a0-4def-44f2-9ec6-0ffe6257c1b9.jpg" 
-             class="w-full h-48 object-cover rounded-b-3xl shadow-lg" alt="Cover">
-    </header>
+<div id="app" v-cloak>
+    
+    <div class="sticky top-0 z-40 bg-[#F7F7F7]/95 backdrop-blur-sm">
+        <header class=\"relative\">
+            <img src="https://cdn.phototourl.com/free/2026-04-08-0cf446a0-4def-44f2-9ec6-0ffe6257c1b9.jpg" 
+                 class="w-full h-40 object-cover rounded-b-3xl shadow-md" alt="Cover">
+        </header>
 
-    <div class="flex mt-4">
-        <aside class="w-16 flex flex-col items-center space-y-3 py-4 fixed left-0 top-56 z-10 bg-white/60 rounded-r-2xl shadow-sm backdrop-blur-md">
+        <div class="px-4 py-3">
+            <div class="bg-white p-3 rounded-2xl card-shadow flex items-center justify-between border-l-4 border-secondary">
+                <div>
+                    <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{{itinerary[activeDay].date}}</div>
+                    <div class="flex items-center space-x-2">
+                        <i :class="getWeatherIcon(itinerary[activeDay].weather.type)" class="text-accent text-xl"></i>
+                        <span class="text-lg font-bold">{{itinerary[activeDay].weather.temp}}°C</span>
+                    </div>
+                </div>
+                <div class="text-right text-[10px] text-gray-500 leading-tight">
+                    體感 {{itinerary[activeDay].weather.feel}}°C<br>
+                    <span class="text-primary font-bold">{{itinerary[activeDay].weather.tips}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex">
+        <aside class="w-16 flex flex-col items-center space-y-3 py-4 fixed left-0 top-64 z-30">
             <button v-for="(day, index) in itinerary" :key="index"
-                    @click="activeDay = index"
-                    :class="['w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold transition-all', 
-                             activeDay === index ? 'bg-primary text-white scale-110 shadow-md' : 'bg-white text-gray-400']">
+                    @click="activeDay = index; scrollToTop()"
+                    :class="['w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold transition-all shadow-sm', 
+                             activeDay === index ? 'bg-primary text-white scale-110 ring-4 ring-white' : 'bg-white text-gray-400 opacity-80']">
                 D{{index + 1}}
             </button>
         </aside>
 
-        <main class="flex-1 ml-16 px-4">
+        <main class="flex-1 ml-16 px-4 pb-32">
+            
             <div v-if="activeTab === 'trip'">
-                <div class="bg-white p-4 rounded-2xl mb-6 card-shadow flex items-center justify-between border-l-4 border-secondary">
-                    <div>
-                        <div class="text-[10px] text-gray-400 font-bold">{{itinerary[activeDay].date}} 福岡天氣</div>
-                        <div class="flex items-center space-x-2">
-                            <i :class="getWeatherIcon(itinerary[activeDay].weather.type)" class="text-accent text-xl"></i>
-                            <span class="text-lg font-bold">{{itinerary[activeDay].weather.temp}}°C</span>
-                        </div>
-                    </div>
-                    <div class="text-right text-[10px] text-gray-500 leading-tight">
-                        體感 {{itinerary[activeDay].weather.feel}}°C<br>
-                        <span class="text-accent">{{itinerary[activeDay].weather.tips}}</span>
-                    </div>
-                </div>
-
-                <div class="relative timeline-line">
+                <div class="relative timeline-line pt-2">
                     <div v-for="(item, idx) in itinerary[activeDay].items" :key="idx" class="relative pl-10 mb-8">
                         <div class="absolute left-0 top-1 w-10 flex justify-center">
-                            <div class="w-4 h-4 bg-primary rounded-full border-4 border-white z-10"></div>
+                            <div class="w-4 h-4 bg-primary rounded-full border-4 border-white z-10 shadow-sm"></div>
                         </div>
 
-                        <div :class="['p-4 rounded-2xl card-shadow border border-gray-100 bg-white', 
-                                    item.type === 'flight' ? 'bg-gradient-to-br from-secondary to-accent text-white border-none' : '',
-                                    item.specialStyle ? 'ring-2 ring-primaryLight' : '']">
+                        <div v-if="item.isHighlight" class="bg-white rounded-3xl p-5 border-2 border-primaryLight shadow-xl overflow-hidden relative">
+                            <div class="absolute -right-4 -top-4 w-16 h-16 bg-primaryLight/10 rounded-full"></div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="text-[10px] px-3 py-1 bg-primary text-white rounded-full font-bold">✨ {{item.category}}</span>
+                                <span class="text-xs font-mono text-gray-400">{{item.time}}</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-800 mb-2">{{item.title}}</h3>
+                            <p class="text-[11px] text-gray-600 leading-relaxed mb-4 whitespace-pre-line">{{item.note}}</p>
                             
-                            <div class="flex justify-between items-start mb-2">
-                                <div>
-                                    <span v-if="item.category" class="text-[9px] px-2 py-0.5 rounded-full bg-fujiBlue text-secondary font-bold mr-2">{{item.category}}</span>
-                                    <h3 :class="['font-bold mt-1 leading-snug', item.type === 'flight' ? 'text-white' : 'text-gray-700']">{{item.title}}</h3>
-                                </div>
-                                <span class="text-[10px] opacity-60 font-mono">{{item.time}}</span>
+                            <div v-if="item.images" class="flex gap-2 mb-4 overflow-x-auto no-scrollbar py-1">
+                                <img v-for="img in item.images" :src="img" class="h-32 w-48 object-cover rounded-2xl shadow-sm flex-shrink-0" @click="openModal(img)">
+                            </div>
+                            
+                            <div v-if="item.warning" class="bg-pink-50 p-3 rounded-xl border border-pink-100 flex items-start space-x-2">
+                                <i class="fas fa-exclamation-circle text-primary mt-0.5"></i>
+                                <span class="text-[10px] text-primary font-bold">{{item.warning}}</span>
                             </div>
 
-                            <div class="flex flex-wrap gap-1 mb-3">
+                            <button v-if="item.map" @click="goMap(item.map)" class="w-full mt-4 py-3 bg-fujiBlue text-secondary rounded-2xl text-xs font-bold">
+                                <i class="fas fa-location-arrow mr-1"></i> 前往 {{item.title}}
+                            </button>
+                        </div>
+
+                        <div v-else-if="item.type === 'flight'" class="bg-gradient-to-br from-secondary to-accent p-5 rounded-3xl text-white shadow-lg">
+                            <div class="flex justify-between items-center mb-4">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-plane"></i>
+                                    <span class="text-xs font-bold tracking-widest">{{item.airline}} {{item.flightNo}}</span>
+                                </div>
+                                <button @click="openModal(item.ticketImg)" class="bg-white/20 px-3 py-1 rounded-full text-[9px] font-bold">憑證</button>
+                            </div>
+                            <div class="flex justify-between items-center text-center">
+                                <div><div class="text-2xl font-bold">{{item.depCode}}</div><div class="text-[10px] opacity-80">{{item.depTime}}</div></div>
+                                <div class="flex-1 px-4 border-b border-dashed border-white/40 relative mx-2">
+                                    <i class="fas fa-plane absolute -top-2 left-1/2 -translate-x-1/2 text-[10px] opacity-50"></i>
+                                </div>
+                                <div><div class="text-2xl font-bold">{{item.arrCode}}</div><div class="text-[10px] opacity-80">{{item.arrTime}}</div></div>
+                            </div>
+                        </div>
+
+                        <div v-else class="bg-white p-4 rounded-2xl card-shadow border border-gray-100">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-fujiBlue text-secondary font-bold mr-2">{{item.category}}</span>
+                                    <h3 class="font-bold text-gray-700 mt-1 leading-snug">{{item.title}}</h3>
+                                </div>
+                                <span class="text-[10px] text-gray-400 font-mono">{{item.time}}</span>
+                            </div>
+
+                            <div class="flex flex-wrap gap-1 mb-3" v-if="item.mustEat || item.mustBuy || item.booking">
                                 <span v-if="item.mustEat" class="text-[9px] px-1.5 py-0.5 bg-pink-100 text-primary rounded font-bold">#必吃</span>
                                 <span v-if="item.mustBuy" class="text-[9px] px-1.5 py-0.5 bg-blue-100 text-secondary rounded font-bold">#必買</span>
                                 <span v-if="item.booking" class="text-[9px] px-1.5 py-0.5 bg-green-100 text-green rounded font-bold">#預約：{{item.booking}}</span>
                             </div>
 
-                            <p v-if="item.note" class="text-[11px] mb-3 whitespace-pre-line leading-relaxed opacity-80">{{item.note}}</p>
-                            
-                            <div v-if="item.images" class="grid grid-cols-2 gap-2 mb-3">
-                                <img v-for="img in item.images" :src="img" class="w-full h-24 object-cover rounded-xl" @click="openModal(img)">
-                            </div>
-                            <img v-else-if="item.image" :src="item.image" class="w-full h-32 object-cover rounded-xl mb-3" @click="openModal(item.image)">
+                            <p class="text-[11px] text-gray-500 mb-3 whitespace-pre-line leading-relaxed opacity-90">{{item.note}}</p>
+                            <img v-if="item.image" :src="item.image" class="w-full h-36 object-cover rounded-xl mb-3 shadow-sm" @click="openModal(item.image)">
 
-                            <div class="flex flex-wrap gap-2">
-                                <button v-if="item.map" @click="goMap(item.map)" class="flex-1 min-w-[80px] py-2 bg-fujiBlue text-secondary rounded-xl text-[10px] font-bold">
-                                    <i class="fas fa-location-arrow mr-1"></i> 導航
+                            <div class="flex gap-2">
+                                <button v-if="item.map" @click="goMap(item.map)" class="flex-1 py-2.5 bg-fujiBlue text-secondary rounded-xl text-[10px] font-bold">
+                                    <i class="fas fa-location-arrow mr-1"></i> 地圖
                                 </button>
-                                <button v-if="item.bookingImg" @click="openModal(item.bookingImg)" class="flex-1 min-w-[80px] py-2 bg-primaryLight text-white rounded-xl text-[10px] font-bold">
-                                    <i class="fas fa-file-invoice mr-1"></i> 查看憑證
+                                <button v-if="item.bookingImg" @click="openModal(item.bookingImg)" class="flex-1 py-2.5 bg-primaryLight text-white rounded-xl text-[10px] font-bold">
+                                    <i class="fas fa-file-invoice mr-1"></i> 憑證
                                 </button>
-                                <button v-if="item.taxiNote" @click="showTaxi(item.taxiNote)" class="flex-1 min-w-[80px] py-2 bg-gray-700 text-white rounded-xl text-[10px] font-bold">
+                                <button v-if="item.taxiNote" @click="showTaxi(item.taxiNote)" class="flex-1 py-2.5 bg-gray-700 text-white rounded-xl text-[10px] font-bold">
                                     <i class="fas fa-taxi mr-1"></i> 司機看
                                 </button>
                             </div>
 
-                            <div v-if="item.transportBox" class="mt-4 p-3 bg-warmGray rounded-xl border-l-4 border-accent space-y-2">
-                                <div v-for="t in item.transportBox" class="text-[10px] leading-relaxed">
-                                    <div class="font-bold text-secondary mb-0.5">{{t.mode}}</div>
-                                    <div class="text-gray-600">{{t.info}}</div>
-                                    <button v-if="t.mapPoint" @click="goMap(t.mapPoint)" class="text-primary font-bold mt-1 inline-block">[點擊查看乘車點]</button>
+                            <div v-if="item.transportBox" class="mt-4 space-y-2">
+                                <div v-for="t in item.transportBox" class="p-3 bg-warmGray rounded-xl text-[10px] border-l-4 border-accent">
+                                    <div class="font-bold text-secondary mb-1">
+                                        <i class="fas fa-directions mr-1"></i> {{t.mode}}
+                                    </div>
+                                    <div class="text-gray-600 leading-relaxed">{{t.info}}</div>
+                                    <button v-if="t.mapPoint" @click="goMap(t.mapPoint)" class="text-primary font-bold mt-2 underline italic">[點擊查看乘車地點]</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             </main>
     </div>
 
-    <nav class="fixed bottom-0 left-0 right-0 h-20 nav-blur border-t border-gray-100 flex items-center justify-around px-6 z-30">
+    <nav class="fixed bottom-0 left-0 right-0 h-20 nav-blur border-t border-gray-100 flex items-center justify-around px-6 z-50">
         <button @click="activeTab = 'trip'" :class="activeTab === 'trip' ? 'text-primary' : 'text-gray-400'" class="flex flex-col items-center">
             <i class="fas fa-map-marked-alt text-xl"></i><span class="text-[9px] mt-1 font-bold">行程</span>
-        </button>
-        <button @click="activeTab = 'guide'" :class="activeTab === 'guide' ? 'text-primary' : 'text-gray-400'" class="flex flex-col items-center">
-            <i class="fas fa-lightbulb text-xl"></i><span class="text-[9px] mt-1 font-bold">指南</span>
         </button>
         <button @click="activeTab = 'money'" :class="activeTab === 'money' ? 'text-primary' : 'text-gray-400'" class="flex flex-col items-center">
             <i class="fas fa-wallet text-xl"></i><span class="text-[9px] mt-1 font-bold">記帳</span>
         </button>
-        <button @click="activeTab = 'check'" :class="activeTab === 'check' ? 'text-primary' : 'text-gray-400'" class="flex flex-col items-center">
-            <i class="fas fa-clipboard-list text-xl"></i><span class="text-[9px] mt-1 font-bold">清單</span>
-        </button>
     </nav>
 
     <div v-if="modalImg" class="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4" @click="modalImg = null">
-        <img :src="modalImg" class="max-w-full max-h-[85vh] rounded-lg">
+        <img :src="modalImg" class="max-w-full max-h-[80vh] rounded-lg">
     </div>
     <div v-if="taxiModal" class="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-6" @click="taxiModal = null">
-        <div class="bg-white p-8 rounded-3xl w-full text-center" @click.stop>
-            <div class="text-xs text-gray-400 mb-4 font-bold">運転手さんへ</div>
-            <div class="text-xl font-bold mb-8 leading-relaxed text-gray-800 bg-warmGray p-4 rounded-2xl">{{taxiModal}}</div>
-            <button @click="taxiModal = null" class="w-full py-4 bg-primary text-white rounded-2xl font-bold">關閉</button>
+        <div class="bg-white p-8 rounded-3xl w-full text-center shadow-2xl" @click.stop>
+            <div class="text-[10px] text-gray-400 mb-4 font-bold tracking-widest">運転手さんへ</div>
+            <div class="text-xl font-bold mb-8 leading-relaxed text-gray-800 bg-gray-50 p-6 rounded-2xl border-2 border-dashed border-gray-200">{{taxiModal}}</div>
+            <button @click="taxiModal = null" class="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-lg shadow-primary/30">關閉</button>
         </div>
     </div>
 </div>
@@ -165,79 +204,70 @@ createApp({
 
         const itinerary = ref([
             {
-                date: '4/23 (四) DAY 1',
-                weather: { type: 'cloud', temp: 18, feel: 16, tips: '出航！福岡微涼舒適' },
+                date: '4/23 (THU) DAY 1',
+                weather: { type: 'cloud', temp: 18, feel: 16, tips: '日系舒適穿搭 OK!' },
                 items: [
                     { type: 'flight', airline: 'EVA AIR', flightNo: 'BR106', depCode: 'TPE', depTime: '08:00', arrCode: 'FUK', arrTime: '11:20', duration: '2h 20m', ticketImg: 'https://cdn.phototourl.com/uploads/2026-03-17-d0a4373b-c132-4c37-83a6-db7e4d67d0ee.png' },
-                    { type: 'spot', category: '住宿', title: '飯店 Check-in', time: '12:10', note: '住宿：Branche 藥院大通 SeedsStay Yakuin\nAgoda 訂單 1990699229', bookingImg: 'https://cdn.phototourl.com/uploads/2026-03-17-5539a649-76e8-441d-a714-d8a31076f51f.png', taxiNote: '住所：福岡県福岡市中央区平尾3-19-25\n(ホテルまでお願いします)', transportBox: [{ mode: '🚕 計程車 (20min)', info: '約 2,200 - 2,800 日圓 (約 NT$480-620)'}] },
+                    { type: 'spot', category: '美食', title: '福岡機場必喝 抹茶拿鐵', time: '11:30', note: '位置：福岡機場國際線入境 51B。\n抵達後的第一口溫馨！', mustEat: true },
+                    { type: 'spot', category: '住宿', title: 'Branche 藥院大通 SeedsStay', time: '12:10', note: '已確認 Agoda 訂單 1990699229', bookingImg: 'https://cdn.phototourl.com/uploads/2026-03-17-5539a649-76e8-441d-a714-d8a31076f51f.png', taxiNote: '住所：福岡県福岡市中央区平尾3-19-25\n(ホテルまでお願いします)', transportBox: [{ mode: '🚕 搭計程車 (20min)', info: '車資約 2,200 - 2,800 日圓 (約 NT$480-620)'}] },
                     { 
-                        type: 'spot', category: '美食', title: '博多運河城午餐', time: '13:00', 
-                        note: '備註：推薦去 4 樓或 5 樓 (拉麵競技場)：位置大方便推車，適合讓寶寶坐沙發。\n水舞表演：B1 水池每整點 (14/15:00) 有表演。',
+                        type: 'spot', category: '美食', title: '博多運河城午餐 (運河城 🍜)', time: '13:00', 
+                        note: '推薦 4-5 樓拉麵競技場，座位大方便推車。\nB1 每整點 (14/15:00) 有音樂噴水秀。',
                         mustEat: true, map: '博多運河城',
                         transportBox: [
-                            { mode: '🚕 計程車 (約8-10分)', info: '約 1,000 - 1,300 日圓 (約 NT$220-280)' },
-                            { mode: '🚃 搭地鐵', info: '從「藥院大通站」搭乘地鐵七隈線（往博多方向），在「櫛田神社前站」下車。', mapPoint: '藥院大通站' },
-                            { mode: '🚶 步行', info: '距離約 1.6 公里，推車步行約 20-25 分鐘。' }
+                            { mode: '🚕 計程車', info: '車資約 1,000 - 1,300 日圓 (NT$220-280)', mapPoint: '博多運河城' },
+                            { mode: '🚃 搭地鐵', info: '「藥院大通站」搭乘七隈線 -> 「櫛田神社前站」下車。', mapPoint: '藥院大通站' },
+                            { mode: '🚶 步行', info: '約 1.6 公里，推車步行約 20-25 分鐘。' }
                         ]
                     },
                     {
                         type: 'spot', category: '景點', title: '櫛田神社⛩️', time: '15:00',
-                        note: '參拜攻略：\n1. 門口右側手水舍淨手漱口。\n2. 本殿投5/50元日幣，二禮二拍手一禮。\n3. 求籤(100日圓)，不好的綁旁邊。\n必看：靈泉鶴之井戶、試力石。',
+                        note: '【參拜流程】\n1.手水舍淨手 2.投錢5或50元 3.二禮二拍手一禮 4.求籤(抽到不好的綁著)。\n必喝靈泉鶴之井戶 (延年益壽)。',
                         mustEat: true, map: '櫛田神社',
-                        transportBox: [
-                            { mode: '🚶 步行路線 (推車友善)', info: '博多運河城北邊出口(North Building) -> 2樓行人天橋 -> 搭電梯下1樓 -> 過馬路即可看見側門。' }
-                        ]
+                        transportBox: [{ mode: '🚶 步行 (推車友善)', info: '運河城北出口 -> 2樓行人天橋連通大樓 -> 搭電梯下1樓 -> 過國體道路即達。' }]
                     },
                     {
-                        type: 'spot', category: '景點', title: '川端通商店街 & 麵包超人館', time: '16:00',
-                        note: '沿著商店街往北走 (不怕日曬雨淋)。\nAKIRA SUISAN 生魚片丼：CP值超高！',
-                        image: 'https://cdn.phototourl.com/uploads/2026-03-17-ae4e14d8-7b9f-4c64-8a04-9e1467d408c4.jpg',
-                        map: 'AKIRA SUISAN',
-                        transportBox: [{ mode: '🚶 步行 (約7分鐘)', info: '穿過川端通商店街直達。' }]
+                        type: 'spot', isHighlight: true, category: '必玩景點', title: '麵包超人博物館', time: '16:00',
+                        note: '經過川端通商店街一路向北，有頂棚不怕日曬雨淋。\nAKIRA SUISAN 生魚片丼就在商店街旁。',
+                        warning: '⚠️ 入內需換成抱著或用揹巾 (推車需寄放門口)。',
+                        map: '福岡麵包超人兒童博物館',
+                        transportBox: [{ mode: '🚶 步行 (7分鐘)', info: '沿著櫛田神社旁的川端通商店街直走。' }]
                     },
                     {
-                        type: 'spot', category: '美食', title: '鈴懸 本店 (甜點界天花板)', time: '16:45',
-                        note: '位於麵包超人館對面。\n必買：鈴乃○餅 (迷你銅鑼燒)、鈴乃最中、草莓大福 (4-5月限定)。',
-                        specialStyle: true,
+                        type: 'spot', isHighlight: true, category: '甜點天花板', title: '鈴懸 (すずかけ) 本店', time: '16:45',
+                        note: '位於麵包超人館對面。福岡甜點必吃！\n必買：鈴乃○餅 (迷你銅鑼燒)、鈴乃最中 (鈴鐺造型)、草莓大福 (4-5月限定)。',
                         images: [
                             'https://cdn.phototourl.com/uploads/2026-03-17-666e9bb9-774c-4290-bf9b-5de8599eb2e2.webp',
                             'https://cdn.phototourl.com/uploads/2026-03-17-01da1205-01db-46c0-832c-6e5d9b23c8dc.jpg'
                         ],
-                        mustBuy: true
+                        mustBuy: true, map: '鈴懸 本店'
                     },
                     {
                         type: 'spot', category: '美食', title: '前田屋牛腸鍋', time: '17:00',
-                        note: '招牌：和牛味噌牛腸鍋\n預約號碼：TS7DNWA82N',
+                        note: '預約號碼：TS7DNWA82N\n招牌：和牛味噌牛腸鍋。',
                         booking: '2026/04/23 17:00',
                         bookingImg: 'https://cdn.phototourl.com/uploads/2026-03-17-1f7e6db7-717f-4cc5-acf6-8f09526cd024.jpg'
                     },
                     {
-                        type: 'spot', category: '購物', title: 'Bon Repas 藥院店超市', time: '18:30',
-                        note: '位於藥院大通站出口。八點半後有半額特價便當。',
-                        transportBox: [{ mode: '🚶 步行 (12-15分鐘)', info: '吃完牛腸鍋散步回藥院飯店，輕鬆回程。' }]
+                        type: 'spot', category: '生活', title: 'Bon Repas 藥院店超市', time: '18:40',
+                        note: '藥院大通站旁。晚上 20:30 有半額熟食特價。',
+                        transportBox: [{ mode: '🚶 散步回飯店 (12-15分)', info: '吃飽後推車慢步回飯店放空。' }]
                     }
                 ]
             },
-            // Day 2-5 維持上個版本的內容...
-            { date: '4/24 (五) DAY 2', weather: { type: 'sun', temp: 22, feel: 21, tips: '太宰府陽光普照' }, items: [] },
-            { date: '4/25 (六) DAY 3', weather: { type: 'cloud', temp: 20, feel: 18, tips: '海邊風大' }, items: [] },
-            { date: '4/26 (日) DAY 4', weather: { type: 'sun', temp: 23, feel: 22, tips: '鋼彈亮起來' }, items: [] },
-            { date: '4/27 (一) DAY 5', weather: { type: 'cloud', temp: 19, feel: 18, tips: '準備回家' }, items: [] }
+            { date: '4/24 DAY 2', weather: { type: 'sun', temp: 22, feel: 21, tips: '適合太宰府散步' }, items: [] },
+            { date: '4/25 DAY 3', weather: { type: 'cloud', temp: 20, feel: 18, tips: '海邊風大記得帶外套' }, items: [] },
+            { date: '4/26 DAY 4', weather: { type: 'sun', temp: 23, feel: 22, tips: '鋼彈立像秀必看' }, items: [] },
+            { date: '4/27 DAY 5', weather: { type: 'cloud', temp: 19, feel: 18, tips: '準備回家囉' }, items: [] }
         ]);
-
-        const expenses = ref([]);
-        const checklists = ref([]);
-
-        const totalJPY = computed(() => expenses.value.reduce((sum, e) => sum + e.amount, 0));
-        const totalTWD = computed(() => Math.round(totalJPY.value * 0.22));
-        const checkProgress = computed(() => 0);
 
         const goMap = (q) => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`);
         const openModal = (u) => modalImg.value = u;
         const showTaxi = (t) => taxiModal.value = t;
+        const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
         const getWeatherIcon = (t) => t === 'sun' ? 'fas fa-sun' : t === 'cloud' ? 'fas fa-cloud-sun' : 'fas fa-cloud-showers-heavy';
 
-        return { activeDay, activeTab, itinerary, expenses, totalJPY, totalTWD, checklists, checkProgress, goMap, modalImg, taxiModal, openModal, showTaxi, getWeatherIcon };
+        return { activeDay, activeTab, itinerary, goMap, modalImg, taxiModal, openModal, showTaxi, scrollToTop, getWeatherIcon };
     }
 }).mount('#app');
 </script>
