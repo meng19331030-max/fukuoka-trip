@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>2026 朵朵的初次飛行 - 終極旗艦穩定版</title>
+    <title>2026 朵朵的初次飛行 - 終極旗艦版</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
@@ -12,38 +12,36 @@
         tailwind.config = { theme: { extend: { colors: { primary: '#D9718C', primaryLight: '#DC909A', secondary: '#518EA6', accent: '#5897A6', fujiBlue: '#E6F0F3', warmGray: '#F7F7F7' } } } }
     </script>
     <style>
-        /* 核心隔離佈局：確保點擊 100% 準確 */
+        /* 1. 核心隔離佈局：確保點擊 100% 準確 */
         :root { --header-h: 185px; --footer-h: 85px; }
         body, html { margin: 0; padding: 0; height: 100dvh; width: 100vw; overflow: hidden; background: #F7F7F7; font-family: 'Zen Maru Gothic', sans-serif; position: fixed; top: 0; left: 0; }
         [v-cloak] { display: none; }
 
         .app-shell { display: flex; flex-direction: column; height: 100dvh; width: 100%; position: relative; }
         
-        /* 1. 頂部封面 */
+        /* 頂部封面：修正比例 */
         .layout-header { flex-shrink: 0; height: var(--header-h); background: #F7F7F7; border-bottom: 1px solid #E6F0F3; z-index: 1000; padding-top: env(safe-area-inset-top); }
         .cover-img { width: 100%; height: 125px; object-fit: cover; border-radius: 0 0 1.5rem 1.5rem; }
 
-        /* 2. 中間滾動隔離 (不與底部重疊) */
+        /* 中間滾動隔離 (不與底部重疊) */
         .layout-middle { flex: 1; display: flex; overflow: hidden; background: #F7F7F7; height: calc(100dvh - var(--header-h) - var(--footer-h)); }
         
-        /* 側邊欄：獨立滾動區 + 巨大底墊片解決 D5 點不到 */
         .sidebar { width: 75px; height: 100%; overflow-y: scroll; border-right: 1px solid #E6F0F3; flex-shrink: 0; -webkit-overflow-scrolling: touch; z-index: 2000; background: #F7F7F7; }
         .sidebar-inner { padding: 1rem 0 500px 0; display: flex; flex-direction: column; align-items: center; } 
         
-        /* 行程內容：隔離滾動 */
         .content-box { flex: 1; height: 100%; overflow-y: scroll; padding: 1rem; -webkit-overflow-scrolling: touch; z-index: 100; }
 
-        /* 3. 底部導覽：最高優先權獨立層 */
+        /* 底部導覽：物理層級最高 */
         .layout-footer { flex-shrink: 0; height: var(--footer-h); background: #ffffff; border-top: 1.5px solid #E6F0F3; display: flex; z-index: 9999; padding-bottom: env(safe-area-inset-bottom); position: relative; }
         .nav-link { flex: 1; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 
         /* 元件樣式 */
-        .day-btn { width: 52px; height: 60px; border-radius: 1rem; margin-bottom: 1.25rem; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.2s; position: relative; }
+        .day-btn { width: 52px; height: 60px; border-radius: 1rem; margin-bottom: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.2s; position: relative; }
         .special-card { background: white; border: 2.5px solid #DC909A; border-radius: 1.5rem; padding: 1.25rem; margin-bottom: 1.5rem; box-shadow: 0 8px 15px rgba(217,113,140,0.08); }
         .item-card { background: white; border: 1px solid #E6F0F3; border-radius: 1.5rem; padding: 1rem; margin-bottom: 1rem; }
         .timeline-line::before { content: ''; position: absolute; left: 20px; top: 0; bottom: 0; width: 2px; background: #DC909A; opacity: 0.15; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .fab { position: fixed; right: 20px; bottom: 100px; z-index: 500000; }
+        .fab { position: fixed; right: 20px; bottom: 105px; z-index: 500000; }
     </style>
 </head>
 <body>
@@ -68,7 +66,7 @@
                 <div v-for="(day, index) in itinerary" :key="index">
                     <button @click="activeDay = index; activeTab = 'trip'; scrollToTop()" 
                         :class="['day-btn shadow-sm', (activeDay === index && activeTab === 'trip') ? 'bg-primary text-white scale-110 shadow-lg' : 'bg-white text-gray-400 border border-[#E6F0F3]']">
-                        <span class="text-[9px] font-bold">D{{index+1}}</span><span class="text-lg">{{day.icon}}</span>
+                        <span class="text-[9px] font-bold uppercase">D{{index+1}}</span><span class="text-lg">{{day.icon}}</span>
                     </button>
                 </div>
             </div>
@@ -116,9 +114,9 @@
                             <p class="text-[11px] text-gray-500 mb-3 whitespace-pre-line leading-relaxed" v-html="item.note"></p>
                             <img v-if="item.image" :src="item.image" class="w-full rounded-xl mb-3 shadow-sm object-cover h-40" @click="openModal(item.image)">
                             <div class="flex gap-2">
-                                <button v-if="item.map" @click="goMap(item.map)" class="flex-1 py-2.5 bg-fujiBlue text-secondary rounded-xl text-[10px] font-bold tracking-widest">地圖</button>
-                                <button v-if="item.bookingImg" @click="openModal(item.bookingImg)" class="flex-1 py-2.5 bg-primaryLight text-white rounded-xl text-[10px] font-bold tracking-widest">憑證</button>
-                                <button v-if="item.taxiNote" @click="showTaxi(item.taxiNote)" class="flex-1 py-2.5 bg-gray-700 text-white rounded-xl text-[10px] font-bold tracking-widest">司機</button>
+                                <button v-if="item.map" @click="goMap(item.map)" class="flex-1 py-2.5 bg-fujiBlue text-secondary rounded-xl text-[10px] font-bold tracking-widest uppercase">地圖</button>
+                                <button v-if="item.bookingImg" @click="openModal(item.bookingImg)" class="flex-1 py-2.5 bg-primaryLight text-white rounded-xl text-[10px] font-bold tracking-widest uppercase">憑證</button>
+                                <button v-if="item.taxiNote" @click="showTaxi(item.taxiNote)" class="flex-1 py-2.5 bg-gray-700 text-white rounded-xl text-[10px] font-bold tracking-widest uppercase">司機</button>
                             </div>
                         </div>
                     </div>
@@ -128,7 +126,7 @@
             <div v-if="activeTab === 'checklist'" class="pb-10 px-2">
                 <div class="bg-white p-5 rounded-3xl card-shadow mb-8 border-t-8 border-green text-center">
                     <h2 class="text-lg font-bold text-gray-800 mb-1 font-bold">準備進度：{{checklistProgress}}%</h2>
-                    <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden shadow-inner"><div class="bg-green h-full transition-all" :style="{width: checklistProgress + '%'}"></div></div>
+                    <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden shadow-inner"><div class="bg-green h-full transition-all duration-700" :style="{width: checklistProgress + '%'}"></div></div>
                 </div>
                 <div v-for="(category, cIdx) in checklistData" :key="cIdx" class="mb-8">
                     <div class="flex justify-between items-center mb-4 px-1">
@@ -147,7 +145,7 @@
             </div>
             
             <div v-if="activeTab === 'shopping'" class="pb-10 px-2">
-                <h2 class="text-xl font-bold text-primary mb-6 flex items-center font-bold px-2"><i class="fas fa-shopping-basket mr-3"></i>我的購物願望</h2>
+                <h2 class="text-xl font-bold text-primary mb-6 flex items-center px-2 font-bold"><i class="fas fa-shopping-basket mr-3"></i>我的購物願望</h2>
                 <div class="grid grid-cols-2 gap-4">
                     <div v-for="(item, index) in shoppingItems" :key="index" class="bg-white rounded-3xl p-3 shadow-md border border-[#E6F0F3] relative">
                         <div class="w-full h-32 bg-gray-100 rounded-2xl mb-2 overflow-hidden"><img v-if="item.img" :src="item.img" class="w-full h-full object-cover"></div>
@@ -178,16 +176,17 @@
         <div class="bg-white p-6 rounded-3xl w-full max-h-[85vh] overflow-y-auto border-2 border-primary shadow-2xl" @click.stop>
             <h2 class="text-xl font-bold text-primary mb-4 flex items-center font-bold"><i class="fas fa-receipt mr-2"></i>LaLaport 兩大退稅方式</h2>
             <div class="space-y-6 text-sm text-gray-600 leading-relaxed">
-                <div class="bg-fujiBlue/30 p-3 rounded-2xl"><p class="font-bold text-secondary mb-1">1. 店舖直接退稅 (最方便)：</p><p>對象：如 UNIQLO、GU 等大型連鎖店。</p></div>
+                <div class="bg-fujiBlue/30 p-3 rounded-2xl"><p class="font-bold text-secondary mb-1 underline">1. 店舖直接退稅 (最方便)：</p><p>對象：如 UNIQLO、GU 等大型連鎖店。</p></div>
                 <div class="text-center text-gray-300 font-bold">////</div>
                 <div class="bg-fujiBlue/30 p-3 rounded-2xl">
-                    <p class="font-bold text-secondary mb-1">2. 免稅櫃檯統一退稅 (需 PIE VAT App)：</p>
-                    <p>對象：大部分中小型店鋪（含阿卡將、Gundam Side-F）。</p>
+                    <p class="font-bold text-secondary mb-1 underline">2. 免稅櫃檯統一退稅 (需 PIE VAT App)：</p>
+                    <p>對象：大部分中小型店鋪（包含 阿卡將、Gundam Side-F 等）。</p>
                     <div class="mt-2 space-y-2 border-l-2 border-primaryLight pl-3 font-bold text-gray-800">
+                        <p><strong>流程：</strong></p>
                         <p>① 先以「含稅價」在各店結帳。<br>② 下載並註冊 <strong>PIE VAT App</strong>。<br>③ 持收據、護照、購買商品前往 1 樓中央綜合免稅櫃檯辦理。<br>④ 合計滿 5,000 日圓(未稅)即可辦理。</p>
                     </div>
                 </div>
-                <div class="bg-warmGray p-4 rounded-2xl border border-[#E6F0F3] font-bold"><p class="text-gray-700">📍 退稅櫃檯位置與時間</p><p class="mt-1 text-xs text-gray-500">位置：1 樓中央 Tourist Information / 免稅櫃檯。建議閉館前 15-30 分鐘抵達。</p></div>
+                <div class="bg-warmGray p-4 rounded-2xl border border-[#E6F0F3] font-bold"><p class="text-gray-700 font-bold">📍 退稅櫃檯位置與時間</p><p class="mt-1 text-xs text-gray-500 font-bold">位置：位於 1 樓中央的 Tourist Information / 免稅櫃檯。建議閉館前 15-30 分鐘抵達辦理。</p></div>
             </div>
             <button @click="showTaxInfo = false" class="w-full py-4 bg-primary text-white rounded-2xl font-bold mt-6 shadow-md">我知道了</button>
         </div>
@@ -196,7 +195,7 @@
     <div v-if="modalImg" class="fixed inset-0 bg-black/95 z-[3000000] flex items-center justify-center p-4" @click="modalImg = null"><img :src="modalImg" class="max-w-full max-h-[90vh] rounded-lg shadow-2xl"></div>
     <div v-if="taxiModal" class="fixed inset-0 bg-black/80 z-[3000000] flex items-center justify-center p-6" @click="taxiModal = null">
         <div class="bg-white p-8 rounded-3xl w-full text-center border border-[#E6F0F3]" @click.stop>
-            <div class="text-[10px] text-gray-400 mb-2 uppercase italic font-bold tracking-widest">向司機出示 (運転手さんへ)</div>
+            <div class="text-[10px] text-gray-400 mb-2 uppercase italic font-bold tracking-widest font-bold">向司機出示 (運転手さんへ)</div>
             <div class="text-xl font-bold mb-8 text-gray-800 bg-warmGray p-6 rounded-2xl border-2 border-dashed border-gray-200 leading-relaxed">{{taxiModal}}</div>
             <button @click="taxiModal = null" class="w-full py-4 bg-primary text-white rounded-2xl font-bold tracking-widest uppercase shadow-md">OK, 我知道了</button>
         </div>
@@ -255,14 +254,23 @@ createApp({
                 date: '4/23 DAY 1', icon: '✈️', weather: { type: 'cloud', temp: 18, feel: 16, tips: '福岡抵達' },
                 items: [
                     { type: 'flight', airline: '長榮航空', flightNo: 'BR106', depCode: 'TPE', depTime: '08:00', arrCode: 'FUK', arrTime: '11:20', ticketImg: 'https://cdn.phototourl.com/uploads/2026-03-17-d0a4373b-c132-4c37-83a6-db7e4d67d0ee.png' },
-                    { type: 'spot', category: '必喝', title: '機場 抹茶拿鐵', time: '11:40', note: '位置：福岡機場國際線入境 51B。抵達第一口福岡味！' },
+                    { type: 'spot', category: '必喝', title: '機場 抹茶拿鐵', time: '11:40', note: '位置：機場國際線入境 51B。抵達第一口福岡味！' },
                     { type: 'spot', isSpecial: true, category: '住宿', title: '飯店 Check-in', time: '12:10', note: 'Branche 藥院大通 SeedsStay Yakuin', bookingImg: 'https://cdn.phototourl.com/uploads/2026-03-17-5539a649-76e8-441d-a714-d8a31076f51f.png' },
-                    { type: 'spot', category: '活動', title: '博多運河城午餐', time: '13:00', note: '【交通】飯店外搭計程車或搭地鐵至「櫛田神社前」。\n推 4-5F 拉麵競技場。B1 水池整點表演。', map: '博多運河城' },
-                    { type: 'spot', category: '景點', title: '櫛田神社⛩️', time: '15:00', note: '【參拜流程】\n1.門口右手邊手水舍淋雙手及漱口。\n2.中間本殿：投5/50元，二禮二拍手一禮。\n3.旁邊投入100日圓自選籤(不好的綁旁邊)。', map: '櫛田神社' },
-                    { type: 'spot', category: '美食', title: '川端通 AKIRA SUISAN', time: '16:00', note: '網友推薦：超厚生魚片丼、便宜大碗！鰻魚飯也好吃。', image: 'https://cdn.phototourl.com/uploads/2026-03-17-ae4e14d8-7b9f-4c64-8a04-9e1467d408c4.jpg', map: 'AKIRA SUISAN' },
+                    { type: 'spot', category: '活動', title: '博多運河城午餐', time: '13:00', note: '推 4-5F 拉麵競技場。B1 水池整點表演。', map: '博多運河城' },
+                    { type: 'spot', category: '景點', title: '櫛田神社⛩️', time: '15:00', note: '【參拜步驟】\n1.門口右手邊手水舍淋雙手及漱口。\n2.中間本殿：投5/50元，二禮二拍手一禮。\n3.旁邊投入100日圓自選籤(不好的綁旁邊)。\n備註：🔹一蘭拉麵總店在附近。', map: '櫛田神社' },
+                    { 
+                        type: 'spot', category: '美食', title: '川端通 AKIRA SUISAN', time: '16:00', 
+                        note: '在櫛田神社旁的商店街內。\n網友推薦：超厚生魚片丼、便宜大碗！鰻魚飯也好吃。', 
+                        image: 'https://cdn.phototourl.com/uploads/2026-03-17-ae4e14d8-7b9f-4c64-8a04-9e1467d408c4.jpg', map: 'AKIRA SUISAN' 
+                    },
                     { type: 'spot', isSpecial: true, category: '重點', title: '麵包超人博物館', time: '16:15', warning: '⚠️ 需換用揹巾 (推車須寄放)。', map: '福岡兒童博物館' },
-                    { type: 'spot', isSpecial: true, category: '甜點', title: '鈴懸（すずかけ）', time: '17:00', note: '「福岡甜點界天花板」。', images: ['https://cdn.phototourl.com/uploads/2026-03-17-666e9bb9-774c-4290-bf9b-5de8599eb2e2.webp', 'https://cdn.phototourl.com/uploads/2026-03-17-01da1205-01db-46c0-832c-6e5d9b23c8dc.jpg'] },
-                    { type: 'spot', isSpecial: true, category: '美食', title: '前田屋牛腸鍋', time: '17:00', note: '招牌：「和牛味噌牛腸鍋」\n■預約：TS7DNWA82N\n■時間：04/23 17:00', actionText: '查看訂位截圖', action: () => openModal('https://cdn.phototourl.com/uploads/2026-03-17-1f7e6db7-717f-4cc5-acf6-8f09526cd024.jpg') },
+                    { type: 'spot', isSpecial: true, category: '甜點', title: '鈴懸 本店', time: '17:00', note: '「福岡甜點界天花板」。', images: ['https://cdn.phototourl.com/uploads/2026-03-17-666e9bb9-774c-4290-bf9b-5de8599eb2e2.webp', 'https://cdn.phototourl.com/uploads/2026-03-17-01da1205-01db-46c0-832c-6e5d9b23c8dc.jpg'] },
+                    { 
+                        type: 'spot', isSpecial: true, category: '美食', title: '前田屋牛腸鍋', time: '17:00', 
+                        note: '招牌：「和牛味噌牛腸鍋」\n■預約號碼：TS7DNWA82N\n■時間：2026/04/23 17:00', 
+                        actionText: '查看預約截圖', action: () => openModal('https://cdn.phototourl.com/uploads/2026-03-17-1f7e6db7-717f-4cc5-acf6-8f09526cd024.jpg'),
+                        bookingImg: 'https://cdn.phototourl.com/uploads/2026-03-17-1f7e6db7-717f-4cc5-acf6-8f09526cd024.jpg'
+                    },
                     { type: 'spot', isSpecial: true, category: '生活', title: 'Bon Repas 藥院超市', time: '18:50', note: '20:30 有半額熟食特價！' }
                 ]
             },
@@ -270,46 +278,75 @@ createApp({
                 date: '4/24 DAY 2', icon: '⛩️', weather: { type: 'sun', temp: 22, feel: 21, tips: '太宰府行程' },
                 items: [
                     { type: 'spot', isSpecial: true, category: '交通', title: '竈門神社', time: '09:00', note: '🚃 西鐵藥院站 -> 二日市轉太宰府線。🚕 站前搭計程車(¥1,000)直奔。' },
-                    { type: 'spot', category: '景點', title: '太宰府天滿宮', time: '11:00', note: '●FUKUYA: 明太子茶泡飯 ●筑紫庵: 炸雞漢堡 ●梅枝餅三名店', map: '太宰府天滿宮' },
-                    { type: 'spot', isSpecial: true, category: '美食', title: '若松屋 鰻魚飯', time: '11:20', note: '建議 11:00 前抵達！💌 柳川市沖端町26 ●鰻魚蛋捲必點！', map: '若松屋' },
+                    { 
+                        type: 'spot', category: '景點', title: '太宰府天滿宮', time: '11:00', 
+                        note: '●必吃梅枝餅：寺田屋(薄皮不甜)/かさの家(#1人氣)/安武(重口味)。\n●FUKUYA：明太子茶泡飯 ●筑紫庵：梅子漢堡 ●造型冰棒 ●YAMAYA明太子麵包\n備註：🔹一蘭五角碗', map: '太宰府天滿宮' 
+                    },
+                    { type: 'spot', isSpecial: true, category: '美食', title: '若松屋 鰻魚飯', time: '11:20', note: '建議 11:00 開門抵達！\n💌 柳川市沖端町26 ●鰻魚蛋捲必點！', map: '若松屋' },
                     { type: 'spot', category: '購物', title: 'Birthday 大佐野店', time: '14:30', note: '走路 3 分鐘即達超大寶寶店。' },
                     { type: 'spot', isSpecial: true, category: '重點', title: '警固神社', time: '16:00', note: '旁邊三越百貨 6 樓育嬰室極佳。' },
-                    { type: 'spot', isSpecial: true, category: '必買', title: 'Full Full 明太子麵包', time: '16:45', note: '名物麵包。穿過公園步行 10min 達。' },
-                    { type: 'spot', category: '購物', title: '天神地下街', time: '17:00', note: '●3COINS (東 4 番街) ●I\'m d\'onut? (建議 15:00)' },
-                    { type: 'spot', isSpecial: true, category: '購物', title: 'Mina 天神', time: '18:00', note: '●1-2F: UNIQLO & GU\n●4F: LOFT 生活雜貨\n●7F: 西松屋\n🍼 推薦 4 樓或 7 樓育嬰室。' },
-                    { type: 'spot', isSpecial: true, category: '打卡', title: 'FUK Seaside & 藍瓶', time: '18:45', note: '必點推薦：冰拿鐵+蠟燭布丁。', map: 'FUK COFFEE' },
-                    { type: 'spot', isSpecial: true, category: '回程', title: '回飯店放東西', time: '19:30', note: '回 Branche 藥院大通飯店休息。', taxiNote: '住所：福岡県福岡市中央区平尾3-19-25' },
-                    { type: 'spot', isSpecial: true, category: '晚餐', title: 'NIKUICHI 燒肉 (藥院店)', time: '20:00', images: ['https://cdn.phototourl.com/free/2026-04-08-7818d233-b4aa-4cde-af47-9ac4d51a9e4f.png'], actionText: '查看預約憑證', action: () => openModal('https://cdn.phototourl.com/free/2026-04-08-7818d233-b4aa-4cde-af47-9ac4d51a9e4f.png') }
+                    { type: 'spot', isSpecial: true, category: '必買', title: 'Full Full 明太子麵包', time: '16:45', note: '穿過公園步行 10min 達。' },
+                    { type: 'spot', category: '購物', title: 'Mina 天神', time: '18:00', note: '●1-2F: UNIQLO & GU ●4F: LOFT ●7F: 西松屋\n🍼 推薦 4 樓或 7 樓育嬰室。' },
+                    { type: 'spot', isSpecial: true, category: '打卡', title: 'FUK Seaside & 藍瓶', time: '18:45', note: '必點推薦：冰拿鐵 + 蠟燭布丁。', map: 'FUK COFFEE' },
+                    { 
+                        type: 'spot', isSpecial: true, category: '晚餐', title: 'NIKUICHI 燒肉 (藥院店)', time: '20:00', 
+                        images: ['https://cdn.phototourl.com/free/2026-04-08-7818d233-b4aa-4cde-af47-9ac4d51a9e4f.png'],
+                        actionText: '查看預約憑證', action: () => openModal('https://cdn.phototourl.com/free/2026-04-08-7818d233-b4aa-4cde-af47-9ac4d51a9e4f.png'),
+                        bookingImg: 'https://cdn.phototourl.com/free/2026-04-08-7818d233-b4aa-4cde-af47-9ac4d51a9e4f.png'
+                    }
                 ]
             },
             {
                 date: '4/25 DAY 3', icon: '🐬', weather: { type: 'cloud', temp: 20 },
                 items: [
-                    { type: 'spot', isSpecial: true, category: '早餐', title: '食堂 おわん 早餐', time: '09:00', actionText: '查看憑證', action: () => openModal('https://cdn.phototourl.com/free/2026-04-08-3c568239-f2f3-449a-888f-bef512a1c0bf.png'), bookingImg: 'https://cdn.phototourl.com/free/2026-04-08-3c568239-f2f3-449a-888f-bef512a1c0bf.png' },
-                    { type: 'spot', category: '重點', title: '海洋世界 (水族館)', time: '11:00', note: '博多埠頭搭 10:05 渡輪。11:00 海豚秀(2F)。', transportBox: [{ mode: '🚢 去程', info: '10:05 渡輪' }] },
-                    { type: 'spot', category: '景點', title: '海之中道海濱公園', time: '14:00', note: '4月粉蝶花海最漂亮。' },
-                    { type: 'spot', isSpecial: true, category: '景點', title: '福岡塔 & 夕陽', time: '16:30', note: '搭 16:15 往「地行濱」船班。' },
-                    { type: 'spot', isSpecial: true, category: '重點', title: 'E・ZO FUKUOKA', time: '17:30', warning: '⚠️ 地面不平，建議換揹巾。' },
-                    { type: 'spot', isSpecial: true, category: '購物', title: 'MARK IS / 3F 聖地', time: '18:30', note: '●西松屋、阿卡將、Birthday、petit main、玩具反斗城。🍼 **3 樓：育兒聖地。**' },
+                    { 
+                        type: 'spot', isSpecial: true, category: '早餐', title: '食堂 おわん 早餐', time: '09:00', 
+                        note: '2026/4/25 (週六) 9:00 已訂位。',
+                        images: ['https://cdn.phototourl.com/uploads/2026-03-18-1a0cecb5-25d7-43b0-8130-6976e7adc56a.jpg'],
+                        actionText: '查看憑證截圖', action: () => openModal('https://cdn.phototourl.com/free/2026-04-08-3c568239-f2f3-449a-888f-bef512a1c0bf.png')
+                    },
+                    { 
+                        type: 'spot', category: '重點', title: '海之中道海洋世界', time: '11:00', 
+                        note: '【攻略】11:00 海豚秀 -> 12:00 去抽天竺鼠互動券 (海獸島附近)。', transportBox: [{ mode: '🚢 去程', info: '10:05 渡輪' }] 
+                    },
+                    { type: 'spot', category: '景點', title: '海之中道海濱公園', time: '14:00', note: '4月粉蝶花海必看。' },
+                    { type: 'spot', isSpecial: true, category: '景點', title: '福岡塔夕陽', time: '16:30', note: '搭 16:15 往「地行濱」船班。' },
+                    { type: 'spot', isSpecial: true, category: '重點', title: 'E・ZO FUKUOKA', time: '17:30', note: '亮點：位於 5 樓 teamLab 森林。' },
+                    { 
+                        type: 'spot', isSpecial: true, category: '購物', title: 'MARK IS / 3F 聖地', time: '18:30', 
+                        note: '連通橋步行 2min。西松屋、阿卡將、Birthday。🍼 **3 樓：育兒聖地。**' 
+                    },
                     { type: 'spot', isSpecial: true, category: '回程', title: '回住宿計程車', time: '20:30', taxiNote: '住所：福岡県福岡市中央区平尾3-19-25' }
                 ]
             },
             {
                 date: '4/26 DAY 4', icon: '🤖', weather: { type: 'sun', temp: 23 },
                 items: [
-                    { type: 'spot', category: '景點', title: '大濠公園 (最美星巴克)', time: '10:00', note: '全日最美星巴克之一。' },
-                    { type: 'spot', category: '美食', title: '天神/大名區 (Daimyo)', time: '13:00', note: '●I\'m d\'onut? ●Shin Shin拉麵 ●麵屋兼虎。' },
-                    { type: 'spot', isSpecial: true, category: '重點', title: 'LaLaport 福岡 (鋼彈)', time: '15:30', note: '🚕 計程車約 10-12 分鐘 (約 ¥1,300-1,700)。\n✨ 18/19 點燈光秀最美。', actionText: '查看退稅方式教學', action: () => { showTaxInfo.value = true; } },
-                    { type: 'spot', isSpecial: true, category: '採買', title: '回博多車站買伴手禮', time: '18:00', note: '努努雞、一番街最後補貨。' },
-                    { type: 'spot', isSpecial: true, category: '晚餐', title: 'Hakata Seafood Uoden', time: '19:00', note: '名物明太子蛋拌飯！', images: ['https://cdn.phototourl.com/free/2026-04-10-aaa48a8b-11ee-4970-8fb6-fe4a8613f3d3.jpg'] },
+                    { type: 'spot', category: '景點', title: '大濠公園 (最美星巴克)', time: '10:00' },
+                    { type: 'spot', category: '美食', title: '天神/大名區 (Daimyo)', time: '13:00', note: '●Shin Shin拉麵 ●麵屋兼虎(沾麵)。' },
+                    { 
+                        type: 'spot', isSpecial: true, category: '重點', title: 'LaLaport 福岡 (鋼彈)', time: '15:30', 
+                        note: '✨ 18/19 點燈光秀最美。\n🚕 計程車：約 12min (¥1,500)。',
+                        actionText: '查看退稅方式教學', action: () => { showTaxInfo.value = true; },
+                        taxiNote: 'ららぽーと福岡', map: 'ららぽーと福岡'
+                    },
+                    { 
+                        type: 'spot', isSpecial: true, category: '採買', title: '回博多車站買伴手禮', time: '18:00', 
+                        note: '●必買：努努雞、LOPIA、治一郎布丁 (1F いっぴん通り)。' 
+                    },
+                    { type: 'spot', isSpecial: true, category: '晚餐', title: 'Hakata Seafood Uoden', time: '19:30', note: '名物明太子蛋拌飯！', images: ['https://cdn.phototourl.com/free/2026-04-10-aaa48a8b-11ee-4970-8fb6-fe4a8613f3d3.jpg'] },
                     { type: 'spot', isSpecial: true, category: '回程', title: '回住宿計程車', time: '21:30', taxiNote: '住所：福岡県福岡市中央区平尾3-19-25' }
                 ]
             },
             {
                 date: '4/27 DAY 5', icon: '🏠', items: [
-                    { type: 'spot', category: '活動', title: '退房', time: '10:00', note: '辦理退房。' },
-                    { type: 'spot', isSpecial: true, category: '交通', title: '前往機場 (12:20 飛機)', time: '10:15', note: '🚕 計程車約 20min 直達國際線。', taxiNote: '目的地：福岡空港 国際線ターミナル\n住所：福岡県福岡市博多区大字下臼井778-1\n(請載我到 福岡機場 國際線航廈)' },
-                    { type: 'spot', category: '活動', title: '機場報到與補貨', time: '10:45', note: '伴手禮最後補貨。' },
+                    { type: 'spot', category: '活動', title: '退房', time: '10:00' },
+                    { 
+                        type: 'spot', isSpecial: true, category: '交通', title: '前往機場 (12:20 飛機)', time: '10:15', 
+                        note: '🚕 計程車約 20min。\n請出示下方司機字卡指名國際線。',
+                        taxiNote: '目的地：福岡空港 国際線ターミナル\n住所：福岡県福岡市博多区大字下臼井778-1\n(請載我到 福岡機場 國際線航廈)'
+                    },
+                    { type: 'spot', category: '活動', title: '機場最後採買', time: '10:45', note: '伴手禮最後補貨。' },
                     { type: 'flight', airline: '長榮航空', flightNo: 'BR105', depCode: 'FUK', depTime: '12:20', arrCode: 'TPE', arrTime: '13:45', ticketImg: 'https://cdn.phototourl.com/uploads/2026-03-18-62e9009f-c1a2-420c-8443-7135151e6f84.jpg' }
                 ]
             }
