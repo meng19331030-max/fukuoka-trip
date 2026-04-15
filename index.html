@@ -12,19 +12,96 @@
         tailwind.config = { theme: { extend: { colors: { primary: '#D9718C', primaryLight: '#DC909A', secondary: '#518EA6', accent: '#5897A6', green: '#588C5C', fujiBlue: '#E6F0F3', warmGray: '#F7F7F7' } } } }
     </script>
     <style>
-        :root { --footer-h: 75px; --side-w: 75px; }
-        body, html { margin: 0; padding: 0; height: 100dvh; width: 100vw; overflow: hidden; background: #F7F7F7; font-family: 'Zen Maru Gothic', sans-serif; position: fixed; }
+        :root { --footer-h: 80px; --side-w: 75px; }
+        body, html { 
+            margin: 0; padding: 0; 
+            height: 100%; width: 100vw; 
+            overflow: hidden; 
+            background: #F7F7F7; 
+            font-family: 'Zen Maru Gothic', sans-serif; 
+            position: fixed; /* 防止背景滾動 */
+        }
         [v-cloak] { display: none; }
-        .app-grid { display: grid; grid-template-rows: auto 1fr var(--footer-h); height: 100dvh; }
-        .layout-header { background: #F7F7F7; z-index: 100; padding-top: env(safe-area-inset-top); border-bottom: 1px solid #E6F0F3; }
+
+        /* 使用 Grid 確保區塊完全獨立，不重疊 */
+        .app-grid { 
+            display: grid; 
+            grid-template-rows: auto 1fr var(--footer-h); 
+            height: 100dvh; 
+            width: 100vw;
+        }
+
+        .layout-header { 
+            background: #F7F7F7; 
+            z-index: 30; 
+            padding-top: env(safe-area-inset-top); 
+            border-bottom: 1px solid #E6F0F3; 
+        }
         .cover-img { width: 92%; height: 110px; object-fit: cover; border-radius: 1.5rem; margin: 0 auto; display: block; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .layout-middle { display: grid; grid-template-columns: var(--side-w) 1fr; overflow: hidden; }
-        .sidebar { border-right: 1px solid #E6F0F3; overflow-y: auto; background: #F7F7F7; }
-        .sidebar-inner { padding: 1.5rem 0 150px 0; display: flex; flex-direction: column; align-items: center; }
-        .content-scroll { overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 1.25rem; background: #F7F7F7; padding-bottom: 100px; }
-        .layout-footer { background: #ffffff; border-top: 1px solid #E6F0F3; display: flex; justify-content: space-around; align-items: center; z-index: 200; padding-bottom: env(safe-area-inset-bottom); }
-        .nav-link { flex: 1; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
-        .day-btn { width: 52px; height: 62px; border-radius: 1.2rem; margin-bottom: 1.2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.3s; }
+
+        .layout-middle { 
+            display: grid; 
+            grid-template-columns: var(--side-w) 1fr; 
+            overflow: hidden; 
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 側邊欄修正：確保高度撐滿且 z-index 正確 */
+        .sidebar { 
+            border-right: 1px solid #E6F0F3; 
+            overflow-y: auto; 
+            background: #F7F7F7; 
+            z-index: 20;
+            -webkit-overflow-scrolling: touch;
+        }
+        /* 底部墊高，確保 D5 不會被底欄遮擋點擊範圍 */
+        .sidebar-inner { 
+            padding: 1.5rem 0 calc(var(--footer-h) + 20px) 0; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+        }
+
+        .content-scroll { 
+            overflow-y: auto; 
+            -webkit-overflow-scrolling: touch; 
+            padding: 1.25rem; 
+            background: #F7F7F7;
+            z-index: 10;
+        }
+
+        /* 底部導覽：最高物理優先權，確保點擊靈敏 */
+        .layout-footer { 
+            background: #ffffff; 
+            border-top: 1px solid #E6F0F3; 
+            display: flex; 
+            justify-content: space-around; 
+            align-items: center; 
+            z-index: 100; /* 最高層級 */
+            padding-bottom: env(safe-area-inset-bottom); 
+            position: relative; /* 脫離文檔流干擾 */
+            pointer-events: auto;
+        }
+        .nav-link { 
+            flex: 1; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+            -webkit-tap-highlight-color: transparent;
+            z-index: 110;
+        }
+
+        .day-btn { 
+            width: 52px; height: 62px; border-radius: 1.2rem; 
+            margin-bottom: 1.2rem; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; transition: 0.3s; 
+            pointer-events: auto; /* 強制按鈕可點擊 */
+        }
+        
         .trip-card { background: white; border-radius: 1.5rem; padding: 1.25rem; margin-bottom: 1.25rem; border: 1px solid #E6F0F3; position: relative; }
         .special-card { border: 2.5px solid #DC909A; background: #FFF9FA; }
         .flight-card { background: linear-gradient(135deg, #518EA6 0%, #5897A6 100%); color: white; border-radius: 1.8rem; padding: 1.5rem; }
@@ -50,6 +127,7 @@
     </header>
 
     <main class="layout-middle">
+        <!-- 側邊欄 -->
         <aside class="sidebar no-scrollbar">
             <div class="sidebar-inner">
                 <button v-for="(day, index) in itinerary" :key="index"
@@ -60,14 +138,14 @@
             </div>
         </aside>
 
+        <!-- 行程內容區域 -->
         <section class="content-scroll no-scrollbar" id="mainScroll">
-            <!-- 行程分頁 -->
             <div v-if="activeTab === 'trip'">
                 <div class="relative timeline-line">
                     <div v-for="(item, idx) in itinerary[activeDay].items" :key="idx" class="relative pl-10 mb-8">
                         <div class="absolute left-0 top-1 w-10 flex justify-center"><div class="w-4 h-4 bg-primary rounded-full border-4 border-white z-10 shadow-sm"></div></div>
 
-                        <!-- 航班卡片 -->
+                        <!-- 航班卡片 (D1/D5) -->
                         <div v-if="item.type === 'flight'" class="flight-card shadow-md">
                             <div class="flex justify-between items-center mb-3 text-[10px] font-bold">
                                 <span><i class="fas fa-plane mr-1"></i>{{item.airline}} · {{item.flightNo}}</span>
@@ -80,7 +158,7 @@
                             </div>
                         </div>
 
-                        <!-- 一般卡片 -->
+                        <!-- 一般/特別卡片 (D1, D2, D3, D4) -->
                         <div v-else :class="['trip-card shadow-sm', item.isSpecial ? 'special-card' : '']">
                             <div class="flex justify-between items-start mb-2">
                                 <div class="flex flex-wrap gap-1">
@@ -99,7 +177,7 @@
                             <p class="text-[11px] text-gray-600 leading-relaxed whitespace-pre-line mb-4 font-bold" v-html="item.note"></p>
                             
                             <div v-if="item.transport" class="bg-warmGray p-3 rounded-xl border border-gray-100 mb-4 text-[10px]">
-                                <div class="font-bold text-secondary mb-1"><i class="fas fa-route mr-1"></i>交通指南</div>
+                                <div class="font-bold text-secondary mb-1"><i class="fas fa-route mr-1"></i>前往方式 / 交通詳情</div>
                                 <p class="text-gray-500 whitespace-pre-line leading-relaxed font-bold">{{item.transport}}</p>
                             </div>
 
@@ -108,7 +186,7 @@
                                 <button v-if="item.taxiNote" @click="showTaxi(item.taxiNote)" class="btn-action bg-gray-700 text-white flex-1 font-bold"><i class="fas fa-taxi mr-1"></i>司機</button>
                                 <button v-if="item.bookingImg" @click="openModal(item.bookingImg)" class="btn-action bg-primaryLight text-white flex-1 font-bold"><i class="fas fa-receipt mr-1"></i>憑證</button>
                                 <button v-if="item.action" @click="item.action()" class="btn-action bg-green text-white flex-1 font-bold"><i class="fas fa-calendar-check mr-1"></i>預約資訊</button>
-                                <button v-if="item.navDetail" @click="showNav(item.navDetail)" class="btn-action bg-secondary text-white flex-1 font-bold"><i class="fas fa-info-circle mr-1"></i>前往細節</button>
+                                <button v-if="item.navDetail" @click="showNav(item.navDetail)" class="btn-action bg-secondary text-white flex-1 font-bold"><i class="fas fa-info-circle mr-1"></i>前往方式</button>
                                 <button v-if="item.refundDetail" @click="showNav(item.refundDetail)" class="btn-action bg-primary text-white flex-1 font-bold"><i class="fas fa-hand-holding-usd mr-1"></i>退稅教學</button>
                             </div>
                         </div>
@@ -182,11 +260,24 @@
         </section>
     </main>
 
+    <!-- 底部導覽欄 (已修正點擊異常) -->
     <footer class="layout-footer shadow-lg">
-        <div @click="activeTab = 'trip'" class="nav-link"><i :class="['fas fa-map-marked-alt text-2xl', activeTab === 'trip' ? 'text-primary' : 'text-gray-300']"></i><span class="text-[10px] mt-1 font-bold">行程表</span></div>
-        <div @click="activeTab = 'money'" class="nav-link"><i :class="['fas fa-wallet text-2xl', activeTab === 'money' ? 'text-primary' : 'text-gray-300']"></i><span class="text-[10px] mt-1 font-bold">記帳</span></div>
-        <div @click="activeTab = 'shopping'" class="nav-link"><i :class="['fas fa-shopping-basket text-2xl', activeTab === 'shopping' ? 'text-primary' : 'text-gray-300']"></i><span class="text-[10px] mt-1 font-bold">購物籃</span></div>
-        <div @click="activeTab = 'checklist'" class="nav-link"><i :class="['fas fa-clipboard-check text-2xl', activeTab === 'checklist' ? 'text-primary' : 'text-gray-300']"></i><span class="text-[10px] mt-1 font-bold">準備清單</span></div>
+        <div @click="activeTab = 'trip'" class="nav-link">
+            <i :class="['fas fa-map-marked-alt text-2xl', activeTab === 'trip' ? 'text-primary' : 'text-gray-300']"></i>
+            <span :class="['text-[10px] mt-1 font-bold', activeTab === 'trip' ? 'text-primary' : 'text-gray-400']">行程表</span>
+        </div>
+        <div @click="activeTab = 'money'" class="nav-link">
+            <i :class="['fas fa-wallet text-2xl', activeTab === 'money' ? 'text-primary' : 'text-gray-300']"></i>
+            <span :class="['text-[10px] mt-1 font-bold', activeTab === 'money' ? 'text-primary' : 'text-gray-400']">記帳</span>
+        </div>
+        <div @click="activeTab = 'shopping'" class="nav-link">
+            <i :class="['fas fa-shopping-basket text-2xl', activeTab === 'shopping' ? 'text-primary' : 'text-gray-300']"></i>
+            <span :class="['text-[10px] mt-1 font-bold', activeTab === 'shopping' ? 'text-primary' : 'text-gray-400']">購物籃</span>
+        </div>
+        <div @click="activeTab = 'checklist'" class="nav-link">
+            <i :class="['fas fa-clipboard-check text-2xl', activeTab === 'checklist' ? 'text-primary' : 'text-gray-300']"></i>
+            <span :class="['text-[10px] mt-1 font-bold', activeTab === 'checklist' ? 'text-primary' : 'text-gray-400']">準備清單</span>
+        </div>
     </footer>
 
     <!-- Modals -->
@@ -200,9 +291,9 @@
     </div>
     <div v-if="navModal" class="fixed inset-0 bg-black/80 z-[9999] flex items-center justify-center p-6" @click="navModal = null">
         <div class="bg-white p-6 rounded-3xl w-full max-w-sm" @click.stop>
-            <div class="text-lg font-bold text-secondary mb-4 flex items-center font-bold"><i class="fas fa-directions mr-2 font-bold"></i> 行程細節教學</div>
+            <div class="text-lg font-bold text-secondary mb-4 flex items-center font-bold"><i class="fas fa-directions mr-2 font-bold"></i> 前往方式細節</div>
             <div class="text-sm text-gray-600 mb-6 whitespace-pre-line leading-relaxed font-bold">{{navModal}}</div>
-            <button @click="navModal = null" class="w-full py-4 bg-secondary text-white rounded-2xl font-bold shadow-md">我知道了</button>
+            <button @click="navModal = null" class="w-full py-4 bg-secondary text-white rounded-2xl font-bold shadow-md">我記住了</button>
         </div>
     </div>
 </div>
@@ -227,7 +318,7 @@ createApp({
                         type: 'spot', isSpecial: true, category: '住宿', title: '飯店 Check-in', time: '12:10', 
                         note: '🏨 Branche 藥院大通SeedsStay Yakuin\nAgoda 訂單 1990699229',
                         transport: '🚕 計程車 (20min)\n預估車資：約 2,200 - 2,800 日圓 (約台幣 480-620 元)',
-                        taxiNote: '住所：福岡県福岡市中央区平尾3-19-25\n(ホテルまでお願いします)',
+                        taxiNote: '住所：福岡県福岡市中央区平尾3-19-25\n(酒店までお願いします)',
                         bookingImg: 'https://cdn.phototourl.com/uploads/2026-03-17-5539a649-76e8-441d-a714-d8a31076f51f.png',
                         map: 'Branche 薬院大通り SeedsStay'
                     },
@@ -240,7 +331,7 @@ createApp({
                     { 
                         type: 'spot', isSpecial: true, category: '景點', title: '櫛田神社⛩️', time: '15:00', 
                         tags: ['參拜攻略', '梅枝餅'],
-                        note: '🌟 **參拜三步驟：**\n1. 入口右手邊手水舍洗手漱口。\n2. 本殿投5/50日元，二禮二拍手一禮。\n3. 100日元抽籤（不好可綁架子上）。\n\n延年益壽：靈泉鶴之井戶（水鹹鹹的）。\n💡 附近有一蘭拉麵總店。',
+                        note: '🌟 **參拜三步驟：**\n1. 入口右手邊手水舍洗手漱口。\n2. 本殿投5/50日元，二禮二拍手一禮。\n3. 100日元抽籤（不好可綁架子上）。\n\n延年益壽：靈泉鶴之井戶（水鹹鹹的）。\n必看：相撲力士「力石」。\n💡 附近有一蘭拉麵總店。',
                         navDetail: '🚶 **推車友善路線：**\n1. 從運河城「北邊出口」(North Building) 出去。\n2. 2樓走天橋接商業大樓電梯下1樓；1樓走星巴克出口。\n3. 過國體道路小馬路即達側門（地面較平坦）。',
                         map: 'Kushida Shrine'
                     },
@@ -281,7 +372,7 @@ createApp({
                     },
                     { type: 'spot', category: '美食', title: '若松屋 鰻魚飯', time: '11:20', note: '💌 沖端町26\n⏰ 10:30–15:30 (售完為止)\n🌟 鰻魚蛋捲必點！', map: '若松屋' },
                     { type: 'spot', category: '購物', title: 'Birthday 大佐野店', time: '14:00', note: '👶 很大很好逛！旁邊還有西松屋（走路3分鐘）。這段時間讓寶寶在推車上午睡。', transport: '🚕 從太宰府站搭計程車 (8-10min)', map: 'Birthday Oosano' },
-                    { type: 'spot', category: '景點', title: '警固神社', time: '16:00', note: '👶 旁邊三越百貨 6 樓育嬰室換尿布。', map: '警固神社' },
+                    { type: 'spot', category: '景點', title: '警固神社', time: '16:00', note: '就在天神三越旁。\n👶 參拜完可去三越百貨 6 樓育嬰室換尿布。', map: '警固神社' },
                     { type: 'spot', category: '美食', title: "I'm d'onut? 生甜甜圈", time: '16:30', note: '就在警固神社斜對面，過馬路就到。先看排隊人龍！' },
                     { type: 'spot', isSpecial: true, category: '美食', title: 'Full Full 麵包', time: '16:50', note: '🥖 買明太子麵包。\n🚶 穿過天神中央公園步行 10 分鐘。', map: 'Full Full 天神' },
                     { type: 'spot', isSpecial: true, category: '打卡', title: 'FUK COFFEE Seaside', time: '17:30', note: '✈️ 飛機拉花冰拿鐵 + 蠟燭布丁。\n藍瓶咖啡 (Blue Bottle) 也在隔壁。', map: 'FUK COFFEE Seaside' },
@@ -294,8 +385,8 @@ createApp({
                         map: 'Mina Tenjin' 
                     },
                     { 
-                        type: 'spot', isSpecial: true, category: '住宿', title: '回藥院飯店放東西', time: '19:15', 
-                        note: '🚶 從天神推車散步 10-15 分鐘（或搭 1 站地鐵）回飯店 Branche 藥院大通。' 
+                        type: 'spot', isSpecial: true, category: '住宿', title: '回飯店放東西', time: '19:15', 
+                        note: '🚶 從天神推車散步 10-15 分鐘回飯店 Branche 藥院大通。' 
                     },
                     { 
                         type: 'spot', isSpecial: true, category: '晚餐', title: 'NIKUICHI 燒肉 (藥院店)', time: '19:30', 
@@ -340,7 +431,7 @@ createApp({
                     },
                     { 
                         type: 'spot', category: '活動', title: 'E・ZO FUKUOKA', time: '17:00', 
-                        note: '✨ 位於 5 樓。teamLab 森林聲光投影效果極佳。\n⚠️ **注意：** 部分地面不平，建議換用揹巾，推車寄門口。',
+                        note: '✨ 位於 5 樓。teamLab 森林聲光投影效果極佳。\n⚠️ **注意：** 部分地面不平，建議換用揹巾，推車寄放門口。',
                         map: 'BOSS E・ZO FUKUOKA'
                     },
                     { 
@@ -369,7 +460,8 @@ createApp({
                     { 
                         type: 'spot', category: '美食', title: '大名區 (Daimyo)', time: '12:00', 
                         tags: ['生甜甜圈', 'ShinShin'],
-                        note: '🍩 **生甜甜圈** 就在這區。\n🍜 **Shin Shin 拉麵 (天神本店)：** 建議 15:00-16:00 來人較少，推車才進得去。\n🥘 **麵屋兼虎：** 也是名店。',
+                        note: '🍩 **生甜甜圈** 就在這區。\n🍜 **Shin Shin 拉麵 (天神本店)：** 建議 15:00-16:00 來人較少，推車才進得去。',
+                        transport: '🚶 從大濠公園步行約 12-15 分鐘即達。',
                         map: 'Tenjin Daimyo Area'
                     },
                     { 
@@ -383,11 +475,11 @@ createApp({
                     { 
                         type: 'spot', isSpecial: true, category: '晚餐', title: 'Hakata Seafood Uoden', time: '18:30', 
                         image: 'https://cdn.phototourl.com/free/2026-04-10-aaa48a8b-11ee-4970-8fb6-fe4a8613f3d3.jpg', 
-                        note: '🐟 **明太子玉子燒！** 食材非常新鮮。',
+                        note: '🐟 **大推明太子玉子燒！** 食材非常新鮮。',
                         map: '博多シーフード うお田'
                     },
                     { 
-                        type: 'spot', category: '購物', title: '博多車站 伴手禮', time: '20:30', 
+                        type: 'spot', category: '購物', title: '博多車站 伴手禮採買', time: '20:30', 
                         tags: ['努努雞', '治一郎', 'LOPIA'],
                         note: '🛍️ **伴手禮動線：**\n1. **LOPIA 超市**：就在筑紫口。\n2. **治一郎**：布丁與年輪蛋糕。\n3. **努努雞**：博多阪急 B1 熟食區(拿冷凍版)。',
                         transport: '🚌 巴士：從 LaLaport 鋼彈門口搭 44/45 號巴士直達博多站。',
@@ -402,7 +494,8 @@ createApp({
                 ]
             },
             {
-                date: '4/27 D5', icon: '🏠', items: [
+                date: '4/27 D5', icon: '🏠', weather: { type: 'sun', temp: 20, tips: '回家日。' },
+                items: [
                     { type: 'spot', category: '活動', title: '飯店退房', time: '10:00' },
                     { type: 'spot', isSpecial: true, category: '交通', title: '前往機場', time: '10:15', taxiNote: '目的地：福岡空港 国際線ターミナル' },
                     { type: 'flight', airline: '長榮航空', flightNo: 'BR105', depCode: 'FUK', depTime: '12:20', arrCode: 'TPE', arrTime: '13:45', ticketImg: 'https://cdn.phototourl.com/uploads/2026-03-18-62e9009f-c1a2-420c-8443-7135151e6f84.jpg' }
@@ -416,20 +509,19 @@ createApp({
                 { text: 'Visit Japan Web 完成登錄並截圖 QR', checked: false },
                 { text: '交通 App：下載 GO/Uber 綁定信用卡', checked: true },
                 { text: '手機 Suica：錢包加入並加值', checked: true },
-                { text: '網路：購買 esim', checked: true },
-                { text: '旅平險、日圓換匯', checked: true }
+                { text: '網路：購買 esim、旅平險、日圓換匯', checked: true }
             ]},
             { title: '🍼 寶寶用品', icon: 'fas fa-baby', newItemText: '', items: [
                 { text: '推車、推車防水罩、揹帶', checked: false },
-                { text: '奶粉、奶瓶、保溫瓶、冷水瓶', checked: false },
+                { text: '奶粉、攜帶式奶瓶、保溫瓶、冷水瓶', checked: false },
                 { text: '副食品調理包、餐具、悶燒罐', checked: false },
                 { text: '常備藥：退燒藥、蚊蟲叮咬、屁屁膏', checked: true },
-                { text: '尿布、口水巾、浴巾、米餅', checked: false }
+                { text: '尿布、口水巾、浴巾、米餅、耳罩', checked: false }
             ]},
-            { title: '托運行李', icon: 'fas fa-luggage-cart', newItemText: '', items: [
-                { text: '充電器、洗衣球、夾腳拖', checked: false },
+            { title: '托運行李準備', icon: 'fas fa-luggage-cart', newItemText: '', items: [
+                { text: '充電器、洗衣球、換洗衣物、夾腳拖', checked: false },
                 { text: '行動電源 (隨身禁託運)', checked: true },
-                { text: '換洗衣物、盥洗用品、隱眼', checked: false }
+                { text: '換洗用具 (牙刷、牙膏、洗面乳)', checked: false }
             ]}
         ]);
 
