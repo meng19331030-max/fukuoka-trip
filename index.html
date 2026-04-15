@@ -109,14 +109,14 @@
                                 <button v-if="item.taxiNote" @click="showTaxi(item.taxiNote)" class="btn-action bg-gray-700 text-white flex-1"><i class="fas fa-taxi mr-1"></i>司機</button>
                                 <button v-if="item.bookingImg" @click="openModal(item.bookingImg)" class="btn-action bg-primaryLight text-white flex-1"><i class="fas fa-receipt mr-1"></i>憑證</button>
                                 <button v-if="item.action" @click="item.action()" class="btn-action bg-green text-white flex-1"><i class="fas fa-calendar-check mr-1"></i>查看預約</button>
-                                <button v-if="item.navDetail" @click="showNav(item.navDetail)" class="btn-action bg-secondary text-white flex-1"><i class="fas fa-info-circle mr-1"></i>前往方式</button>
+                                <button v-if="item.navDetail" @click="showNav(item.navDetail)" class="btn-action bg-secondary text-white flex-1"><i class="fas fa-info-circle mr-1"></i>前往細節</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 記帳頁面 -->
+            <!-- 記帳頁 -->
             <div v-if="activeTab === 'money'" class="pb-10">
                 <div class="bg-gradient-to-br from-primary to-primaryLight p-6 rounded-3xl text-white shadow-lg mb-6 text-center">
                     <div class="text-[10px] opacity-80 uppercase font-bold mb-1">Total Expenses</div>
@@ -144,7 +144,7 @@
                 <button @click="addExpense()" class="fixed right-6 bottom-24 w-14 h-14 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center text-2xl z-50"><i class="fas fa-plus"></i></button>
             </div>
 
-            <!-- 清單頁面 -->
+            <!-- 清單頁 -->
             <div v-if="activeTab === 'checklist'" class="pb-10">
                 <div class="bg-white p-5 rounded-3xl shadow-sm mb-6 border-t-8 border-green">
                     <h2 class="text-lg font-bold text-gray-800 mb-1">準備完成度：{{checklistProgress}}%</h2>
@@ -164,7 +164,7 @@
                 </div>
             </div>
 
-            <!-- 購物籃頁面 -->
+            <!-- 購物籃 -->
             <div v-if="activeTab === 'shopping'" class="pb-10">
                 <h2 class="text-xl font-bold text-primary mb-6 flex items-center px-2"><i class="fas fa-shopping-basket mr-3"></i>購物願望</h2>
                 <div class="grid grid-cols-2 gap-4">
@@ -189,14 +189,14 @@
     <div v-if="modalImg" class="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center p-4" @click="modalImg = null"><img :src="modalImg" class="max-w-full max-h-[85vh] rounded-lg shadow-2xl object-contain"></div>
     <div v-if="taxiModal" class="fixed inset-0 bg-black/80 z-[9999] flex items-center justify-center p-6" @click="taxiModal = null">
         <div class="bg-white p-8 rounded-3xl w-full text-center border-4 border-primary" @click.stop>
-            <div class="text-[10px] text-gray-400 mb-2 font-bold uppercase tracking-widest">向司機出示 (運転手さんへ)</div>
-            <div class="text-2xl font-bold mb-8 text-gray-800 bg-warmGray p-6 rounded-2xl border-2 border-dashed border-gray-300 whitespace-pre-line leading-relaxed">{{taxiModal}}</div>
+            <div class="text-[10px] text-gray-400 mb-2 font-bold uppercase tracking-widest font-bold">向司機出示 (運転手さんへ)</div>
+            <div class="text-2xl font-bold mb-8 text-gray-800 bg-warmGray p-6 rounded-2xl border-2 border-dashed border-gray-300 whitespace-pre-line leading-relaxed font-bold">{{taxiModal}}</div>
             <button @click="taxiModal = null" class="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-md">OK, 我知道了</button>
         </div>
     </div>
     <div v-if="navModal" class="fixed inset-0 bg-black/80 z-[9999] flex items-center justify-center p-6" @click="navModal = null">
         <div class="bg-white p-6 rounded-3xl w-full max-w-sm" @click.stop>
-            <div class="text-lg font-bold text-secondary mb-4 flex items-center font-bold"><i class="fas fa-directions mr-2 font-bold"></i> 前往方式細節</div>
+            <div class="text-lg font-bold text-secondary mb-4 flex items-center font-bold"><i class="fas fa-directions mr-2"></i> 路線導引細節</div>
             <div class="text-sm text-gray-600 mb-6 whitespace-pre-line leading-relaxed font-bold">{{navModal}}</div>
             <button @click="navModal = null" class="w-full py-4 bg-secondary text-white rounded-2xl font-bold shadow-md">我記住了</button>
         </div>
@@ -332,13 +332,55 @@ createApp({
                 ]
             },
             {
-                date: '4/25 D3', icon: '🐬', weather: { type: 'sun', temp: 22, tips: '水族館與花海。' },
+                date: '4/25 D3', icon: '🐬', weather: { type: 'sun', temp: 22, feel: 21, tips: '海邊風大。帶小外套。' },
                 items: [
-                    { type: 'spot', isSpecial: true, category: '美食', title: '食堂 おわん 早餐', time: '09:00', action: () => openModal('https://cdn.phototourl.com/uploads/2026-03-18-14b25d1c-c3dd-4a94-9053-1e5287531a6d.png'), map: '食堂 おわん' },
-                    { type: 'spot', category: '景點', title: '海洋世界 (水族館)', time: '11:00', note: '🐬 11:00 海豚秀。', map: 'Marine World' },
-                    { type: 'spot', category: '活動', title: 'E・ZO teamLab', time: '16:00', note: '⚠️ 建議揹巾。', map: 'E・ZO FUKUOKA' },
-                    { type: 'spot', isSpecial: true, category: '購物', title: 'MARK IS 育兒聖地', time: '17:30', note: '👶 3F Kids Room。', map: 'MARK IS' },
-                    { type: 'spot', isSpecial: true, category: '交通', title: '回飯店 (計程車)', time: '19:30', taxiNote: '住所：福岡県福岡市中央区平尾3-19-25\n(ホテルまでお願いします)' }
+                    { 
+                        type: 'spot', isSpecial: true, category: '美食', title: '食堂 おわん (日式早餐)', time: '09:00', 
+                        note: '🍚 **9:00 已訂位。**\n搭配現煮釜飯與醃漬小菜，每一口都很有層次，喜歡日式早餐的首選！',
+                        images: ['https://cdn.phototourl.com/uploads/2026-03-18-1a0cecb5-25d7-43b0-8130-6976e7adc56a.jpg'],
+                        action: () => openModal('https://cdn.phototourl.com/uploads/2026-03-18-14b25d1c-c3dd-4a94-9053-1e5287531a6d.png'),
+                        transport: '🚶 從飯店步行約 10 分鐘即達。',
+                        map: '食堂 おわん'
+                    },
+                    { 
+                        type: 'spot', isSpecial: true, category: '活動', title: '前往 海之中道海洋世界', time: '10:05', 
+                        note: '🚢 搭船：博多埠頭 第 1 碼頭 (安田汽船)。\n🕒 10:05 準時開船，航程約 15-20 分鐘。',
+                        transport: '🚕 計程車 (12-15分, ¥1,500) 直達「博多埠頭」。',
+                        map: '博多ふ頭 第1ターミナル'
+                    },
+                    { 
+                        type: 'spot', category: '景點', title: '海洋世界水族館', time: '11:00', 
+                        tags: ['海豚秀', '天竺鼠'],
+                        note: '🐬 **11:00 海豚海獅表演：** 下船走1分即到入口，直衝2樓表演場。\n🐹 **12:00 天竺鼠互動：** 表演完立刻去「海獸島」附近抽整理券。',
+                        map: 'Marine World'
+                    },
+                    { 
+                        type: 'spot', category: '景點', title: '海之中道海濱公園', time: '14:00', 
+                        note: '🌸 4月是粉蝶花最美時刻。\n👶 園區內育嬰室極多，推車首選。',
+                        map: 'Uminonakamichi Seaside Park'
+                    },
+                    { 
+                        type: 'spot', isSpecial: true, category: '景點', title: '回程動線：福岡塔', time: '16:15', 
+                        note: '🚢 改搭往「地行濱 (福岡巨蛋)」的船班。\n🕒 16:15 左右有一班，抵達後走一下即到福岡塔。',
+                        map: 'Fukuoka Tower'
+                    },
+                    { 
+                        type: 'spot', category: '活動', title: 'E・ZO teamLab 森林', time: '17:00', 
+                        note: '✨ 位於 5 樓。聲光投影效果極佳。\n⚠️ **注意：** 部分地面不平，建議換用揹巾，推車寄放門口。',
+                        map: 'BOSS E・ZO FUKUOKA'
+                    },
+                    { 
+                        type: 'spot', isSpecial: true, category: '購物', title: 'MARK IS 育兒聖地', time: '18:00', 
+                        note: '🛍️ **必逛：** 西松屋、玩具反斗城、Birthday、petit main、阿卡將。\n👶 **3F 育兒專區：** 推薦去「Kids Premium Room」遊戲軟墊區。',
+                        transport: '🚶 位於隔壁，有連通橋步行 2 分鐘即達。',
+                        map: 'MARK IS Fukuoka-momochi'
+                    },
+                    { 
+                        type: 'spot', isSpecial: true, category: '交通', title: '回飯店 (計程車)', time: '20:00', 
+                        note: '🚕 車資約 ¥2,000，車程 15-20 分鐘。',
+                        taxiNote: '住所：福岡県福岡市中央区平尾3-19-25\n(ホテルまでお願いします)',
+                        map: 'MARK IS'
+                    }
                 ]
             },
             {
