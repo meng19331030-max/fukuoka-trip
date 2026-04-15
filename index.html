@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>2026 朵朵的初次飛行 - 完美終極版</title>
+    <title>2026 朵朵的初次飛行 - 百分百完美版</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
@@ -61,12 +61,13 @@
         </aside>
 
         <section class="content-scroll no-scrollbar" id="mainScroll">
-            <!-- 行程分頁 (D1-D4 完全保留) -->
+            <!-- 行程分頁 -->
             <div v-if="activeTab === 'trip'">
                 <div class="relative timeline-line">
                     <div v-for="(item, idx) in itinerary[activeDay].items" :key="idx" class="relative pl-10 mb-8">
                         <div class="absolute left-0 top-1 w-10 flex justify-center"><div class="w-4 h-4 bg-primary rounded-full border-4 border-white z-10 shadow-sm"></div></div>
 
+                        <!-- 航班卡片 -->
                         <div v-if="item.type === 'flight'" class="flight-card shadow-md">
                             <div class="flex justify-between items-center mb-3 text-[10px] font-bold">
                                 <span><i class="fas fa-plane mr-1"></i>{{item.airline}} · {{item.flightNo}}</span>
@@ -79,6 +80,7 @@
                             </div>
                         </div>
 
+                        <!-- 一般卡片 -->
                         <div v-else :class="['trip-card shadow-sm', item.isSpecial ? 'special-card' : '']">
                             <div class="flex justify-between items-start mb-2">
                                 <div class="flex flex-wrap gap-1">
@@ -88,18 +90,26 @@
                                 <span class="text-[10px] font-mono text-gray-400 font-bold">{{item.time}}</span>
                             </div>
                             <h3 class="text-lg font-bold text-gray-800 leading-tight mb-2">{{item.title}}</h3>
+                            
+                            <!-- 多圖展示 -->
                             <div v-if="item.images && item.images.length > 0" class="flex space-x-2 mb-3 overflow-x-auto no-scrollbar py-1">
                                 <img v-for="img in item.images" :src="img" @click="openModal(img)" class="h-24 w-32 object-cover rounded-xl shadow-sm flex-shrink-0 border border-gray-100">
                             </div>
                             <img v-else-if="item.image" :src="item.image" @click="openModal(item.image)" class="w-full h-36 object-cover rounded-xl shadow-sm mb-3">
+
                             <p class="text-[11px] text-gray-600 leading-relaxed whitespace-pre-line mb-4 font-bold" v-html="item.note"></p>
-                            <div v-if="item.transport" class="bg-warmGray p-3 rounded-xl border border-gray-100 mb-4 text-[10px]"><div class="font-bold text-secondary mb-1"><i class="fas fa-route mr-1"></i>交通詳情</div><p class="text-gray-500 whitespace-pre-line leading-relaxed font-bold">{{item.transport}}</p></div>
+                            
+                            <div v-if="item.transport" class="bg-warmGray p-3 rounded-xl border border-gray-100 mb-4 text-[10px]">
+                                <div class="font-bold text-secondary mb-1"><i class="fas fa-route mr-1"></i>前往方式 / 交通詳情</div>
+                                <p class="text-gray-500 whitespace-pre-line leading-relaxed font-bold">{{item.transport}}</p>
+                            </div>
+
                             <div class="flex flex-wrap gap-2">
                                 <button v-if="item.map" @click="goMap(item.map)" class="btn-action bg-fujiBlue text-secondary flex-1 font-bold"><i class="fas fa-location-arrow mr-1"></i>地圖</button>
                                 <button v-if="item.taxiNote" @click="showTaxi(item.taxiNote)" class="btn-action bg-gray-700 text-white flex-1 font-bold"><i class="fas fa-taxi mr-1"></i>司機</button>
                                 <button v-if="item.bookingImg" @click="openModal(item.bookingImg)" class="btn-action bg-primaryLight text-white flex-1 font-bold"><i class="fas fa-receipt mr-1"></i>憑證</button>
                                 <button v-if="item.action" @click="item.action()" class="btn-action bg-green text-white flex-1 font-bold"><i class="fas fa-calendar-check mr-1"></i>預約資訊</button>
-                                <button v-if="item.navDetail" @click="showNav(item.navDetail)" class="btn-action bg-secondary text-white flex-1 font-bold"><i class="fas fa-info-circle mr-1"></i>細節</button>
+                                <button v-if="item.navDetail" @click="showNav(item.navDetail)" class="btn-action bg-secondary text-white flex-1 font-bold"><i class="fas fa-info-circle mr-1"></i>前往細節</button>
                                 <button v-if="item.refundDetail" @click="showNav(item.refundDetail)" class="btn-action bg-primary text-white flex-1 font-bold"><i class="fas fa-hand-holding-usd mr-1"></i>退稅</button>
                             </div>
                         </div>
@@ -107,31 +117,60 @@
                 </div>
             </div>
 
-            <!-- 準備清單頁面 (更新版) -->
+            <!-- 記帳頁面 -->
+            <div v-if="activeTab === 'money'" class="pb-10">
+                <div class="bg-gradient-to-br from-primary to-primaryLight p-6 rounded-3xl text-white shadow-lg mb-6 text-center">
+                    <div class="text-[10px] opacity-80 uppercase font-bold mb-1">Total Expenses</div>
+                    <div class="text-3xl font-bold">NT$ {{totalTWD.toLocaleString()}}</div>
+                    <div class="text-[11px] mt-1 opacity-90 italic">約 ¥{{totalJPY.toLocaleString()}} JPY</div>
+                </div>
+                <div class="space-y-3">
+                    <div v-for="(bill, bIdx) in expenses" :key="bIdx" class="bg-white p-4 rounded-2xl shadow-sm border border-fujiBlue flex justify-between items-center">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-fujiBlue flex items-center justify-center text-secondary text-lg"><i :class="getExpenseIcon(bill.category)"></i></div>
+                            <div>
+                                <div class="text-sm font-bold text-gray-700">{{bill.name}}</div>
+                                <div class="text-[10px] text-gray-400">{{bill.date}} · {{bill.payBy}}</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="text-right">
+                                <div class="text-sm font-bold text-primary">¥{{bill.jpy.toLocaleString()}}</div>
+                                <div class="text-[10px] text-gray-400">NT$ {{Math.round(bill.jpy * 0.21)}}</div>
+                            </div>
+                            <button @click="expenses.splice(bIdx, 1)" class="text-gray-300 active:text-red-400 p-2"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <button @click="addExpense()" class="fixed right-6 bottom-24 w-14 h-14 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center text-2xl z-50"><i class="fas fa-plus"></i></button>
+            </div>
+
+            <!-- 清單頁面 -->
             <div v-if="activeTab === 'checklist'" class="pb-10">
                 <div class="bg-white p-5 rounded-3xl shadow-sm mb-6 border-t-8 border-green text-center">
-                    <h2 class="text-lg font-bold text-gray-800 mb-1 font-bold">準備進度：{{checklistProgress}}%</h2>
-                    <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden shadow-inner"><div class="bg-green h-full transition-all duration-700" :style="{width: checklistProgress + '%'}"></div></div>
+                    <h2 class="text-lg font-bold text-gray-800 mb-1 font-bold">準備完成度：{{checklistProgress}}%</h2>
+                    <div class="w-full bg-gray-100 h-2.5 rounded-full overflow-hidden"><div class="bg-green h-full transition-all duration-700" :style="{width: checklistProgress + '%'}"></div></div>
                 </div>
-
-                <div v-for="(category, cIdx) in checklistData" :key="cIdx" class="mb-8">
-                    <h3 class="flex items-center text-secondary font-bold text-sm uppercase tracking-widest mb-4 px-1"><i :class="category.icon" class="mr-2 text-primary"></i> {{category.title}}</h3>
-                    <div class="bg-white rounded-3xl p-4 shadow-sm border border-fujiBlue space-y-4">
-                        <div v-for="(item, iIdx) in category.items" :key="iIdx" class="flex items-center justify-between group">
-                            <label class="flex items-center flex-1 cursor-pointer">
-                                <input type="checkbox" v-model="item.checked" class="w-5 h-5 rounded-lg border-gray-200 text-green mr-3 focus:ring-green">
-                                <span :class="{'line-through text-gray-300 italic': item.checked}" class="text-[13px] font-bold text-gray-600 leading-snug">{{item.text}}</span>
+                <div v-for="(cat, cIdx) in checklistData" :key="cIdx" class="mb-6">
+                    <h3 class="text-secondary font-bold text-sm mb-3 flex items-center px-1"><i :class="cat.icon" class="mr-2 text-primary"></i> {{cat.title}}</h3>
+                    <div class="bg-white rounded-2xl p-4 space-y-4 shadow-sm border border-fujiBlue">
+                        <div v-for="(item, iIdx) in cat.items" :key="iIdx" class="flex items-center justify-between group">
+                            <label class="flex items-center space-x-3 cursor-pointer flex-1">
+                                <input type="checkbox" v-model="item.checked" class="w-5 h-5 rounded-lg border-gray-200 text-green focus:ring-green">
+                                <span :class="{'line-through text-gray-300 italic': item.checked}" class="text-sm text-gray-600 font-bold">{{item.text}}</span>
                             </label>
-                            <button @click="category.items.splice(iIdx, 1)" class="text-gray-300 p-2 hover:text-red-400 transition-colors"><i class="fas fa-trash-alt text-xs"></i></button>
+                            <button @click="cat.items.splice(iIdx, 1)" class="text-gray-200 hover:text-red-400 p-2 transition-colors">
+                                <i class="fas fa-trash-alt text-xs"></i>
+                            </button>
                         </div>
                         <!-- 新增項目輸入 -->
                         <div class="pt-2 flex items-center border-t border-dashed border-gray-100">
-                            <input type="text" v-model="category.newItemText" @keyup.enter="addItem(cIdx)" placeholder="新增項目..." class="flex-1 text-[12px] bg-warmGray rounded-xl px-3 py-2 outline-none focus:ring-1 focus:ring-primaryLight">
+                            <input type="text" v-model="cat.newItemText" @keyup.enter="addItem(cIdx)" placeholder="新增項目..." class="flex-1 text-[12px] bg-warmGray rounded-xl px-3 py-2 outline-none focus:ring-1 focus:ring-primaryLight">
                             <button @click="addItem(cIdx)" class="ml-2 w-8 h-8 bg-fujiBlue text-secondary rounded-full flex items-center justify-center shadow-sm"><i class="fas fa-plus text-xs"></i></button>
                         </div>
                     </div>
                 </div>
-
+                
                 <!-- 特別注意事項 -->
                 <div class="bg-red-50 p-5 rounded-3xl border border-red-100 mb-8">
                     <h3 class="text-red-500 font-bold text-sm mb-3 flex items-center"><i class="fas fa-exclamation-triangle mr-2"></i> 行李特別注意事項</h3>
@@ -143,28 +182,7 @@
                 </div>
             </div>
 
-            <!-- 其他 Tab (與之前相同) -->
-            <div v-if="activeTab === 'money'" class="pb-10">
-                <!-- 記帳邏輯保留 -->
-                <div class="bg-gradient-to-br from-primary to-primaryLight p-6 rounded-3xl text-white shadow-lg mb-6 text-center">
-                    <div class="text-[10px] opacity-80 uppercase font-bold mb-1">Total Expenses</div>
-                    <div class="text-3xl font-bold">NT$ {{totalTWD.toLocaleString()}}</div>
-                </div>
-                <div class="space-y-3">
-                    <div v-for="(bill, bIdx) in expenses" :key="bIdx" class="bg-white p-4 rounded-2xl shadow-sm border border-fujiBlue flex justify-between items-center">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 rounded-full bg-fujiBlue flex items-center justify-center text-secondary text-lg"><i :class="getExpenseIcon(bill.category)"></i></div>
-                            <div><div class="text-sm font-bold text-gray-700">{{bill.name}}</div><div class="text-[10px] text-gray-400">{{bill.date}} · {{bill.payBy}}</div></div>
-                        </div>
-                        <div class="flex items-center space-x-4">
-                            <div class="text-right"><div class="text-sm font-bold text-primary">¥{{bill.jpy.toLocaleString()}}</div><div class="text-[10px] text-gray-400">NT$ {{Math.round(bill.jpy * 0.21)}}</div></div>
-                            <button @click="expenses.splice(bIdx, 1)" class="text-gray-300 p-2"><i class="fas fa-trash-alt"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <button @click="addExpense()" class="fixed right-6 bottom-24 w-14 h-14 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center text-2xl z-50"><i class="fas fa-plus"></i></button>
-            </div>
-
+            <!-- 購物籃頁面 -->
             <div v-if="activeTab === 'shopping'" class="pb-10">
                 <h2 class="text-xl font-bold text-primary mb-6 flex items-center px-2"><i class="fas fa-shopping-basket mr-3"></i>購物願望</h2>
                 <div class="grid grid-cols-2 gap-4">
@@ -185,20 +203,20 @@
         <div @click="activeTab = 'checklist'" class="nav-link"><i :class="['fas fa-clipboard-check text-2xl', activeTab === 'checklist' ? 'text-primary' : 'text-gray-300']"></i><span class="text-[10px] mt-1 font-bold">準備清單</span></div>
     </footer>
 
-    <!-- Modals ( taxi, img, nav ) 保留 -->
+    <!-- Modals -->
     <div v-if="modalImg" class="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center p-4" @click="modalImg = null"><img :src="modalImg" class="max-w-full max-h-[85vh] rounded-lg shadow-2xl object-contain"></div>
     <div v-if="taxiModal" class="fixed inset-0 bg-black/80 z-[9999] flex items-center justify-center p-6" @click="taxiModal = null">
         <div class="bg-white p-8 rounded-3xl w-full text-center border-4 border-primary" @click.stop>
             <div class="text-[10px] text-gray-400 mb-2 font-bold uppercase tracking-widest font-bold">向司機出示 (運転手さんへ)</div>
             <div class="text-2xl font-bold mb-8 text-gray-800 bg-warmGray p-6 rounded-2xl border-2 border-dashed border-gray-300 whitespace-pre-line leading-relaxed font-bold">{{taxiModal}}</div>
-            <button @click="taxiModal = null" class="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-md shadow-primary/20">OK, 我記住了</button>
+            <button @click="taxiModal = null" class="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-md">OK, 我記住了</button>
         </div>
     </div>
     <div v-if="navModal" class="fixed inset-0 bg-black/80 z-[9999] flex items-center justify-center p-6" @click="navModal = null">
         <div class="bg-white p-6 rounded-3xl w-full max-w-sm" @click.stop>
-            <div class="text-lg font-bold text-secondary mb-4 flex items-center font-bold"><i class="fas fa-directions mr-2 font-bold"></i> 行程詳情教學</div>
+            <div class="text-lg font-bold text-secondary mb-4 flex items-center font-bold"><i class="fas fa-directions mr-2 font-bold"></i> 詳情說明</div>
             <div class="text-sm text-gray-600 mb-6 whitespace-pre-line leading-relaxed font-bold">{{navModal}}</div>
-            <button @click="navModal = null" class="w-full py-4 bg-secondary text-white rounded-2xl font-bold shadow-md shadow-secondary/20">我知道了</button>
+            <button @click="navModal = null" class="w-full py-4 bg-secondary text-white rounded-2xl font-bold shadow-md">我知道了</button>
         </div>
     </div>
 </div>
@@ -213,219 +231,6 @@ createApp({
         const taxiModal = ref(null);
         const navModal = ref(null);
 
-        // --- 行程資料 (D1-D5 完全依照之前完美設定) ---
         const itinerary = ref([
             {
-                date: '4/23 D1', icon: '✈️', weather: { type: 'sun', temp: 18, feel: 16, tips: '抵達福岡。早晚偏涼。' },
-                items: [
-                    { type: 'flight', airline: '長榮航空', flightNo: 'BR106', depCode: 'TPE', depTime: '08:00', arrCode: 'FUK', arrTime: '11:20', ticketImg: 'https://cdn.phototourl.com/uploads/2026-03-17-d0a4373b-c132-4c37-83a6-db7e4d67d0ee.png' },
-                    { type: 'spot', category: '必喝', title: '機場 抹茶拿鐵', time: '11:40', note: '📍 位置：機場國際線入境 51B。' },
-                    { 
-                        type: 'spot', isSpecial: true, category: '住宿', title: '飯店 Check-in', time: '12:10', 
-                        note: '🏨 Branche 藥院大通SeedsStay Yakuin\nAgoda 訂單 1990699229',
-                        transport: '🚕 計程車 (20min)\n預估車資：約 2,200 - 2,800 日圓 (約台幣 480-620 元)',
-                        taxiNote: '住所：福岡県福岡市中央区平尾3-19-25\n(ホテルまでお願いします)',
-                        bookingImg: 'https://cdn.phototourl.com/uploads/2026-03-17-5539a649-76e8-441d-a714-d8a31076f51f.png',
-                        map: 'Branche 薬院大通り SeedsStay'
-                    },
-                    { 
-                        type: 'spot', category: '美食', title: '博多運河城 午餐', time: '13:00', 
-                        note: '🍜 推薦 4F/5F 拉麵競技場：位置大適合推車。\n🕒 14:00/15:00 有水舞表演。', 
-                        transport: '🚕 計程車 (8-10分) 約¥1,300\n🚃 地鐵：藥院大通站➔櫛田神社前站\n🚶 步行：約 1.6km (20-25分)',
-                        map: 'Canal City Hakata' 
-                    },
-                    { 
-                        type: 'spot', isSpecial: true, category: '景點', title: '櫛田神社⛩️', time: '15:00', 
-                        tags: ['參拜攻略', '梅枝餅'],
-                        note: '🌟 **參拜三步驟：**\n1. 入口右手邊手水舍洗手漱口。\n2. 本殿投5/50日元，二禮二拍手一禮。\n3. 100日元抽籤（不好可綁架子上）。\n\n延年益壽：靈泉鶴之井戶（水鹹鹹的）。\n必看：相撲力士「力石」。\n💡 附近有一蘭拉麵總店。',
-                        transport: '🚶 **推車友善路線：**\n1. 從運河城「北邊出口」(North Building) 出去。\n2. 2樓走天橋接商業大樓電梯下1樓；1樓走星巴克出口。\n3. 過國體道路小馬路即達側門（地面較平坦）。',
-                        map: 'Kushida Shrine'
-                    },
-                    { type: 'spot', isSpecial: true, category: '景點', title: '天開稻荷神社', time: '15:30', note: '位於櫛田神社內，求開運極佳！', map: '天開稻荷神社' },
-                    { type: 'spot', category: '美食', title: '川端通 AKIRA SUISAN', time: '15:45', image: 'https://cdn.phototourl.com/uploads/2026-03-17-ae4e14d8-7b9f-4c64-8a04-9e1467d408c4.jpg', note: '🌟 網友推薦丼飯生魚片超多又厚！便宜又好吃。', map: 'AKIRA SUISAN' },
-                    { 
-                        type: 'spot', isSpecial: true, category: '活動', title: '麵包超人博物館', time: '16:00', 
-                        note: '👶 經過商店街步行7分即達。入內需換揹巾。',
-                        transport: '🚶 路線：沿川端通商店街(有頂棚)一直往北走。',
-                        map: 'Fukuoka Anpanman Museum'
-                    },
-                    { 
-                        type: 'spot', isSpecial: true, category: '甜點', title: '鈴懸（すずかけ）本店', time: '16:30', 
-                        images: ['https://cdn.phototourl.com/uploads/2026-03-17-666e9bb9-774c-4290-bf9b-5de8599eb2e2.webp','https://cdn.phototourl.com/uploads/2026-03-17-01da1205-01db-46c0-832c-6e5d9b23c8dc.jpg','https://cdn.phototourl.com/uploads/2026-03-17-666e9bb9-774c-4290-bf9b-5de8599eb2e2.webp'], 
-                        note: '🍓 福岡甜點界天花板！迷你銅鑼燒、鈴鈴最中必買。', 
-                        map: '鈴懸 本店' 
-                    },
-                    { 
-                        type: 'spot', isSpecial: true, category: '美食', title: '前田屋牛腸鍋', time: '17:00', 
-                        note: '招牌和牛味噌牛腸鍋。預約：TS7DNWA82N', 
-                        action: () => openModal('https://cdn.phototourl.com/uploads/2026-03-17-1f7e6db7-717f-4cc5-acf6-8f09526cd024.jpg'), 
-                        map: '博多もつ鍋 前田屋' 
-                    },
-                    { type: 'spot', category: '購物', title: 'Bon Repas 藥院店超市', time: '20:30', note: '🕒 營業至 21:00。\n✨ 20:30 有半額熟食特價！就在飯店附近。', map: 'Bon Repas Yakuin' }
-                ]
-            },
-            {
-                date: '4/24 D2', icon: '⛩️', weather: { type: 'cloud', temp: 21, feel: 20, tips: '太宰府美食日。' },
-                items: [
-                    { type: 'spot', category: '景點', title: '竈門神社', time: '09:40', transport: '🚃 藥院➔西鐵二日市➔太宰府➔🚕 5分', map: '竈門神社' },
-                    { 
-                        type: 'spot', isSpecial: true, category: '美食', title: '太宰府天滿宮 必吃攻略', time: '11:00', 
-                        note: '梅枝餅評測：\n● 寺田屋：皮最薄\n● かさの家：人氣NO.1\n● 安武：重口味\n🍜 一蘭五角碗在此！',
-                        tags: ['明太子茶泡飯', '明太子漢堡'], map: '太宰府天滿宮' 
-                    },
-                    { type: 'spot', category: '美食', title: '若松屋 鰻魚飯', time: '11:20', note: '💌 沖端町26\n⏰ 10:30–15:30 (售完為止)\n🌟 鰻魚蛋捲必點！', map: '若松屋' },
-                    { type: 'spot', category: '購物', title: 'Birthday 大佐野店', time: '14:00', note: '👶 很大很好逛！這段時間讓寶寶在推車上午睡。', transport: '🚕 從太宰府站搭計程車 (8-10min)', map: 'Birthday Oosano' },
-                    { type: 'spot', category: '景點', title: '警固神社', time: '16:00', note: '👶 旁邊三越百貨 6 樓育嬰室換尿布。', map: '警固神社' },
-                    { type: 'spot', isSpecial: true, category: '美食', title: 'Full Full 麵包', time: '16:50', note: '🥖 買明太子麵包。\n🚶 穿過中央公園步行 10 分鐘。', map: 'Full Full 天神' },
-                    { type: 'spot', isSpecial: true, category: '打卡', title: 'FUK COFFEE Seaside', time: '17:30', note: '✈️ 拉花拿鐵 + 蠟燭布丁。', map: 'FUK COFFEE Seaside' },
-                    { 
-                        type: 'spot', category: '購物', title: '天神地下街 & Mina 天神', time: '18:15', 
-                        tags: ['LOFT', '西松屋'], note: '🛍️ Mina 7F 西松屋重要備案。\n👶 地下街育嬰室設施完善。',
-                        navDetail: '🚕 Birthday➔西鐵二日市站➔🚃 西鐵特急➔天神站。', map: 'Mina Tenjin' 
-                    },
-                    { 
-                        type: 'spot', isSpecial: true, category: '晚餐', title: 'NIKUICHI 燒肉 (藥院店)', time: '19:30', 
-                        action: () => openModal('https://cdn.phototourl.com/free/2026-04-08-7818d233-b4aa-4cde-af47-9ac4d51a9e4f.png'),
-                        map: 'NIKUICHI Yakuin'
-                    }
-                ]
-            },
-            {
-                date: '4/25 D3', icon: '🐬', weather: { type: 'sun', temp: 22, tips: '水族館與花海。' },
-                items: [
-                    { type: 'spot', isSpecial: true, category: '美食', title: '食堂 おわん 早餐', time: '09:00', note: '🍚 9:00 已訂位。現煮釜飯！', images:['https://cdn.phototourl.com/uploads/2026-03-18-1a0cecb5-25d7-43b0-8130-6976e7adc56a.jpg'], action: () => openModal('https://cdn.phototourl.com/uploads/2026-03-18-14b25d1c-c3dd-4a94-9053-1e5287531a6d.png'), map: '食堂 おわん' },
-                    { type: 'spot', category: '景點', title: '海洋世界 (水族館)', time: '11:00', note: '🐬 11:00 海豚秀。12:00 抽天竺鼠。', transport: '🚕 ➔ 博多埠頭 ➔ 🚢 搭船 (安田汽船)', map: 'Marine World' },
-                    { type: 'spot', category: '活動', title: 'E・ZO teamLab 森林', time: '17:00', note: '⚠️ 建議換用揹巾。', map: 'E・ZO FUKUOKA' },
-                    { type: 'spot', isSpecial: true, category: '購物', title: 'MARK IS 育兒聖地', time: '18:00', note: '👶 3F Kids Premium Room。', map: 'MARK IS' },
-                    { type: 'spot', isSpecial: true, category: '交通', title: '回飯店 (計程車)', time: '20:00', taxiNote: '住所：福岡県福岡市中央区平尾3-19-25\n(ホテルまでお願いします)' }
-                ]
-            },
-            {
-                date: '4/26 D4', icon: '🤖', weather: { type: 'sun', temp: 23, tips: '鋼彈與大名購物。' },
-                items: [
-                    { type: 'spot', category: '景點', title: '大濠公園', time: '09:30', note: '☕ 全日最美星巴克。', map: 'Ohori Park' },
-                    { type: 'spot', category: '美食', title: '大名區 (Daimyo) 逛街', time: '12:00', note: '🍜 Shin Shin 建議 15:00 來。', map: 'Shin Shin' },
-                    { 
-                        type: 'spot', isSpecial: true, category: '景點', title: 'LaLaport 福岡 (鋼彈)', time: '15:30', 
-                        note: '🤖 整點燈光秀。', transport: '🚌 巴士：天神大丸前 4C ➔ 44/46L 直達', 
-                        refundDetail: '💰 PIE VAT App 統一退稅至 1F 櫃檯。', taxiNote: '住所：博多区那珂6丁目23-1', map: 'LaLaport' 
-                    },
-                    { type: 'spot', isSpecial: true, category: '晚餐', title: 'Seafood Uoden', time: '18:30', image: 'https://cdn.phototourl.com/free/2026-04-10-aaa48a8b-11ee-4970-8fb6-fe4a8613f3d3.jpg', map: 'Uoden' },
-                    { 
-                        type: 'spot', category: '購物', title: '博多車站 伴手禮', time: '20:30', 
-                        note: '🛍️ 努努雞、治一郎、LOPIA。', taxiNote: '住所：中央区平尾3-19-25\n(ホテルまでお願いします)', map: 'Hakata Station' 
-                    }
-                ]
-            },
-            {
-                date: '4/27 D5', icon: '🏠', weather: { type: 'sun', temp: 20, tips: '回家日。' },
-                items: [
-                    { type: 'spot', category: '活動', title: '飯店退房', time: '10:00' },
-                    { type: 'spot', isSpecial: true, category: '交通', title: '前往機場', time: '10:15', taxiNote: '目的地：福岡空港 国際線ターミナル' },
-                    { type: 'flight', airline: '長榮航空', flightNo: 'BR105', depCode: 'FUK', depTime: '12:20', arrCode: 'TPE', arrTime: '13:45', ticketImg: 'https://cdn.phototourl.com/uploads/2026-03-18-62e9009f-c1a2-420c-8443-7135151e6f84.jpg' }
-                ]
-            }
-        ]);
-
-        // --- 準備清單資料 (依照您的要求更新) ---
-        const checklistData = ref([
-            { 
-                title: '出發前準備', icon: 'fas fa-plane-departure', newItemText: '',
-                items: [
-                    { text: '護照與憑證：大人與寶寶護照、機票憑證(手機截圖)', checked: true },
-                    { text: 'Visit Japan Web：完成登錄並截圖 QR Code', checked: false },
-                    { text: '交通 App：下載 GO 或 Uber 並綁定信用卡', checked: true },
-                    { text: '手機 Suica：iPhone 錢包加入並加值', checked: true },
-                    { text: '網路：購買 esim', checked: true },
-                    { text: '旅平險', checked: false },
-                    { text: '換匯 (日圓)', checked: true }
-                ]
-            },
-            { 
-                title: '🍼 寶寶專屬用品', icon: 'fas fa-baby', newItemText: '',
-                items: [
-                    { text: '推車、推車防水罩', checked: false },
-                    { text: '揹帶', checked: false },
-                    { text: '奶粉及攜帶式奶瓶、保溫瓶、冷水瓶', checked: false },
-                    { text: '副食品調理包 (帶1-2天份，其餘在D1買齊)', checked: false },
-                    { text: '奶嘴、濕紙巾、乾/濕兩用巾', checked: false },
-                    { text: '餐具：拋棄式圍兜、食物剪、餐碗、悶燒罐', checked: false },
-                    { text: '替換衣服、小外套、被被', checked: false },
-                    { text: '尿布、口水巾、寶寶浴巾', checked: false },
-                    { text: '常備藥：退燒藥、蚊蟲叮咬、屁屁膏', checked: true },
-                    { text: '奶瓶清潔劑、消毒噴霧', checked: false },
-                    { text: '安撫玩具、米餅、水壺、圍兜兜、耳罩', checked: false }
-                ]
-            },
-            { 
-                title: '托運行李準備', icon: 'fas fa-luggage-cart', newItemText: '',
-                items: [
-                    { text: '購物用：輕便保冷袋、大型摺疊購物袋', checked: false },
-                    { text: '充電器、行動電源 (禁託運！)', checked: false },
-                    { text: '洗衣球、換洗衣物、夾腳拖', checked: false },
-                    { text: '換洗用具 (牙刷、牙膏、洗面乳)', checked: false },
-                    { text: '隱眼用品、眼鏡', checked: false }
-                ]
-            },
-            { 
-                title: '上飛機/隨身物品', icon: 'fas fa-suitcase-rolling', newItemText: '',
-                items: [
-                    { text: '上飛機包：護照、錢包(外幣)、自拍棒腳架', checked: false },
-                    { text: '背身上：行動電源、相機、攝影機、信用卡', checked: true }
-                ]
-            }
-        ]);
-
-        const expenses = ref([
-            { category: '美食', name: '前田屋牛腸鍋', date: '4/23', jpy: 8500, payBy: '信用卡' },
-            { category: '交通', name: '機場計程車', date: '4/23', jpy: 2800, payBy: '現金' }
-        ]);
-
-        const shoppingItems = ref([{ name: '鈴懸 最中', img: 'https://cdn.phototourl.com/uploads/2026-03-17-01da1205-01db-46c0-832c-6e5d9b23c8dc.jpg' }]);
-
-        const totalJPY = computed(() => expenses.value.reduce((sum, item) => sum + item.jpy, 0));
-        const totalTWD = computed(() => Math.round(totalJPY.value * 0.21));
-        const checklistProgress = computed(() => {
-            const all = checklistData.value.flatMap(c => c.items);
-            return all.length ? Math.round((all.filter(i => i.checked).length / all.length) * 100) : 0;
-        });
-
-        // Methods
-        const addItem = (catIdx) => {
-            const text = checklistData.value[catIdx].newItemText;
-            if (text.trim()) {
-                checklistData.value[catIdx].items.push({ text: text.trim(), checked: false });
-                checklistData.value[catIdx].newItemText = '';
-            }
-        };
-        const openModal = (u) => modalImg.value = u;
-        const showTaxi = (t) => taxiModal.value = t;
-        const showNav = (t) => navModal.value = t;
-        const scrollToTop = () => { document.getElementById('mainScroll').scrollTop = 0; };
-        const goMap = (q) => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`);
-        const getWeatherIcon = (t) => t === 'sun' ? 'fas fa-sun' : 'fas fa-cloud-sun';
-        const getCategoryColor = (c) => {
-            const m = { '住宿': 'bg-pink-100 text-pink-600', '美食': 'bg-orange-100 text-orange-600', '景點': 'bg-blue-100 text-blue-600', '購物': 'bg-green-100 text-green-600', '交通': 'bg-gray-100 text-gray-600' };
-            return m[c] || 'bg-fujiBlue text-secondary';
-        };
-        const getExpenseIcon = (c) => {
-            const m = { '美食': 'fas fa-utensils', '交通': 'fas fa-taxi', '購物': 'fas fa-shopping-bag' };
-            return m[c] || 'fas fa-coins';
-        };
-        const addExpense = () => {
-            const name = prompt("消費名稱?");
-            const jpy = parseInt(prompt("日幣金額?"));
-            if (name && jpy) expenses.value.push({ category: '其他', name, jpy, date: '4/2x', payBy: '現金' });
-        };
-
-        return { 
-            activeDay, activeTab, itinerary, expenses, checklistData, shoppingItems, 
-            totalJPY, totalTWD, checklistProgress, addItem, openModal, showTaxi, showNav, 
-            scrollToTop, goMap, getWeatherIcon, getCategoryColor, getExpenseIcon, addExpense, 
-            modalImg, taxiModal, navModal 
-        };
-    }
-}).mount('#app');
-</script>
-</body>
-</html>
+                date: '4/23 D1', icon: '✈️', weather: { type: 'sun', temp: 18, feel: 16, tips: '抵達福岡。早晚偏涼。' }
