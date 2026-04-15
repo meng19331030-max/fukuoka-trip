@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>2026 朵朵的初次飛行 - 完美終極版</title>
+    <title>2026 朵朵的初次飛行 - 最終完結版</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
@@ -20,6 +20,7 @@
         .cover-img { width: 92%; height: 110px; object-fit: cover; border-radius: 1.5rem; margin: 0 auto; display: block; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         .layout-middle { display: grid; grid-template-columns: var(--side-w) 1fr; overflow: hidden; }
         .sidebar { border-right: 1px solid #E6F0F3; overflow-y: auto; background: #F7F7F7; }
+        /* 側邊欄底部墊片，解決 D5 點不到問題 */
         .sidebar-inner { padding: 1.5rem 0 150px 0; display: flex; flex-direction: column; align-items: center; }
         .content-scroll { overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 1.25rem; background: #F7F7F7; padding-bottom: 100px; }
         .layout-footer { background: #ffffff; border-top: 1px solid #E6F0F3; display: flex; justify-content: space-around; align-items: center; z-index: 200; padding-bottom: env(safe-area-inset-bottom); }
@@ -108,9 +109,9 @@
                                 <button v-if="item.map" @click="goMap(item.map)" class="btn-action bg-fujiBlue text-secondary flex-1 font-bold"><i class="fas fa-location-arrow mr-1"></i>地圖</button>
                                 <button v-if="item.taxiNote" @click="showTaxi(item.taxiNote)" class="btn-action bg-gray-700 text-white flex-1 font-bold"><i class="fas fa-taxi mr-1"></i>司機</button>
                                 <button v-if="item.bookingImg" @click="openModal(item.bookingImg)" class="btn-action bg-primaryLight text-white flex-1 font-bold"><i class="fas fa-receipt mr-1"></i>憑證</button>
-                                <button v-if="item.action" @click="item.action()" class="btn-action bg-green text-white flex-1 font-bold"><i class="fas fa-calendar-check mr-1"></i>預約資訊</button>
-                                <button v-if="item.navDetail" @click="showNav(item.navDetail)" class="btn-action bg-secondary text-white flex-1 font-bold"><i class="fas fa-info-circle mr-1"></i>前往細節</button>
-                                <button v-if="item.refundDetail" @click="showNav(item.refundDetail)" class="btn-action bg-primary text-white flex-1 font-bold"><i class="fas fa-hand-holding-usd mr-1"></i>退稅教學</button>
+                                <button v-if="item.action" @click="item.action()" class="btn-action bg-green text-white flex-1 font-bold"><i class="fas fa-calendar-check mr-1"></i>查看預約</button>
+                                <button v-if="item.navDetail" @click="showNav(item.navDetail)" class="btn-action bg-secondary text-white flex-1 font-bold"><i class="fas fa-info-circle mr-1"></i>詳情</button>
+                                <button v-if="item.refundDetail" @click="showNav(item.refundDetail)" class="btn-action bg-primary text-white flex-1 font-bold"><i class="fas fa-hand-holding-usd mr-1"></i>退稅</button>
                             </div>
                         </div>
                     </div>
@@ -154,18 +155,20 @@
                 <div v-for="(cat, cIdx) in checklistData" :key="cIdx" class="mb-6">
                     <h3 class="text-secondary font-bold text-sm mb-3 flex items-center px-1"><i :class="cat.icon" class="mr-2"></i> {{cat.title}}</h3>
                     <div class="bg-white rounded-2xl p-4 space-y-4 shadow-sm border border-fujiBlue">
-                        <div v-for="(item, iIdx) in cat.items" :key="iIdx" class="flex items-center justify-between">
+                        <div v-for="(item, iIdx) in cat.items" :key="iIdx" class="flex items-center justify-between group">
                             <label class="flex items-center space-x-3 cursor-pointer flex-1">
                                 <input type="checkbox" v-model="item.checked" class="w-5 h-5 rounded-lg border-gray-200 text-green focus:ring-green">
                                 <span :class="{'line-through text-gray-300 italic': item.checked}" class="text-sm text-gray-600 font-bold">{{item.text}}</span>
                             </label>
-                            <button @click="cat.items.splice(iIdx, 1)" class="text-gray-200 p-1"><i class="fas fa-times-circle"></i></button>
+                            <button @click="cat.items.splice(iIdx, 1)" class="text-gray-200 hover:text-red-400 p-2 transition-colors">
+                                <i class="fas fa-trash-alt text-xs"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 購物籃頁面 -->
+            <!-- 購物籃 -->
             <div v-if="activeTab === 'shopping'" class="pb-10">
                 <h2 class="text-xl font-bold text-primary mb-6 flex items-center px-2"><i class="fas fa-shopping-basket mr-3"></i>購物願望</h2>
                 <div class="grid grid-cols-2 gap-4">
@@ -192,14 +195,14 @@
         <div class="bg-white p-8 rounded-3xl w-full text-center border-4 border-primary" @click.stop>
             <div class="text-[10px] text-gray-400 mb-2 font-bold uppercase tracking-widest font-bold">向司機出示 (運転手さんへ)</div>
             <div class="text-2xl font-bold mb-8 text-gray-800 bg-warmGray p-6 rounded-2xl border-2 border-dashed border-gray-300 whitespace-pre-line leading-relaxed font-bold">{{taxiModal}}</div>
-            <button @click="taxiModal = null" class="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-md">OK, 我知道了</button>
+            <button @click="taxiModal = null" class="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-md">OK, 我記住了</button>
         </div>
     </div>
     <div v-if="navModal" class="fixed inset-0 bg-black/80 z-[9999] flex items-center justify-center p-6" @click="navModal = null">
         <div class="bg-white p-6 rounded-3xl w-full max-w-sm" @click.stop>
-            <div class="text-lg font-bold text-secondary mb-4 flex items-center font-bold"><i class="fas fa-directions mr-2 font-bold"></i> 行程細節教學</div>
+            <div class="text-lg font-bold text-secondary mb-4 flex items-center font-bold"><i class="fas fa-directions mr-2 font-bold"></i> 詳情說明</div>
             <div class="text-sm text-gray-600 mb-6 whitespace-pre-line leading-relaxed font-bold">{{navModal}}</div>
-            <button @click="navModal = null" class="w-full py-4 bg-secondary text-white rounded-2xl font-bold shadow-md">我記住了</button>
+            <button @click="navModal = null" class="w-full py-4 bg-secondary text-white rounded-2xl font-bold shadow-md">我知道了</button>
         </div>
     </div>
 </div>
@@ -362,7 +365,7 @@ createApp({
                     },
                     { 
                         type: 'spot', isSpecial: true, category: '景點', title: '回程動線：福岡塔', time: '16:15', 
-                        note: '🚢 改搭往「地行濱 (福岡巨蛋)」的船班。\n🕒 16:15 左右有一班，抵達後走一下即到福岡塔級達。',
+                        note: '🚢 改搭往「地行濱 (福岡巨蛋)」的船班。\n🕒 16:15 左右有一班，抵達後走一下即到福岡塔。',
                         map: 'Fukuoka Tower'
                     },
                     { 
@@ -389,38 +392,44 @@ createApp({
                 items: [
                     { 
                         type: 'spot', category: '景點', title: '福岡城跡 / 大濠公園', time: '09:30', 
-                        note: '☕ **全日本最美的星巴克之一就在大濠公園！**\n清晨在大濠公園散步非常舒服。',
+                        note: '☕ **全日本最美的星巴克之一就在大濠公園！**',
                         transport: '🚕 從飯店搭計程車只要 8-10 分鐘 (約 ¥1,000)\n🚇 地鐵：約 2 站距離。',
                         map: 'Ohori Park'
                     },
                     { 
                         type: 'spot', category: '美食', title: '天神 / 大名區 逛街', time: '12:00', 
                         tags: ['生甜甜圈', 'ShinShin'],
-                        note: '🍩 **生甜甜圈** 就在這區，必排隊。\n🍜 **Shin Shin 拉麵 (天神本店)：** 建議 15:00-16:00 來避開人潮，推車才進得去。\n🍲 **麵屋兼虎：** 沾麵名店。',
+                        note: '🍩 **生甜甜圈** 就在這區，必排隊。\n🍜 **Shin Shin 拉麵 (天神本店)：** 建議 15:00-16:00 來避開人潮，推車才進得去。',
                         transport: '🚶 從大濠公園步行約 12-15 分鐘即達。',
                         map: 'Tenjin Daimyo Area'
                     },
                     { 
                         type: 'spot', isSpecial: true, category: '景點', title: 'LaLaport 福岡 (鋼彈立像)', time: '15:30', 
                         note: '🤖 **鋼彈立像整點有燈光秀！** 傍晚 18:00 或 19:00 看燈光效果最漂亮。\n🛍️ 阿卡將、Gundam Side-F 都在這。',
-                        transport: '🚕 計程車：約 10-12 分鐘 (¥1,300-1,700 / 台幣$280-370)\n🚌 巴士：天神有直達巴士！\n乘車點：「天神大丸前」(4C處) 或「天神四丁目」。搭 44 號或 46L 往諸岡方向。約 25-30 分，¥310。',
+                        transport: '🚕 計程車：約 10-12 分鐘 (¥1,300-1,700)\n🚌 巴士：天神有直達巴士！天神大丸前(4C處)搭 44 或 46L 往諸岡方向。',
                         taxiNote: '目的地：ららぽーと福岡（ガンダム立像前）\n住所：福岡県福岡市博多区那珂6丁目23-1\n(ガンダムのところまでお願いします)',
-                        refundDetail: '💰 **LaLaport 兩大退稅方式：**\n\n1. **店舖直接退稅：** 大型連鎖店如 UNIQLO、GU。\n2. **免稅櫃檯統一退稅 (需 PIE VAT App)：**\n對象：阿卡將、Gundam Side-F 等多數中小店家。\n流程：先含稅結帳 ➔ 註冊 PIE VAT App ➔ 持收據/護照/商品至 1F 綜合免稅櫃檯辦理。\n⚠️ 最晚閉館前 30 分鐘要辦理！',
+                        refundDetail: '💰 **退稅方式：**\n1. 店舖直接退稅 (UNIQLO, GU)\n2. 統一退稅 (阿卡將等需 PIE VAT App) ➔ 至 1F 免稅櫃檯辦理。',
                         map: 'LaLaport Fukuoka'
                     },
                     { 
                         type: 'spot', isSpecial: true, category: '晚餐', title: 'Hakata Seafood Uoden', time: '18:30', 
                         image: 'https://cdn.phototourl.com/free/2026-04-10-aaa48a8b-11ee-4970-8fb6-fe4a8613f3d3.jpg', 
-                        note: '🐟 **大推明太子玉子燒！** 食材極致新鮮，網美必吃。',
+                        note: '🐟 **大推明太子玉子燒！** 網美必吃。',
                         map: '博多シーフード うお田'
                     },
                     { 
                         type: 'spot', category: '購物', title: '博多車站 伴手禮採買', time: '20:30', 
                         tags: ['努努雞', '治一郎', 'LOPIA'],
-                        note: '🛍️ **完美採買動線：**\n1. **LOPIA 超市：** 後站(筑紫口)超好買。\n2. **治一郎 (1F いっぴん通り)：** 布丁超濃郁綿密(需冷藏)；年輪蛋糕濕潤化開必買！\n3. **努努雞 (博多阪急 B1)：** 記得拿「冷凍」版免加熱。',
+                        note: '🛍️ **LOPIA 超市、治一郎布丁/年輪蛋糕、努努雞一次補齊！**',
                         transport: '🚌 巴士：從 LaLaport 鋼彈門口搭 44/45 號巴士直達博多站。',
-                        taxiNote: '住所：福岡県福岡市中央区平尾3-19-25\n(ホテルまでお願いします)',
                         map: 'Hakata Station'
+                    },
+                    { 
+                        type: 'spot', isSpecial: true, category: '交通', title: '回飯店 (計程車)', time: '21:30', 
+                        note: '🚕 **採買結束，提重物建議直接搭車回藥院。**',
+                        transport: '🚕 從博多車站「筑紫口」計程車排班處搭車。',
+                        taxiNote: '住所：福岡県福岡市中央区平尾3-19-25\n(ホテルまでお願いします)',
+                        map: 'Hakata Station Chikushi Gate'
                     }
                 ]
             },
@@ -440,8 +449,8 @@ createApp({
         ]);
 
         const checklistData = ref([
-            { title: '出發前', icon: 'fas fa-plane-departure', items: [{ text: '護照、憑證截圖', checked: true }, { text: 'VJW 完成登錄', checked: false }, { text: '手機 Suica 加值', checked: true }]},
-            { title: '🍼 寶寶專屬', icon: 'fas fa-baby', items: [{ text: '推車與防水罩', checked: false }, { text: '奶粉、調理包', checked: false }, { text: '常備藥', checked: true }]}
+            { title: '出發前', icon: 'fas fa-plane-departure', items: [{ text: '護照、憑證截圖', checked: true }, { text: 'VJW 完成登錄', checked: false }, { text: '手機 Suica 加值', checked: true }, { text: 'esim 購買', checked: true }]},
+            { title: '🍼 寶寶專屬', icon: 'fas fa-baby', items: [{ text: '推車與防水罩', checked: false }, { text: '奶粉、調理包', checked: false }, { text: '常備藥', checked: true }, { text: '餐具圍兜', checked: false }]}
         ]);
 
         const shoppingItems = ref([{ name: '鈴懸 最中', img: 'https://cdn.phototourl.com/uploads/2026-03-17-01da1205-01db-46c0-832c-6e5d9b23c8dc.jpg' }]);
